@@ -1,3 +1,3 @@
-# C++ Project Template
+# Modian Inkstone
 
-This is a template project for C++.
+This repository is the backend of Modian IME, which will carry the core business logic in it.
