@@ -1,5 +1,5 @@
 add_executable(
-        cpp_project_template
+        modian_inkstone
         main.cpp
 )
-target_link_libraries(cpp_project_template PRIVATE cpp_project_template_lib)
+target_link_libraries(modian_inkstone PRIVATE modian_inkstone_lib)

@@ -9,14 +9,14 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(
-        cpp_project_template_tests
+        modian_inkstone_test
         test_main.cpp
         test_template.cpp
 )
 
 target_link_libraries(
-        cpp_project_template_tests
-        cpp_project_template_lib
+        modian_inkstone_test
+        modian_inkstone_lib
         gtest_main
         gmock_main
 )
