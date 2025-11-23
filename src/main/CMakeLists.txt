@@ -6,5 +6,6 @@ add_executable(
 target_link_libraries(modian_inkstone PRIVATE modian_inkstone_lib)
 
 set_target_properties(modian_inkstone PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/ModianIME"
     OUTPUT_NAME "modian-inkstone"
 )
