@@ -3,12 +3,19 @@
 #include <string>
 #include <vector>
 
+#include "modian/core/engine/pinyin_engine.h"
+#include "modian/manager/engine_manager.h"
+
 const std::wstring PIPE_NAME = L"\\\\.\\pipe\\modian_ipc_pipe";
 const int BUFFER_SIZE = 1024;
 
 void run_server() {
     std::wcout << L"=== Modian Inkstone (Server) Started ===" << std::endl;
     std::wcout << L"Listening on pipe: " << PIPE_NAME << std::endl;
+
+    auto candidate_manager = std::make_shared<modian::inkstone::manager::candidate_manager>();
+    auto engine_manager = std::make_shared<modian::inkstone::manager::engine_manager>(candidate_manager);
+    engine_manager->add_new_engine(modian::inkstone::core::lazy_load_dictionary<modian::inkstone::core::pinyin_engine>());
 
     while (true) {
         HANDLE hPipe = CreateNamedPipeW(
@@ -39,11 +46,18 @@ void run_server() {
             DWORD bytesRead;
 
             while (ReadFile(hPipe, buffer, BUFFER_SIZE - 1, &bytesRead, nullptr) != FALSE) {
-                buffer[bytesRead] = '\0'; // 补上字符串结束符
+                buffer[bytesRead] = '\0';
+                std::string recv_str = buffer;
 
-                std::cout << "[Received]: " << buffer << std::endl;
-
-                // TODO: 这里未来会连接 EngineManager 进行查词
+                for (char c : recv_str) {
+                    if (c == '\b') {
+                        std::cout << "[Recv] CMD: Backspace" << std::endl;
+                        engine_manager->handle_backspace();
+                    } else {
+                        std::cout << "[Recv] Key: " << c << std::endl;
+                        engine_manager->update_input_state(c);
+                    }
+                }
             }
         }
 
