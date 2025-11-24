@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "modian/core/engine/pinyin_engine.h"
+#include "modian/core/utils/utils.h"
 #include "modian/manager/engine_manager.h"
 
 const std::wstring PIPE_NAME = L"\\\\.\\pipe\\modian_ipc_pipe";
@@ -20,7 +21,7 @@ void run_server() {
     while (true) {
         HANDLE hPipe = CreateNamedPipeW(
             PIPE_NAME.c_str(),
-            PIPE_ACCESS_INBOUND,
+            PIPE_ACCESS_DUPLEX,
             PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
             1, // Max instances
             BUFFER_SIZE, // Out buffer
@@ -56,6 +57,21 @@ void run_server() {
                     } else {
                         std::cout << "[Recv] Key: " << c << std::endl;
                         engine_manager->update_input_state(c);
+
+                        auto candidates = candidate_manager->get_candidates();
+                        std::string response{""};
+                        if (!candidates.empty()) {
+                            std::wcout << L"candidate: " << candidates[0] << std::endl;
+                            response = modian::inkstone::core::utils::to_utf8(candidates[0]);
+                            engine_manager->reset();
+                        } else {
+                            std::cout << "nothing!!!" << std::endl;
+                            response = "";
+                        }
+
+                        DWORD bytesWritten;
+                        WriteFile(hPipe, response.c_str(), response.size(), &bytesWritten, nullptr);
+                        std::cout << "[Replied]: " << response << std::endl;
                     }
                 }
             }
