@@ -26,10 +26,12 @@ add_custom_command(TARGET modian_inkstone POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/data" "${DICTIONARY_DIR}"
 
     # 3. (可选) 打印一条日志方便调试
-    COMMENT "📦 [Inkstone] Creating Modian root dir and copying dictionary assets to ${DICT_DEST_DIR}..."
+    COMMENT "[Inkstone] Creating Modian root dir and copying dictionary assets to ${DICT_DEST_DIR}..."
     VERBATIM
 )
 
 add_custom_target(clean_up_env
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${MODIAN_ROOT_DIR}"
+    COMMENT "[Inkstone] Clean up Modian Env..."
+    VERBATIM
 )
