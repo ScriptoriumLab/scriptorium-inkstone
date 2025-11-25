@@ -24,7 +24,7 @@ add_custom_target(set_up_modian_inkstone_env
     COMMAND ${CMAKE_COMMAND} -E make_directory "${MODIAN_LOG_DIR}"
 
     # 2. 拷贝词库文件 (copy_directory 会递归拷贝，copy_if_different 适合单文件)
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/data" "${DICTIONARY_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/data" "${DICTIONARY_DIR}"
 
     # 3. (可选) 打印一条日志方便调试
     COMMENT "[Inkstone] Creating Modian root dir and copying dictionary assets to ${DICT_DEST_DIR}..."

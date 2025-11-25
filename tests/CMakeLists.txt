@@ -14,7 +14,7 @@ add_executable(
     core/engine/input_engine_test.cpp
 )
 
-target_include_directories(modian_inkstone_tests PRIVATE ${CMAKE_SOURCE_DIR}/tests/unit_tests/include)
+target_include_directories(modian_inkstone_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests/unit_tests/include)
 
 target_link_libraries(
     modian_inkstone_tests
@@ -24,4 +24,4 @@ target_link_libraries(
     gmock_main
 )
 
-target_compile_definitions(modian_inkstone_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+target_compile_definitions(modian_inkstone_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
