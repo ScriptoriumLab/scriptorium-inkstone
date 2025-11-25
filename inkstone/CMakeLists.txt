@@ -18,8 +18,6 @@ set(MODIAN_ROOT_DIR "${USER_HOME}/Modian")
 set(DICTIONARY_DIR "${USER_HOME}/Modian/Local")
 set(MODIAN_LOG_DIR "${USER_HOME}/Modian/Log")
 add_custom_command(TARGET modian_inkstone POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E remove_directory "${MODIAN_ROOT_DIR}"
-
     # 1. 创建目录 (如果不存在)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${DICTIONARY_DIR}"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${MODIAN_LOG_DIR}"
@@ -30,4 +28,8 @@ add_custom_command(TARGET modian_inkstone POST_BUILD
     # 3. (可选) 打印一条日志方便调试
     COMMENT "📦 [Inkstone] Creating Modian root dir and copying dictionary assets to ${DICT_DEST_DIR}..."
     VERBATIM
+)
+
+add_custom_target(clean_up_env
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${MODIAN_ROOT_DIR}"
 )
