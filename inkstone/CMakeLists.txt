@@ -13,7 +13,8 @@ set_target_properties(modian_inkstone PROPERTIES
     OUTPUT_NAME "modian-inkstone"
 )
 
-set(USER_HOME "$ENV{USERPROFILE}")
+set(RAW_USER_HOME "$ENV{USERPROFILE}")
+file(TO_CMAKE_PATH "${RAW_USER_HOME}" USER_HOME)
 set(MODIAN_ROOT_DIR "${USER_HOME}/Modian")
 set(DICTIONARY_DIR "${USER_HOME}/Modian/Local")
 set(MODIAN_LOG_DIR "${USER_HOME}/Modian/Log")
