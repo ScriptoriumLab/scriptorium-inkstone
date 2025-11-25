@@ -17,7 +17,7 @@ set(USER_HOME "$ENV{USERPROFILE}")
 set(MODIAN_ROOT_DIR "${USER_HOME}/Modian")
 set(DICTIONARY_DIR "${USER_HOME}/Modian/Local")
 set(MODIAN_LOG_DIR "${USER_HOME}/Modian/Log")
-add_custom_command(TARGET modian_inkstone POST_BUILD
+add_custom_target(set_up_modian_inkstone_env
     # 1. 创建目录 (如果不存在)
     COMMAND ${CMAKE_COMMAND} -E make_directory "${DICTIONARY_DIR}"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${MODIAN_LOG_DIR}"
@@ -30,7 +30,7 @@ add_custom_command(TARGET modian_inkstone POST_BUILD
     VERBATIM
 )
 
-add_custom_target(clean_up_env
+add_custom_target(clean_up_modian_inkstone_env
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${MODIAN_ROOT_DIR}"
     COMMENT "[Inkstone] Clean up Modian Env..."
     VERBATIM
