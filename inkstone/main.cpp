@@ -65,7 +65,6 @@ void run_server() {
                             response = modian::inkstone::core::utils::to_utf8(candidates[0]);
                             engine_manager->reset();
                         } else {
-                            std::cout << "nothing!!!" << std::endl;
                             response = "";
                         }
 
