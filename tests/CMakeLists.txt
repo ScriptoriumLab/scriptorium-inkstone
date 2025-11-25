@@ -24,4 +24,4 @@ target_link_libraries(
     gmock_main
 )
 
-target_compile_definitions(modian_inkstone_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_definitions(modian_inkstone_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/..")
