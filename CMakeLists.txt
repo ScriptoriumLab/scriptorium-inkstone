@@ -3,7 +3,12 @@ project(modian-inkstone)
 
 set(CMAKE_CXX_STANDARD 23)
 
+include(CTest)
+
 add_subdirectory(core)
 add_subdirectory(manager)
 add_subdirectory(inkstone)
-add_subdirectory(tests)
+
+if (BUILD_TESTING)
+    add_subdirectory(tests)
+endif ()
