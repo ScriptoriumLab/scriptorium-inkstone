@@ -1,6 +1,6 @@
 add_executable(
     modian_inkstone
-    main.cpp
+    app.cpp
 )
 
 target_link_libraries(modian_inkstone PRIVATE
