@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <modian/core/logger/logger_service.h>
 
 #include "modian/core/engine/pinyin_engine.h"
 #include "modian/core/utils/utils.h"
@@ -31,16 +32,16 @@ namespace modian::inkstone {
 			);
 
 			if (hPipe == INVALID_HANDLE_VALUE) {
-				std::cerr << "CreateNamedPipe failed. Error: " << GetLastError() << std::endl;
+				core::logger_service::logger()->error("CreateNamedPipe failed. Error: {}", GetLastError());
 				return;
 			}
 
-			std::cout << "Waiting for Brush connection..." << std::endl;
+			core::logger_service::logger()->info("Waiting for Brush connection...");
 
 			bool connected = ConnectNamedPipe(hPipe, nullptr) ? true : (GetLastError() == ERROR_PIPE_CONNECTED);
 
 			if (connected) {
-				std::cout << "Brush connected! Ready to grind ink." << std::endl;
+				core::logger_service::logger()->info("Brush connected! Ready to grind ink.");
 
 				char buffer[BUFFER_SIZE];
 				DWORD bytesRead;
@@ -51,16 +52,16 @@ namespace modian::inkstone {
 
 					for (char c : recv_str) {
 						if (c == '\b') {
-							std::cout << "[Recv] CMD: Backspace" << std::endl;
+							core::logger_service::logger()->info("[Recv] CMD: Backspace");
 							engine_manager_->handle_backspace();
 						} else {
-							std::cout << "[Recv] Key: " << c << std::endl;
+							core::logger_service::logger()->info("[Recv] Key: {}", c);
 							engine_manager_->update_input_state(c);
 
 							auto candidates = candidate_manager_->get_candidates();
 							std::string response{""};
 							if (!candidates.empty()) {
-								std::wcout << L"candidate: " << candidates[0] << std::endl;
+								core::logger_service::logger()->info("[candidate]: {}", core::utils::to_utf8(candidates[0]));
 								response = core::utils::to_utf8(candidates[0]);
 								engine_manager_->reset();
 							} else {
@@ -69,13 +70,14 @@ namespace modian::inkstone {
 
 							DWORD bytesWritten;
 							WriteFile(hPipe, response.c_str(), response.size(), &bytesWritten, nullptr);
-							std::cout << "[Replied]: " << response << std::endl;
+							core::logger_service::logger()->info("[Replied]: {}", response);
 						}
 					}
 				}
 			}
 
-			std::cout << "Brush disconnected." << std::endl;
+
+			core::logger_service::logger()->info("Brush disconnected.");
 			DisconnectNamedPipe(hPipe);
 			CloseHandle(hPipe);
 		}

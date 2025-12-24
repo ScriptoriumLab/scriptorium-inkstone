@@ -6,6 +6,7 @@ add_executable(
 
 target_link_libraries(modian_inkstone PRIVATE
     modian_inkstone_manager
+    modian_inkstone_logger
     modian_inkstone_core
 )
 
