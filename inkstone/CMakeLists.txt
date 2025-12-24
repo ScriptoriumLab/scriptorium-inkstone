@@ -1,5 +1,6 @@
 add_executable(
     modian_inkstone
+    server.cpp
     app.cpp
 )
 
