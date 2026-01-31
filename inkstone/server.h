@@ -11,7 +11,5 @@ namespace modian::inkstone {
 	private:
 		std::shared_ptr<manager::candidate_manager> candidate_manager_;
 		std::shared_ptr<manager::engine_manager> engine_manager_;
-
-		static const int BUFFER_SIZE = 1024;
 	};
 }
