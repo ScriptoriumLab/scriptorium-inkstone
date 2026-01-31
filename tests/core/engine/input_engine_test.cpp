@@ -8,7 +8,9 @@ TEST(pinyin_engine_test, should_successfully_load_dictionary_and_show_candidates
 	auto engine = modian::inkstone::core::pinyin_engine{};
 	engine.load_dictionary(std::string{PROJECT_SOURCE_DIR}.append("/data/pinyin_dictionary.txt"));
 
-	const auto candidates = engine.convert(L"ni");
+	engine.update_input_state('n');
+	engine.update_input_state('i');
+	const auto candidates = engine.get_candidates();
 
 	ASSERT_EQ(candidates.size(), 3);
 

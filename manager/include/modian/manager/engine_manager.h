@@ -16,22 +16,18 @@ namespace modian::inkstone::manager {
 	class engine_manager {
 	public:
 		explicit engine_manager(std::shared_ptr<candidate_manager> can_manager);
-
 		void add_new_engine(const EngineDetail& engine_detail);
-
 		bool select_engine(const std::string& engine_name);
-
-		void update_input_state(wchar_t character);
-
-		bool handle_backspace();
+		void update_input_state(char character);
+		void handle_backspace();
 		void reset();
+		[[nodiscard]] std::string get_current_raw_pinyin() const;
+
 	private:
 		std::unordered_map<std::string, EngineFactory> engine_factories_;
 		std::shared_ptr<core::input_engine> current_engine_{nullptr};
-
-		std::wstring input_pinyin_;
 		std::shared_ptr<candidate_manager> candidate_manager_;
 
-		void _trigger_conversion();
+		void _sync_candidates_from_engine();
 	};
 }

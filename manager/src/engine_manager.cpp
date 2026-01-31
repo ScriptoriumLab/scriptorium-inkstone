@@ -19,43 +19,46 @@ namespace modian::inkstone::manager {
         if (it != engine_factories_.end()) {
             current_engine_ = it->second();
             core::logger_service::logger()->info("Switched to engine: {}", engine_name);
+            reset();
             return true;
         }
         return false;
     }
 
-    void engine_manager::update_input_state(wchar_t character) {
+    void engine_manager::update_input_state(char character) {
         if (!current_engine_) return;
 
-        input_pinyin_.push_back(character);
-
-        _trigger_conversion();
+        char lower_char = std::tolower(static_cast<unsigned char>(character));
+        current_engine_->update_input_state(lower_char);
+        _sync_candidates_from_engine();
     }
 
-    bool engine_manager::handle_backspace() {
-        if (!input_pinyin_.empty()) {
-            input_pinyin_.pop_back();
-            _trigger_conversion();
-            return true;
-        }
+    void engine_manager::handle_backspace() {
+        if (!current_engine_) return;
 
-        reset();
-        return false;
+        current_engine_->handle_backspace();
+        _sync_candidates_from_engine();
     }
 
     void engine_manager::reset() {
-        input_pinyin_.clear();
+        if (current_engine_) {
+            current_engine_->reset();
+        }
+
         candidate_manager_->update_candidates({});
     }
 
-    void engine_manager::_trigger_conversion() {
-        if (input_pinyin_.empty()) {
-            candidate_manager_->update_candidates({});
-            return;
+    std::string engine_manager::get_current_raw_pinyin() const {
+        if (current_engine_) {
+            return current_engine_->get_raw_input();
         }
+        return "";
+    }
 
-        auto candidates = current_engine_->convert(input_pinyin_);
+    void engine_manager::_sync_candidates_from_engine() {
+        if (!current_engine_) return;
 
+        auto candidates = current_engine_->get_candidates();
         candidate_manager_->update_candidates(std::move(candidates));
     }
 }

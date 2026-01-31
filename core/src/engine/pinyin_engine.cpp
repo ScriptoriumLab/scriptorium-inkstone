@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "modian/core/logger/logger_service.h"
+#include "modian/core/utils/utils.h"
 
 namespace modian::inkstone::core {
 	pinyin_engine::pinyin_engine() {
@@ -16,11 +17,34 @@ namespace modian::inkstone::core {
 		}
 	}
 
-	std::vector<std::wstring> pinyin_engine::convert(const std::wstring& input) {
-		if (auto it = dictionary_.find(input); it != dictionary_.end()) {
+	void pinyin_engine::update_input_state(char c) {
+		input_buffer_ += static_cast<wchar_t>(c);
+		logger_service::logger()->debug("input buffer is: {}", utils::to_utf8(input_buffer_));
+	}
+
+	void pinyin_engine::handle_backspace() {
+		if (!input_buffer_.empty()) {
+			input_buffer_.pop_back();
+		}
+	}
+
+	void pinyin_engine::reset() {
+		input_buffer_.clear();
+	}
+
+	std::vector<std::wstring> pinyin_engine::get_candidates() const {
+		if (input_buffer_.empty()) {
+			return {};
+		}
+
+		if (auto it = dictionary_.find(input_buffer_); it != dictionary_.end()) {
 			return it->second;
 		}
 		return {};
+	}
+
+	[[nodiscard]] std::string pinyin_engine::get_raw_input() const {
+		return utils::to_utf8(input_buffer_);
 	}
 
 	void pinyin_engine::load_dictionary(const std::string& path) {

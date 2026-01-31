@@ -22,26 +22,29 @@ namespace modian::inkstone {
 	void server::run() const {
 		infra::ipc::named_pipe_server ipc_server{PIPE_NAME};
 		ipc_server.run([this](const std::string& request) {
-			std::string response{""};
+		   std::string response{""};
 
-			for (const auto& c : request) {
-				if (c == '\b') {
-					core::logger_service::logger()->info("[Recv] CMD: Backspace");
-					engine_manager_->handle_backspace();
-				} else {
-					core::logger_service::logger()->info("[Recv] Key: {}", c);
-					engine_manager_->update_input_state(c);
+		   for (const auto& c : request) {
+			  if (c == '\b') {
+				 core::logger_service::logger()->info("[Recv] CMD: Backspace");
+				 engine_manager_->handle_backspace();
+			  } else {
+				 core::logger_service::logger()->info("[Recv] Key: {}", c);
+				 engine_manager_->update_input_state(c);
+			  }
+		   }
 
-					auto candidates = candidate_manager_->get_candidates();
-					if (!candidates.empty()) {
-						core::logger_service::logger()->info("[candidate]: {}", core::utils::to_utf8(candidates[0]));
-						response = core::utils::to_utf8(candidates[0]);
-						engine_manager_->reset();
-					}
-				}
-			}
+		   auto candidates = candidate_manager_->get_candidates();
+		   if (!candidates.empty()) {
+			   std::string candidate_text = core::utils::to_utf8(candidates[0]);
 
-			return response;
+			   core::logger_service::logger()->info("[Commit Candidate]: {}", candidate_text);
+			   response = candidate_text;
+
+			   engine_manager_->reset();
+		   }
+
+		   return response;
 		});
 	}
 }
