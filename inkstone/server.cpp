@@ -22,29 +22,40 @@ namespace modian::inkstone {
 	void server::run() const {
 		infra::ipc::named_pipe_server ipc_server{PIPE_NAME};
 		ipc_server.run([this](const std::string& request) {
-		   std::string response{""};
+			std::string response{""};
 
-		   for (const auto& c : request) {
-			  if (c == '\b') {
-				 core::logger_service::logger()->info("[Recv] CMD: Backspace");
-				 engine_manager_->handle_backspace();
-			  } else {
-				 core::logger_service::logger()->info("[Recv] Key: {}", c);
-				 engine_manager_->update_input_state(c);
-			  }
-		   }
+			for (const auto& c : request) {
+				if (c == '\b') {
+					core::logger_service::logger()->info("[Recv] CMD: Backspace");
+					engine_manager_->handle_backspace();
+				} else {
+					core::logger_service::logger()->info("[Recv] Key: {}", c);
+					char lower_c = std::tolower(static_cast<unsigned char>(c));
+					engine_manager_->update_input_state(lower_c);
+				}
+			}
 
-		   auto candidates = candidate_manager_->get_candidates();
-		   if (!candidates.empty()) {
-			   std::string candidate_text = core::utils::to_utf8(candidates[0]);
+			auto candidates = candidate_manager_->get_candidates();
+			if (!candidates.empty()) {
+				std::string text = core::utils::to_utf8(candidates[0]);
+				response = "C:" + text;
 
-			   core::logger_service::logger()->info("[Commit Candidate]: {}", candidate_text);
-			   response = candidate_text;
+				core::logger_service::logger()->info("Decision: Commit '{}'", text);
 
-			   engine_manager_->reset();
-		   }
+				engine_manager_->reset();
+			} else {
+				std::string raw_pinyin = engine_manager_->get_current_raw_pinyin();
 
-		   return response;
+				if (raw_pinyin.empty()) {
+					response = "";
+				} else {
+					response = "U:" + raw_pinyin;
+				}
+
+				core::logger_service::logger()->info("Decision: Update '{}'", raw_pinyin);
+			}
+
+			return response;
 		});
 	}
 }
