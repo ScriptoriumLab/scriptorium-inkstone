@@ -8,6 +8,7 @@
 #include <modian/infra/ipc/named_pipe_server.h>
 
 #include "modian/core/engine/pinyin_engine.h"
+#include "modian/core/protocol/composition_protocol.h"
 #include "modian/core/utils/utils.h"
 
 namespace modian::inkstone {
@@ -38,7 +39,7 @@ namespace modian::inkstone {
 			auto candidates = candidate_manager_->get_candidates();
 			if (!candidates.empty()) {
 				std::string text = core::utils::to_utf8(candidates[0]);
-				response = "C:" + text;
+				response = core::protocol::composition_protocol::create_commit(text).encode();
 
 				core::logger_service::logger()->info("Decision: Commit '{}'", text);
 
@@ -46,11 +47,7 @@ namespace modian::inkstone {
 			} else {
 				std::string raw_pinyin = engine_manager_->get_current_raw_pinyin();
 
-				if (raw_pinyin.empty()) {
-					response = "";
-				} else {
-					response = "U:" + raw_pinyin;
-				}
+				response = core::protocol::composition_protocol::create_update(raw_pinyin).encode();
 
 				core::logger_service::logger()->info("Decision: Update '{}'", raw_pinyin);
 			}

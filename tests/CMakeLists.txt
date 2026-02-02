@@ -12,6 +12,7 @@ add_executable(
     modian_inkstone_tests
     test_main.cpp
     core/engine/input_engine_test.cpp
+    core/protocol/composition_protocol_test.cpp
 )
 
 target_include_directories(modian_inkstone_tests PRIVATE ${CMAKE_SOURCE_DIR}/tests/unit_tests/include)
