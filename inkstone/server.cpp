@@ -1,17 +1,15 @@
 #include "server.h"
 
 #include <windows.h>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <modian/core/logger/logger_service.h>
 #include <modian/infra/ipc/named_pipe_server.h>
 
-#include "modian/core/engine/pinyin_engine.h"
 #include "modian/core/protocol/composition_protocol.h"
 
 namespace modian::inkstone {
-	const std::wstring PIPE_NAME = L"\\\\.\\pipe\\modian_ipc_pipe";
+	const std::string PIPE_NAME = "\\\\.\\pipe\\modian_ipc_pipe";
 
 	server::server(const manager::EngineDetail& engine_detail) {
 		candidate_manager_ = std::make_shared<manager::candidate_manager>();

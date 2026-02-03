@@ -7,7 +7,7 @@
 
 
 namespace modian::inkstone::infra::ipc {
-	named_pipe_server::named_pipe_server(std::wstring_view pipe_name) : pipe_name_{pipe_name} {}
+	named_pipe_server::named_pipe_server(std::string_view pipe_name) : pipe_name_{pipe_name} {}
 
 	named_pipe_server::~named_pipe_server() {
 		stop();
@@ -23,11 +23,11 @@ namespace modian::inkstone::infra::ipc {
 
 	void named_pipe_server::run(request_handler_t handler) {
 		running_ = true;
-		core::logger_service::logger()->info("[infra] Named Pipe Server starting at: {}", utils::to_utf8(pipe_name_));
+		core::logger_service::logger()->info("[infra] Named Pipe Server starting at: {}", pipe_name_);
 
 		while (running_) {
 			HANDLE pipe_handle = CreateNamedPipeW(
-				pipe_name_.c_str(),
+				utils::utf8_to_wstring(pipe_name_).c_str(),
 				PIPE_ACCESS_DUPLEX,
 				PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
 				1,
