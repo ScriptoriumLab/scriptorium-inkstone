@@ -5,7 +5,7 @@
 namespace modian::inkstone {
 	class server {
 	public:
-		server();
+		explicit server(const manager::EngineDetail& engine_detail);
 		void run() const;
 
 	private:

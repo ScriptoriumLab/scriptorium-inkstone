@@ -14,16 +14,16 @@
 namespace modian::inkstone {
 	const std::wstring PIPE_NAME = L"\\\\.\\pipe\\modian_ipc_pipe";
 
-	server::server() {
+	server::server(const manager::EngineDetail& engine_detail) {
 		candidate_manager_ = std::make_shared<manager::candidate_manager>();
 		engine_manager_ = std::make_shared<manager::engine_manager>(candidate_manager_);
-		engine_manager_->add_new_engine(core::lazy_load_dictionary<core::pinyin_engine>());
+		engine_manager_->add_new_engine(engine_detail);
 	}
 
 	void server::run() const {
 		infra::ipc::named_pipe_server ipc_server{PIPE_NAME};
 		ipc_server.run([this](const std::string& request) {
-			std::string response{""};
+			std::string response;
 
 			for (const auto& c : request) {
 				if (c == '\b') {
@@ -38,7 +38,7 @@ namespace modian::inkstone {
 
 			auto candidates = candidate_manager_->get_candidates();
 			if (!candidates.empty()) {
-				std::string text = core::utils::to_utf8(candidates[0]);
+				std::string text = candidates[0];
 				response = core::protocol::composition_protocol::create_commit(text).encode();
 
 				core::logger_service::logger()->info("Decision: Commit '{}'", text);
