@@ -3,7 +3,6 @@ add_library(modian_inkstone_core STATIC
     src/logger/console_logger.cpp
     src/logger/logger_service.cpp
     src/protocol/composition_protocol.cpp
-    src/utils/utils.cpp
 )
 
 target_include_directories(modian_inkstone_core PUBLIC

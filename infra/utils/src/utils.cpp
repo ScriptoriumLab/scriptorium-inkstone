@@ -1,9 +1,9 @@
-#include "modian/core/utils/utils.h"
+#include "modian/infra/utils/utils.h"
 
 #if defined(_WIN32)
 #include <windows.h>
 
-namespace modian::inkstone::core::utils {
+namespace modian::inkstone::infra::utils {
 	std::string to_utf8(std::wstring_view wstr) {
 		if (wstr.empty()) return {};
 

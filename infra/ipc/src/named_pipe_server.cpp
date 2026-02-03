@@ -3,7 +3,7 @@
 #include <windows.h>
 
 #include "modian/core/logger/logger_service.h"
-#include "modian/core/utils/utils.h"
+#include "modian/infra/utils/utils.h"
 
 
 namespace modian::inkstone::infra::ipc {
@@ -23,7 +23,7 @@ namespace modian::inkstone::infra::ipc {
 
 	void named_pipe_server::run(request_handler_t handler) {
 		running_ = true;
-		core::logger_service::logger()->info("[infra] Named Pipe Server starting at: {}", core::utils::to_utf8(pipe_name_));
+		core::logger_service::logger()->info("[infra] Named Pipe Server starting at: {}", utils::to_utf8(pipe_name_));
 
 		while (running_) {
 			HANDLE pipe_handle = CreateNamedPipeW(

@@ -9,7 +9,6 @@
 
 #include "modian/core/engine/pinyin_engine.h"
 #include "modian/core/protocol/composition_protocol.h"
-#include "modian/core/utils/utils.h"
 
 namespace modian::inkstone {
 	const std::wstring PIPE_NAME = L"\\\\.\\pipe\\modian_ipc_pipe";
