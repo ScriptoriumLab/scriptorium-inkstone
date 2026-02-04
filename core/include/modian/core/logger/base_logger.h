@@ -42,7 +42,7 @@ namespace modian::inkstone::core {
                 std::string formatted = std::format(fmt, std::forward<Args>(args)...);
                 sink_it(level, formatted);
             } catch (const std::format_error& e) {
-                sink_it(log_level::error, std::format("[Logger Error] Format failed: {}", e.what()));
+                sink_it(log_level::error, std::string("[Logger Error] Format failed: ") + e.what());
             }
         }
     };
