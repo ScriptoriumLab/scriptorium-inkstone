@@ -58,10 +58,10 @@ namespace modian::inkstone {
 		});
 
 		core::logger_service::logger()->info("Inkstone Server (Headless) running...");
-
-		std::unique_lock lock(exit_mutex_);
-		exit_cv_.wait(lock, [this]{ return stop_requested_; });
-
+		{
+			std::unique_lock lock(exit_mutex_);
+			exit_cv_.wait(lock, [this]{ return stop_requested_; });
+		}
 		core::logger_service::logger()->info("Stopping server...");
 	}
 
