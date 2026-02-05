@@ -5,11 +5,12 @@
 #include <vector>
 #include <modian/core/logger/logger_service.h>
 #include <modian/infra/ipc/named_pipe_server.h>
+#include <iostream>
 
 #include "modian/core/protocol/composition_protocol.h"
 
 namespace modian::inkstone {
-	const std::string PIPE_NAME = "\\\\.\\pipe\\modian_ipc_pipe";
+	const std::string PIPE_NAME = R"(\\.\pipe\modian_ipc_pipe)";
 
 	server::server(const manager::EngineDetail& engine_detail) {
 		candidate_manager_ = std::make_shared<manager::candidate_manager>();
@@ -19,7 +20,7 @@ namespace modian::inkstone {
 
 	void server::run() const {
 		infra::ipc::named_pipe_server ipc_server{PIPE_NAME};
-		ipc_server.run([this](const std::string& request) {
+		ipc_server.run([this](const std::string_view request) {
 			std::string response;
 
 			for (const auto& c : request) {
@@ -51,5 +52,10 @@ namespace modian::inkstone {
 
 			return response;
 		});
+
+		core::logger_service::logger()->info("Inkstone Server (Headless) running...");
+		core::logger_service::logger()->info("Press [Enter] to stop the server.");
+		std::cin.get();
+		core::logger_service::logger()->info("Stopping server...");
 	}
 }

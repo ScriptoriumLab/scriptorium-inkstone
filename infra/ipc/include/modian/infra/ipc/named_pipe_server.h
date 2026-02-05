@@ -3,11 +3,13 @@
 #include <atomic>
 #include <string>
 #include <functional>
+#include <mutex>
+#include <thread>
 
 namespace modian::inkstone::infra::ipc {
 	class named_pipe_server {
 	public:
-		using request_handler_t = std::function<std::string(const std::string&)>;
+		using request_handler_t = std::function<std::string(std::string_view)>;
 
 		explicit named_pipe_server(std::string_view pipe_name);
 		~named_pipe_server();
@@ -20,9 +22,19 @@ namespace modian::inkstone::infra::ipc {
 		void stop();
 
 	private:
+		void accept_loop(std::stop_token st);
+		void handle_session(void* raw_handle, std::stop_token st) const;
+
 		std::string pipe_name_;
+		request_handler_t handler_;
+
 		std::atomic<bool> running_{false};
 
-		static const int BUFFER_SIZE = 1024;
+		std::jthread accept_thread_;
+
+		std::vector<std::jthread> client_threads_;
+		std::mutex threads_mutex_;
+
+		static constexpr int BUFFER_SIZE = 1024 * 16;
 	};
 }
