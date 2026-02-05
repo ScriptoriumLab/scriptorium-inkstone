@@ -13,6 +13,7 @@ add_executable(
     test_main.cpp
     core/engine/input_engine_test.cpp
     core/protocol/composition_protocol_test.cpp
+    manager/candidate_manager_test.cpp
     infra/utils/utils_test.cpp
 )
 
