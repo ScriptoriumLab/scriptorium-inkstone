@@ -21,7 +21,7 @@ int main() {
     });
 
     try {
-        const modian::inkstone::server inkstone_server{
+        modian::inkstone::server inkstone_server{
             modian::inkstone::core::lazy_load_dictionary<modian::inkstone::core::pinyin_engine>(modian::inkstone::infra::utils::get_dict_path())
         };
         inkstone_server.run();

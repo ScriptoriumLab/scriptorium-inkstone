@@ -5,7 +5,6 @@
 #include <vector>
 #include <modian/core/logger/logger_service.h>
 #include <modian/infra/ipc/named_pipe_server.h>
-#include <iostream>
 
 #include "modian/core/protocol/composition_protocol.h"
 
@@ -18,10 +17,15 @@ namespace modian::inkstone {
 		engine_manager_->add_new_engine(engine_detail);
 	}
 
-	void server::run() const {
+	void server::run() {
 		infra::ipc::named_pipe_server ipc_server{PIPE_NAME};
 		ipc_server.run([this](const std::string_view request) {
 			std::string response;
+
+			if (request == "cmd:shutdown") {
+			   this->signal_stop();
+			   return std::string("bye");
+		   }
 
 			for (const auto& c : request) {
 				if (c == '\b') {
@@ -54,8 +58,18 @@ namespace modian::inkstone {
 		});
 
 		core::logger_service::logger()->info("Inkstone Server (Headless) running...");
-		core::logger_service::logger()->info("Press [Enter] to stop the server.");
-		std::cin.get();
+
+		std::unique_lock lock(exit_mutex_);
+		exit_cv_.wait(lock, [this]{ return stop_requested_; });
+
 		core::logger_service::logger()->info("Stopping server...");
+	}
+
+	void server::signal_stop() {
+		{
+			std::lock_guard lock(exit_mutex_);
+			stop_requested_ = true;
+		}
+		exit_cv_.notify_one();
 	}
 }
