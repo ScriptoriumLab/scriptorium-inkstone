@@ -13,6 +13,7 @@ add_executable(
     test_main.cpp
     core/engine/input_engine_test.cpp
     core/protocol/composition_protocol_test.cpp
+    infra/utils/utils_test.cpp
 )
 
 target_include_directories(modian_inkstone_tests PRIVATE ${CMAKE_SOURCE_DIR}/tests/unit_tests/include)
@@ -21,6 +22,7 @@ target_link_libraries(
     modian_inkstone_tests
     modian_inkstone_core
     modian_inkstone_manager
+    modian_inkstone_infra_utils
     gtest_main
     gmock_main
 )
