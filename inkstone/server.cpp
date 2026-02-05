@@ -9,17 +9,17 @@
 #include "modian/core/protocol/composition_protocol.h"
 
 namespace modian::inkstone {
-	const std::string PIPE_NAME = R"(\\.\pipe\modian_ipc_pipe)";
+	const std::string BRUSH_PIPE_NAME = R"(\\.\pipe\modian_ipc_brush)";
 
 	server::server(const manager::EngineDetail& engine_detail) {
 		candidate_manager_ = std::make_shared<manager::candidate_manager>();
 		engine_manager_ = std::make_shared<manager::engine_manager>(candidate_manager_);
 		engine_manager_->add_new_engine(engine_detail);
+		brush_pipe_ = std::make_unique<infra::ipc::named_pipe_server>(BRUSH_PIPE_NAME);
 	}
 
 	void server::run() {
-		infra::ipc::named_pipe_server ipc_server{PIPE_NAME};
-		ipc_server.run([this](const std::string_view request) {
+		brush_pipe_->run([this](const std::string_view request) {
 			std::string response;
 
 			if (request == "cmd:shutdown") {
