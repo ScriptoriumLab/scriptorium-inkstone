@@ -11,14 +11,17 @@
 #include "modian/logger/spdlog_logger.h"
 #include "server.h"
 
+namespace inkstone_core = modian::inkstone::core;
+namespace inkstone_infra = modian::inkstone::infra;
+
 int main() {
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 #endif
 
-    modian::inkstone::core::logger_service::update_logger([](){
-        return std::make_shared<modian::inkstone::infra::logger::spdlog_logger>();
+    inkstone_core::logger_service::update_logger([](){
+        return std::make_shared<inkstone_infra::logger::spdlog_logger>();
     });
 
     try {
@@ -27,8 +30,8 @@ int main() {
         };
         inkstone_server.run();
     } catch (const std::exception& e) {
-        if (modian::inkstone::core::logger_service::logger()) {
-            modian::inkstone::core::logger_service::logger()->error("Fatal Error: {}", e.what());
+        if (inkstone_core::logger_service::logger()) {
+            inkstone_core::logger_service::logger()->error("Fatal Error: {}", e.what());
         } else {
             std::cerr << "Fatal Error (Logger failed): " << e.what() << std::endl;
         }
