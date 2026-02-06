@@ -11,7 +11,6 @@
 #include "../../inkstone/server.h"
 
 #include "include/modian/tests/utils/test_pipe_client.h"
-#include "modian/infra/utils/utils.h"
 
 using namespace std::chrono_literals;
 
@@ -24,7 +23,8 @@ protected:
 	}
 
 	void SetUp() override {
-		auto dict_loader = modian::inkstone::core::lazy_load_dictionary<modian::inkstone::core::pinyin_engine>(std::string{PROJECT_SOURCE_DIR}.append("/data/pinyin_dictionary.txt"));
+		auto dict_path = std::filesystem::path(PROJECT_SOURCE_DIR) / "data" / "pinyin_dictionary.txt";
+		auto dict_loader = modian::inkstone::core::lazy_load_dictionary<modian::inkstone::core::pinyin_engine>(dict_path.string());
 
 		server_instance_ = std::make_unique<modian::inkstone::server>(dict_loader);
 
@@ -36,6 +36,8 @@ protected:
 	}
 
 	void TearDown() override {
+		modian::inkstone::core::logger_service::shutdown();
+
 		if (server_instance_) {
 			server_instance_->signal_stop();
 		}

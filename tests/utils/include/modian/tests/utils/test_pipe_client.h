@@ -2,8 +2,7 @@
 
 #include <filesystem>
 #include <chrono>
-
-#include "src/gtest-internal-inl.h"
+#include <windows.h>
 
 using namespace std::chrono_literals;
 
@@ -16,6 +15,23 @@ namespace modian::inkstone::tests::utils {
 
 		~test_pipe_client() {
 			close();
+		}
+
+		test_pipe_client(const test_pipe_client&) = delete;
+		test_pipe_client& operator=(const test_pipe_client&) = delete;
+
+		test_pipe_client(test_pipe_client&& other) noexcept : pipe_path_(std::move(other.pipe_path_)), handle_(other.handle_) {
+			other.handle_ = INVALID_HANDLE_VALUE;
+		}
+
+		test_pipe_client& operator=(test_pipe_client&& other) noexcept {
+			if (this != &other) {
+				close();
+				pipe_path_ = std::move(other.pipe_path_);
+				handle_ = other.handle_;
+				other.handle_ = INVALID_HANDLE_VALUE;
+			}
+			return *this;
 		}
 
 		bool connect(int max_retries = 5) {

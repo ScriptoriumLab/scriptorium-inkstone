@@ -12,9 +12,10 @@ namespace modian::inkstone {
 		void signal_stop();
 
 	private:
-		std::unique_ptr<infra::ipc::named_pipe_server> brush_pipe_;
 		std::shared_ptr<manager::candidate_manager> candidate_manager_;
 		std::shared_ptr<manager::engine_manager> engine_manager_;
+
+		std::unique_ptr<infra::ipc::named_pipe_server> brush_pipe_;
 
 		std::mutex exit_mutex_;
 		std::condition_variable exit_cv_;
