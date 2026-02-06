@@ -14,6 +14,12 @@
 namespace inkstone_core = modian::inkstone::core;
 namespace inkstone_infra = modian::inkstone::infra;
 
+struct logger_guard {
+    ~logger_guard() {
+        modian::inkstone::core::logger_service::shutdown();
+    }
+};
+
 int main() {
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
@@ -23,6 +29,8 @@ int main() {
     inkstone_core::logger_service::update_logger([](){
         return std::make_shared<inkstone_infra::logger::spdlog_logger>();
     });
+
+    logger_guard log_guard;
 
     try {
         modian::inkstone::server inkstone_server{
