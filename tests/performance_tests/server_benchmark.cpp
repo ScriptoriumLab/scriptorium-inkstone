@@ -67,10 +67,14 @@ BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_InputLatency)(benchmark::State& 
 
     for (auto _ : state) {
         for (int i = 0; i < n; ++i) {
+            client->send_and_receive("d");
+            client->send_and_receive("i");
             client->send_and_receive("a");
-        }
+            client->send_and_receive("n");
 
-        for (int i = 0; i < n; ++i) {
+            client->send_and_receive("\b");
+            client->send_and_receive("\b");
+            client->send_and_receive("\b");
             client->send_and_receive("\b");
         }
     }
@@ -80,7 +84,7 @@ BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_InputLatency)(benchmark::State& 
 
 BENCHMARK_REGISTER_F(server_benchmark_fixture, BM_InputLatency)
     ->RangeMultiplier(10)
-    ->Range(1, 1000)
+    ->Range(1, 100000)
     ->Complexity(benchmark::oN)
     ->Unit(benchmark::kMicrosecond);
 
