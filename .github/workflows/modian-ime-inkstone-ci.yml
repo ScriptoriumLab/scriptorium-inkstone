@@ -40,3 +40,7 @@ jobs:
     - name: Run Integration Test
       working-directory: ${{github.workspace}}/build
       run: .\tests\integration_tests\${{env.BUILD_TYPE}}\modian_inkstone_integration_tests.exe --gtest_shuffle
+
+    - name: Run Performance Test
+      working-directory: ${{github.workspace}}/build
+      run: .\tests\performance_tests\${{env.BUILD_TYPE}}\modian_inkstone_performance_tests.exe

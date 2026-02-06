@@ -32,6 +32,7 @@ namespace modian::inkstone::infra::ipc {
 
 		std::jthread accept_thread_;
 
+		// TODO(future): current implementation will add a new jthread everytime there's a new connection. should consider using a thread pool to limit the max number of threads and reuse them.
 		std::vector<std::jthread> client_threads_;
 		std::mutex threads_mutex_;
 
