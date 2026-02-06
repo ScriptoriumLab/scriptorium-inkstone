@@ -1,15 +1,25 @@
+add_library(modian_inkstone_server server.cpp)
+
+target_link_libraries(modian_inkstone_server PUBLIC
+    modian_inkstone_manager
+    modian_inkstone_ipc_server
+    modian_inkstone_infra_utils
+    modian_inkstone_logger
+    modian_inkstone_core
+)
+
+target_include_directories(modian_inkstone_server PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+
 add_executable(
     modian_inkstone
-    server.cpp
     app.cpp
 )
 
 target_link_libraries(modian_inkstone PRIVATE
-    modian_inkstone_manager
-    modian_inkstone_infra_utils
-    modian_inkstone_ipc_server
-    modian_inkstone_logger
-    modian_inkstone_core
+    modian_inkstone_server
 )
 
 set_target_properties(modian_inkstone PROPERTIES
