@@ -57,7 +57,7 @@ public:
 std::unique_ptr<server> server_benchmark_fixture::server_instance = nullptr;
 std::jthread server_benchmark_fixture::server_thread;
 
-BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_InputLatency)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_modian_input_method_performance)(benchmark::State& state) {
     if (!client->connect()) {
         state.SkipWithError("Failed to connect to server");
         return;
@@ -82,7 +82,7 @@ BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_InputLatency)(benchmark::State& 
     state.SetComplexityN(state.range(0));
 }
 
-BENCHMARK_REGISTER_F(server_benchmark_fixture, BM_InputLatency)
+BENCHMARK_REGISTER_F(server_benchmark_fixture, BM_modian_input_method_performance)
     ->RangeMultiplier(10)
     ->Range(1, 100000)
     ->Complexity(benchmark::oN)
