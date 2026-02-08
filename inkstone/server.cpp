@@ -29,7 +29,9 @@ namespace modian::inkstone {
 			   return std::string("bye");
 		    }
 
-			return session_orchestrator_->handle_key(key_event).encode();
+			const auto instruction = session_orchestrator_->handle_key(key_event);
+
+			return service::input_protocol_service::build_instruction_response(instruction);
 		});
 
 		core::logger_service::logger()->info("Inkstone Server (Headless) running...");
