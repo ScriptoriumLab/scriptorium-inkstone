@@ -6,7 +6,7 @@
 #include <modian/core/logger/logger_service.h>
 #include <modian/infra/ipc/named_pipe_server.h>
 
-#include "modian/core/protocol/composition_protocol.h"
+#include "modian/core/protocol/instruction.h"
 
 namespace modian::inkstone {
 	const std::string BRUSH_PIPE_NAME = R"(\\.\pipe\modian_ipc_brush)";
@@ -41,7 +41,7 @@ namespace modian::inkstone {
 			auto candidates = candidate_manager_->get_candidates();
 			if (!candidates.empty()) {
 				std::string text = candidates[0];
-				response = core::protocol::composition_protocol::create_commit(text).encode();
+				response = core::protocol::instruction::create_commit(text).encode();
 
 				core::logger_service::logger()->info("Decision: Commit '{}'", text);
 
@@ -49,7 +49,7 @@ namespace modian::inkstone {
 			} else {
 				std::string raw_pinyin = engine_manager_->get_current_raw_pinyin();
 
-				response = core::protocol::composition_protocol::create_update(raw_pinyin).encode();
+				response = core::protocol::instruction::create_update(raw_pinyin).encode();
 
 				core::logger_service::logger()->info("Decision: Update '{}'", raw_pinyin);
 			}
