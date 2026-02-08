@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace modian::inkstone::core::protocol {
+namespace modian::inkstone::core::protocol::input::v1 {
 	class instruction {
 	public:
 		enum class message_type {
