@@ -109,7 +109,6 @@ namespace modian::inkstone::infra::ipc {
 			}
 
 			const std::string request(buffer.data(), bytes_read);
-
 			std::string response = handler_(request);
 
 			DWORD bytes_written = 0;
