@@ -1,8 +1,6 @@
 #pragma once
 
 #include "modian/infra/ipc/named_pipe_server.h"
-#include "modian/manager/candidate_manager.h"
-#include "modian/manager/engine_manager.h"
 #include "modian/orchistrator/session_orchestrator.h"
 
 namespace modian::inkstone {

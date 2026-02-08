@@ -1,11 +1,8 @@
 #include "server.h"
 
-#include <windows.h>
 #include <string>
-#include <vector>
 
 #include "modian/core/logger/logger_service.h"
-#include "modian/infra/ipc/named_pipe_server.h"
 #include "modian/core/protocol/instruction.h"
 #include "modian/service/input_protocol_service.h"
 
