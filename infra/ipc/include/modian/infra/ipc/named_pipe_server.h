@@ -9,7 +9,7 @@
 namespace modian::inkstone::infra::ipc {
 	class named_pipe_server {
 	public:
-		using request_handler_t = std::function<std::string(std::string_view)>;
+		using request_handler_t = std::function<std::string(std::string)>;
 
 		explicit named_pipe_server(std::string_view pipe_name);
 		~named_pipe_server();

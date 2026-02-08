@@ -108,7 +108,7 @@ namespace modian::inkstone::infra::ipc {
 				break;
 			}
 
-			const std::string_view request(buffer.data(), bytes_read);
+			const std::string request(buffer.data(), bytes_read);
 
 			std::string response = handler_(request);
 

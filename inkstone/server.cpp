@@ -3,10 +3,11 @@
 #include <windows.h>
 #include <string>
 #include <vector>
-#include <modian/core/logger/logger_service.h>
-#include <modian/infra/ipc/named_pipe_server.h>
 
+#include "modian/core/logger/logger_service.h"
+#include "modian/infra/ipc/named_pipe_server.h"
 #include "modian/core/protocol/instruction.h"
+#include "modian/service/input_protocol_service.h"
 
 namespace modian::inkstone {
 	const std::string BRUSH_PIPE_NAME = R"(\\.\pipe\modian_ipc_brush)";
@@ -19,15 +20,16 @@ namespace modian::inkstone {
 	}
 
 	void server::run() {
-		brush_pipe_->run([this](const std::string_view request) {
+		brush_pipe_->run([this](const std::string& request) {
 			std::string response;
+			const auto key_event = service::input_protocol_service::parse_key_event_request(request);
 
-			if (request == "cmd:shutdown") {
+			if (key_event.content == "cmd:shutdown") {
 			   this->signal_stop();
 			   return std::string("bye");
 		   }
 
-			for (const auto& c : request) {
+			for (const auto& c : key_event.content) {
 				if (c == '\b') {
 					core::logger_service::logger()->info("[Recv] CMD: Backspace");
 					engine_manager_->handle_backspace();

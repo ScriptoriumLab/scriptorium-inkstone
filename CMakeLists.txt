@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 23)
 include(CTest)
 
 add_subdirectory(core)
+add_subdirectory(service)
 add_subdirectory(manager)
 add_subdirectory(infra)
 add_subdirectory(inkstone)
