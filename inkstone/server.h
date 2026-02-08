@@ -1,7 +1,9 @@
 #pragma once
+
 #include "modian/infra/ipc/named_pipe_server.h"
 #include "modian/manager/candidate_manager.h"
 #include "modian/manager/engine_manager.h"
+#include "modian/orchistrator/session_orchestrator.h"
 
 namespace modian::inkstone {
 	class server {
@@ -12,8 +14,7 @@ namespace modian::inkstone {
 		void signal_stop();
 
 	private:
-		std::shared_ptr<manager::candidate_manager> candidate_manager_;
-		std::shared_ptr<manager::engine_manager> engine_manager_;
+		std::shared_ptr<manager::session_orchestrator> session_orchestrator_;
 
 		std::unique_ptr<infra::ipc::named_pipe_server> brush_pipe_;
 

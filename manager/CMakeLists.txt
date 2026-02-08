@@ -1,6 +1,7 @@
 add_library(modian_inkstone_manager STATIC
     src/engine_manager.cpp
     src/candidate_manager.cpp
+    src/session_orchestrator.cpp
 )
 
 target_link_libraries(
