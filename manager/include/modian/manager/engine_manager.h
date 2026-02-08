@@ -6,7 +6,6 @@
 #include <functional>
 #include <utility>
 
-#include "modian/manager/candidate_manager.h"
 #include "modian/core/engine/input_engine.h"
 
 namespace modian::inkstone::manager {
