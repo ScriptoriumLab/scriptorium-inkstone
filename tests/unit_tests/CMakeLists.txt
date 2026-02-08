@@ -1,15 +1,15 @@
-add_executable(
-    modian_inkstone_unit_tests
+add_executable(modian_inkstone_unit_tests
     test_main.cpp
     core/engine/input_engine_test.cpp
-        core/protocol/instruction_test.cpp
+    core/protocol/instruction_test.cpp
+    service/input_protocol_service_test.cpp
     manager/candidate_manager_test.cpp
     infra/utils/utils_test.cpp
 )
 
-target_link_libraries(
-    modian_inkstone_unit_tests
+target_link_libraries(modian_inkstone_unit_tests PRIVATE
     modian_inkstone_core
+    modian_inkstone_service
     modian_inkstone_manager
     modian_inkstone_infra_utils
     gtest_main
