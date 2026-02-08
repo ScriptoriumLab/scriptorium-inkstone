@@ -6,6 +6,15 @@ namespace modian::inkstone::service {
 	}
 
 	std::string input_protocol_service::build_instruction_response(const core::protocol::input::v1::instruction& instruction) {
-		return instruction.encode();
+		if (instruction.type == core::protocol::input::v1::message_type::NONE) return "";
+		if (instruction.payload.empty()) return "";
+
+		std::string draft_message;
+		draft_message.reserve(2 + instruction.payload.size());
+		draft_message += static_cast<char>(instruction.type);
+		draft_message += ':';
+		draft_message += instruction.payload;
+
+		return draft_message;
 	}
 }

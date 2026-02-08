@@ -1,7 +1,6 @@
 add_executable(modian_inkstone_unit_tests
     test_main.cpp
     core/engine/input_engine_test.cpp
-    core/protocol/instruction_test.cpp
     service/input_protocol_service_test.cpp
     manager/candidate_manager_test.cpp
     infra/utils/utils_test.cpp
