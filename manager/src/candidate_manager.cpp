@@ -58,7 +58,7 @@ namespace modian::inkstone::manager {
        }
     }
 
-    void candidate_manager::notify_observers() {
+    void candidate_manager::notify_observers() const {
        std::vector<std::shared_ptr<core::candidate_observer>> observers_copy;
        {
            std::shared_lock lock(mutex_);

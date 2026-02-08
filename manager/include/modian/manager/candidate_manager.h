@@ -26,6 +26,6 @@ namespace modian::inkstone::manager {
 
 		mutable std::shared_mutex mutex_;
 
-		void notify_observers();
+		void notify_observers() const;
 	};
 }
