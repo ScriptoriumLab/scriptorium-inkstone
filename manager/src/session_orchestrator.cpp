@@ -7,20 +7,19 @@ namespace modian::inkstone::manager {
 		: candidate_manager_{std::move(candidate_manager)}, engine_manager_{std::move(engine_manager)} {}
 
 	core::protocol::input::v1::instruction session_orchestrator::handle_key(const core::protocol::input::v1::key_event& key_event) const {
-		for (const auto& c : key_event.content) {
-			if (c == '\b') {
-				core::logger_service::logger()->info("[Recv] CMD: Backspace");
-				engine_manager_->handle_backspace();
-			} else {
-				core::logger_service::logger()->info("[Recv] Key: {}", c);
-				engine_manager_->update_input_state(c);
-			}
+		if (key_event.content.empty()) {
+			return {core::protocol::input::v1::message_type::UPDATE, ""};
 		}
 
-		const auto candidates = engine_manager_->get_current_candidates();
-		candidate_manager_->update_candidates(candidates);
+		if (const auto key = key_event.content[0]; key == '\b') {
+			core::logger_service::logger()->info("[Recv] CMD: Backspace");
+			engine_manager_->handle_backspace();
+		} else {
+			core::logger_service::logger()->info("[Recv] Key: {}", key);
+			engine_manager_->update_input_state(key);
+		}
 
-		if (!candidates.empty()) {
+		if (const auto candidates = engine_manager_->get_current_candidates(); !candidates.empty()) {
 			std::string text = candidates[0];
 			engine_manager_->reset();
 			candidate_manager_->update_candidates({});
