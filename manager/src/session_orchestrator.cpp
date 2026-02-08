@@ -6,7 +6,7 @@ namespace modian::inkstone::manager {
 	session_orchestrator::session_orchestrator(std::shared_ptr<candidate_manager> candidate_manager, std::shared_ptr<engine_manager> engine_manager)
 		: candidate_manager_{std::move(candidate_manager)}, engine_manager_{std::move(engine_manager)} {}
 
-	core::protocol::input::v1::instruction session_orchestrator::handle_key(const core::protocol::input::v1::key_event& key_event) {
+	core::protocol::input::v1::instruction session_orchestrator::handle_key(const core::protocol::input::v1::key_event& key_event) const {
 		for (const auto& c : key_event.content) {
 			if (c == '\b') {
 				core::logger_service::logger()->info("[Recv] CMD: Backspace");

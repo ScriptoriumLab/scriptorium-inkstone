@@ -9,7 +9,7 @@ namespace modian::inkstone::manager {
 	class session_orchestrator {
 	public:
 		session_orchestrator(std::shared_ptr<candidate_manager> candidate_manager, std::shared_ptr<engine_manager> engine_manager);
-		core::protocol::input::v1::instruction handle_key(const core::protocol::input::v1::key_event& key_event);
+		[[nodiscard]] core::protocol::input::v1::instruction handle_key(const core::protocol::input::v1::key_event& key_event) const;
 
 	private:
 		std::shared_ptr<candidate_manager> candidate_manager_;
