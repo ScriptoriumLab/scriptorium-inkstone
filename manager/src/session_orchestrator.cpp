@@ -13,14 +13,17 @@ namespace modian::inkstone::manager {
 				engine_manager_->handle_backspace();
 			} else {
 				core::logger_service::logger()->info("[Recv] Key: {}", c);
-				const char lower_c = std::tolower(static_cast<unsigned char>(c));
-				engine_manager_->update_input_state(lower_c);
+				engine_manager_->update_input_state(c);
 			}
 		}
 
-		if (const auto candidates = candidate_manager_->get_candidates(); !candidates.empty()) {
+		const auto candidates = engine_manager_->get_current_candidates();
+		candidate_manager_->update_candidates(candidates);
+
+		if (!candidates.empty()) {
 			std::string text = candidates[0];
 			engine_manager_->reset();
+			candidate_manager_->update_candidates({});
 			core::logger_service::logger()->info("Decision: Commit '{}'", text);
 
 			return {core::protocol::input::v1::message_type::COMMIT, std::move(text)};

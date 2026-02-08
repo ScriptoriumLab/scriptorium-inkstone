@@ -10,10 +10,12 @@ namespace modian::inkstone {
 	const std::string BRUSH_PIPE_NAME = R"(\\.\pipe\modian_ipc_brush)";
 
 	server::server(const manager::EngineDetail& engine_detail) {
-		auto candidate_manager = std::make_shared<manager::candidate_manager>();
-		auto engine_manager = std::make_shared<manager::engine_manager>(candidate_manager);
+		auto engine_manager = std::make_shared<manager::engine_manager>();
 		engine_manager->add_new_engine(engine_detail);
-		session_orchestrator_ = std::make_shared<manager::session_orchestrator>(candidate_manager, engine_manager);
+		session_orchestrator_ = std::make_shared<manager::session_orchestrator>(
+			std::make_shared<manager::candidate_manager>(),
+			engine_manager
+		);
 		brush_pipe_ = std::make_unique<infra::ipc::named_pipe_server>(BRUSH_PIPE_NAME);
 	}
 
