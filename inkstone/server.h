@@ -1,6 +1,6 @@
 #pragma once
 
-#include "modian/infra/ipc/named_pipe_server.h"
+#include "modian/infra/ipc/input_protocol_pipe_server.h"
 #include "modian/orchistrator/session_orchestrator.h"
 
 namespace modian::inkstone {
@@ -14,7 +14,7 @@ namespace modian::inkstone {
 	private:
 		std::shared_ptr<manager::session_orchestrator> session_orchestrator_;
 
-		std::unique_ptr<infra::ipc::named_pipe_server> input_protocol_pipe_;
+		std::unique_ptr<infra::ipc::input_protocol_pipe_server> input_protocol_pipe_;
 
 		std::mutex exit_mutex_;
 		std::condition_variable exit_cv_;

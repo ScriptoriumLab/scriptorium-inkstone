@@ -16,7 +16,7 @@ namespace modian::inkstone {
 			std::make_shared<manager::candidate_manager>(),
 			engine_manager
 		);
-		input_protocol_pipe_ = std::make_unique<infra::ipc::named_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
+		input_protocol_pipe_ = std::make_unique<infra::ipc::input_protocol_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
 	}
 
 	void server::run() {
