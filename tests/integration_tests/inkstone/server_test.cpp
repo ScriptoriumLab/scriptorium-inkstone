@@ -85,7 +85,7 @@ TEST_F(server_integration_tests, should_successfully_handle_backspace_when_user_
 	brush_client.send_and_receive("a");
 	ink_client.read_next_message();
 
-	const auto response_after_backspace = brush_client.send_and_receive("\b");
+	const auto response_after_backspace = brush_client.send_and_receive("cmd:backspace");
 	ink_client.read_next_message();
 	EXPECT_THAT(response_after_backspace, testing::HasSubstr("U:di"));
 

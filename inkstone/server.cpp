@@ -16,13 +16,12 @@ namespace modian::inkstone {
 		explicit ui_bridge(infra::ipc::ui_protocol_pipe_server* pipe)
 			: pipe_(pipe) {}
 
-		void on_candidate_update(const std::vector<std::string>& candidates) override {
+		void on_candidate_update(const std::vector<std::string>& candidates, const size_t& highlight_index) override {
 			if (!pipe_) return;
 
 			bool visible = !candidates.empty();
 			double x = 100.0;
 			double y = 100.0;
-			size_t highlight_index = 0;
 			int page_index = 0;
 			int total_pages = 1;
 

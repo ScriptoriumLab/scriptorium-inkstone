@@ -82,16 +82,16 @@ BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_modian_input_method_performance)
             brush_client->send_and_receive("n");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("\b");
+            brush_client->send_and_receive("cmd:backspace");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("\b");
+            brush_client->send_and_receive("cmd:backspace");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("\b");
+            brush_client->send_and_receive("cmd:backspace");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("\b");
+            brush_client->send_and_receive("cmd:backspace");
             ink_client->read_next_message();
         }
     }

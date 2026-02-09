@@ -33,6 +33,17 @@ namespace modian::inkstone::manager {
        }
     }
 
+   void candidate_manager::update_state(const std::vector<std::string>& candidates, size_t highlight_index) {
+       {
+          std::unique_lock lock(mutex_);
+          candidates_ = candidates;
+          highlight_index_ = highlight_index;
+       }
+
+       core::logger_service::logger()->info("UI Update: count={}, hl={}", candidates.size(), highlight_index);
+       notify_observers();
+   }
+
     const std::vector<std::string>& candidate_manager::get_candidates() const {
         std::shared_lock lock(mutex_);
         return candidates_;
@@ -58,23 +69,23 @@ namespace modian::inkstone::manager {
        }
     }
 
-    void candidate_manager::notify_observers() const {
-       std::vector<std::shared_ptr<core::candidate_observer>> observers_copy;
-       {
-           std::shared_lock lock(mutex_);
-           observers_copy = observers_;
-       }
+   void candidate_manager::notify_observers() const {
+      std::vector<std::shared_ptr<core::candidate_observer>> observers_copy;
+      {
+         std::shared_lock lock(mutex_);
+         observers_copy = observers_;
+      }
 
-       std::vector<std::string> candidates_snapshot;
-       {
-           std::shared_lock lock(mutex_);
-           candidates_snapshot = candidates_;
-       }
+      std::vector<std::string> candidates_snapshot;
+      {
+         std::shared_lock lock(mutex_);
+         candidates_snapshot = candidates_;
+      }
 
-       for (const auto& observer : observers_copy) {
-          if (observer) {
-              observer->on_candidate_update(candidates_snapshot);
-          }
-       }
-    }
+      for (const auto& observer : observers_copy) {
+         if (observer) {
+            observer->on_candidate_update(candidates_snapshot, highlight_index_);
+         }
+      }
+   }
 }

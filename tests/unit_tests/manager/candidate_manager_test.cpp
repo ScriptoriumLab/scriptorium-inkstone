@@ -7,7 +7,7 @@ using namespace modian::inkstone;
 
 class mock_observer : public core::candidate_observer {
 public:
-	MOCK_METHOD(void, on_candidate_update, (const std::vector<std::string>&), (override));
+	MOCK_METHOD(void, on_candidate_update, (const std::vector<std::string>&, const size_t&), (override));
 };
 
 TEST(candidate_manager_test, ShouldNotifyObserverOnUpdate) {
@@ -16,7 +16,7 @@ TEST(candidate_manager_test, ShouldNotifyObserverOnUpdate) {
 
 	manager->add_observer(observer);
 
-	EXPECT_CALL(*observer, on_candidate_update(testing::ElementsAre("ni", "hao")))
+	EXPECT_CALL(*observer, on_candidate_update(testing::ElementsAre("ni", "hao"), 0))
 		.Times(1);
 
 	manager->update_candidates({"ni", "hao"});
@@ -31,7 +31,7 @@ public:
 		manager_weak_ = mgr;
 	}
 
-	void on_candidate_update(const std::vector<std::string>& candidates) override {
+	void on_candidate_update(const std::vector<std::string>& candidates, const size_t&) override {
 		call_count_++;
 
 		if (auto mgr = manager_weak_.lock()) {
