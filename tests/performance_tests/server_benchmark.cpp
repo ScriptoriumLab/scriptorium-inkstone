@@ -5,8 +5,8 @@
 #include "../../inkstone/server.h"
 #include "modian/core/logger/logger_service.h"
 #include "modian/logger/spdlog_logger.h"
-#include "include/modian/tests/utils/test_pipe_client.h"
-#include "include/modian/tests/utils/test_ui_pipe_client.h"
+#include "include/modian/tests/utils/test_input_protocol_pipe_client.h"
+#include "include/modian/tests/utils/test_ui_protocol_pipe_client.h"
 #include "modian/core/engine/pinyin_engine.h"
 
 using namespace modian::inkstone;
@@ -24,8 +24,8 @@ class server_benchmark_fixture : public benchmark::Fixture {
 public:
     static std::unique_ptr<server> server_instance;
     static std::jthread server_thread;
-    static std::unique_ptr<tests::utils::test_pipe_client> brush_client;
-    static std::unique_ptr<tests::utils::test_ui_pipe_client> ink_client;
+    static std::unique_ptr<tests::utils::test_input_protocol_pipe_client> brush_client;
+    static std::unique_ptr<tests::utils::test_ui_protocol_pipe_client> ink_client;
 
     const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
 	const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_ui_protocol_pipe)";
@@ -45,12 +45,12 @@ public:
 
             std::this_thread::sleep_for(500ms);
 
-            brush_client = std::make_unique<tests::utils::test_pipe_client>(INPUT_PROTOCOL_PIPE_NAME);
+            brush_client = std::make_unique<tests::utils::test_input_protocol_pipe_client>(INPUT_PROTOCOL_PIPE_NAME);
             if (!brush_client->connect()) {
                 throw std::runtime_error("Failed to connect brush client");
             }
 
-            ink_client = std::make_unique<tests::utils::test_ui_pipe_client>(UI_PROTOCOL_PIPE_NAME);
+            ink_client = std::make_unique<tests::utils::test_ui_protocol_pipe_client>(UI_PROTOCOL_PIPE_NAME);
             if (!ink_client->connect()) {
                 throw std::runtime_error("Failed to connect ink client");
             }
@@ -62,8 +62,8 @@ public:
 
 std::unique_ptr<server> server_benchmark_fixture::server_instance = nullptr;
 std::jthread server_benchmark_fixture::server_thread;
-std::unique_ptr<tests::utils::test_pipe_client> server_benchmark_fixture::brush_client = nullptr;
-std::unique_ptr<tests::utils::test_ui_pipe_client> server_benchmark_fixture::ink_client = nullptr;
+std::unique_ptr<tests::utils::test_input_protocol_pipe_client> server_benchmark_fixture::brush_client = nullptr;
+std::unique_ptr<tests::utils::test_ui_protocol_pipe_client> server_benchmark_fixture::ink_client = nullptr;
 
 BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_modian_input_method_performance)(benchmark::State& state) {
     auto n = state.range(0);

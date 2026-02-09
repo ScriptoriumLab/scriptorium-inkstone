@@ -10,8 +10,8 @@
 #include "modian/logger/spdlog_logger.h"
 #include "../../inkstone/server.h"
 
-#include "include/modian/tests/utils/test_pipe_client.h"
-#include "include/modian/tests/utils/test_ui_pipe_client.h"
+#include "include/modian/tests/utils/test_input_protocol_pipe_client.h"
+#include "include/modian/tests/utils/test_ui_protocol_pipe_client.h"
 
 using namespace std::chrono_literals;
 
@@ -51,10 +51,10 @@ protected:
 };
 
 TEST_F(server_integration_tests, should_successfully_return_candidate_when_input_is_correct) {
-	modian::inkstone::tests::utils::test_pipe_client brush_client(INPUT_PROTOCOL_PIPE_NAME);
+	modian::inkstone::tests::utils::test_input_protocol_pipe_client brush_client(INPUT_PROTOCOL_PIPE_NAME);
 	ASSERT_TRUE(brush_client.connect()) << "Failed to connect to server";
 
-	modian::inkstone::tests::utils::test_ui_pipe_client ink_client(UI_PROTOCOL_PIPE_NAME);
+	modian::inkstone::tests::utils::test_ui_protocol_pipe_client ink_client(UI_PROTOCOL_PIPE_NAME);
 	ASSERT_TRUE(ink_client.connect()) << "UI failed to connect";
 
 	const auto response_without_candidates = brush_client.send_and_receive("n");
@@ -71,8 +71,8 @@ TEST_F(server_integration_tests, should_successfully_return_candidate_when_input
 }
 
 TEST_F(server_integration_tests, should_successfully_handle_backspace_when_user_input_is_correct) {
-	modian::inkstone::tests::utils::test_pipe_client brush_client(INPUT_PROTOCOL_PIPE_NAME);
-	modian::inkstone::tests::utils::test_ui_pipe_client ink_client(UI_PROTOCOL_PIPE_NAME);
+	modian::inkstone::tests::utils::test_input_protocol_pipe_client brush_client(INPUT_PROTOCOL_PIPE_NAME);
+	modian::inkstone::tests::utils::test_ui_protocol_pipe_client ink_client(UI_PROTOCOL_PIPE_NAME);
 	ASSERT_TRUE(brush_client.connect());
 	ASSERT_TRUE(ink_client.connect());
 

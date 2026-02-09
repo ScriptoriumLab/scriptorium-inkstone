@@ -10,13 +10,13 @@
 using namespace std::chrono_literals;
 
 namespace modian::inkstone::tests::utils {
-    class test_ui_pipe_client {
+    class test_ui_protocol_pipe_client {
     public:
-        explicit test_ui_pipe_client(std::string_view pipe_name) {
+        explicit test_ui_protocol_pipe_client(std::string_view pipe_name) {
             pipe_path_ = std::filesystem::path(pipe_name).wstring();
         }
 
-        ~test_ui_pipe_client() {
+        ~test_ui_protocol_pipe_client() {
             close();
         }
 

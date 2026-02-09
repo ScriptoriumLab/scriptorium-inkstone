@@ -7,24 +7,24 @@
 using namespace std::chrono_literals;
 
 namespace modian::inkstone::tests::utils {
-	class test_pipe_client {
+	class test_input_protocol_pipe_client {
 	public:
-		explicit test_pipe_client(std::string_view pipe_name) {
+		explicit test_input_protocol_pipe_client(std::string_view pipe_name) {
 			pipe_path_ = std::filesystem::path(pipe_name).wstring();
 		}
 
-		~test_pipe_client() {
+		~test_input_protocol_pipe_client() {
 			close();
 		}
 
-		test_pipe_client(const test_pipe_client&) = delete;
-		test_pipe_client& operator=(const test_pipe_client&) = delete;
+		test_input_protocol_pipe_client(const test_input_protocol_pipe_client&) = delete;
+		test_input_protocol_pipe_client& operator=(const test_input_protocol_pipe_client&) = delete;
 
-		test_pipe_client(test_pipe_client&& other) noexcept : pipe_path_(std::move(other.pipe_path_)), handle_(other.handle_) {
+		test_input_protocol_pipe_client(test_input_protocol_pipe_client&& other) noexcept : pipe_path_(std::move(other.pipe_path_)), handle_(other.handle_) {
 			other.handle_ = INVALID_HANDLE_VALUE;
 		}
 
-		test_pipe_client& operator=(test_pipe_client&& other) noexcept {
+		test_input_protocol_pipe_client& operator=(test_input_protocol_pipe_client&& other) noexcept {
 			if (this != &other) {
 				close();
 				pipe_path_ = std::move(other.pipe_path_);
