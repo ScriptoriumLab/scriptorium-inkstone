@@ -19,17 +19,10 @@ namespace modian::inkstone::manager {
 			engine_manager_->update_input_state(key);
 		}
 
-		if (const auto candidates = engine_manager_->get_current_candidates(); !candidates.empty()) {
-			std::string text = candidates[0];
-			engine_manager_->reset();
-			candidate_manager_->update_candidates({});
-			core::logger_service::logger()->info("Decision: Commit '{}'", text);
-
-			return {core::protocol::input::v1::message_type::COMMIT, std::move(text)};
-		}
+		const auto candidates = engine_manager_->get_current_candidates();
+		candidate_manager_->update_candidates(candidates);
 
 		std::string raw_pinyin = engine_manager_->get_current_raw_pinyin();
-		core::logger_service::logger()->info("Decision: Update '{}'", raw_pinyin);
 
 		return {core::protocol::input::v1::message_type::UPDATE, std::move(raw_pinyin)};
 	}

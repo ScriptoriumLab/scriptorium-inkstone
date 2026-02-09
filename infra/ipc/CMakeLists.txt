@@ -1,5 +1,6 @@
 add_library(modian_inkstone_ipc_server STATIC
     src/input_protocol_pipe_server.cpp
+    src/ui_protocol_pipe_server.cpp
 )
 
 target_include_directories(modian_inkstone_ipc_server PUBLIC

@@ -6,6 +6,7 @@
 #include "modian/core/logger/logger_service.h"
 #include "modian/logger/spdlog_logger.h"
 #include "include/modian/tests/utils/test_pipe_client.h"
+#include "include/modian/tests/utils/test_ui_pipe_client.h"
 #include "modian/core/engine/pinyin_engine.h"
 
 using namespace modian::inkstone;
@@ -23,8 +24,11 @@ class server_benchmark_fixture : public benchmark::Fixture {
 public:
     static std::unique_ptr<server> server_instance;
     static std::jthread server_thread;
-    const std::string PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
-    std::unique_ptr<tests::utils::test_pipe_client> client;
+    static std::unique_ptr<tests::utils::test_pipe_client> brush_client;
+    static std::unique_ptr<tests::utils::test_ui_pipe_client> ink_client;
+
+    const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
+	const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_ui_protocol_pipe)";
 
     void SetUp(const ::benchmark::State& state) override {
         if (!server_instance) {
@@ -33,49 +37,62 @@ public:
             });
 
             const auto dict_path = std::filesystem::path(PROJECT_SOURCE_DIR) / "data" / "pinyin_dictionary.txt";
-            auto dict_loader = modian::inkstone::core::lazy_load_dictionary<modian::inkstone::core::pinyin_engine>(dict_path.string());
+            auto dict_loader = modian::inkstone::core::lazy_load_dictionary<core::pinyin_engine>(dict_path.string());
             server_instance = std::make_unique<server>(dict_loader);
             server_thread = std::jthread([this] {
                 server_instance->run();
             });
 
             std::this_thread::sleep_for(500ms);
-        }
 
-        client = std::make_unique<tests::utils::test_pipe_client>(PIPE_NAME);
-        client->connect();
+            brush_client = std::make_unique<tests::utils::test_pipe_client>(INPUT_PROTOCOL_PIPE_NAME);
+            if (!brush_client->connect()) {
+                throw std::runtime_error("Failed to connect brush client");
+            }
+
+            ink_client = std::make_unique<tests::utils::test_ui_pipe_client>(UI_PROTOCOL_PIPE_NAME);
+            if (!ink_client->connect()) {
+                throw std::runtime_error("Failed to connect ink client");
+            }
+        }
     }
 
-    void TearDown(const ::benchmark::State& state) override {
-        if (client) {
-            client->close();
-            client.reset();
-        }
-    }
+    void TearDown(const ::benchmark::State& state) override {}
 };
 
 std::unique_ptr<server> server_benchmark_fixture::server_instance = nullptr;
 std::jthread server_benchmark_fixture::server_thread;
+std::unique_ptr<tests::utils::test_pipe_client> server_benchmark_fixture::brush_client = nullptr;
+std::unique_ptr<tests::utils::test_ui_pipe_client> server_benchmark_fixture::ink_client = nullptr;
 
 BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_modian_input_method_performance)(benchmark::State& state) {
-    if (!client->connect()) {
-        state.SkipWithError("Failed to connect to server");
-        return;
-    }
-
     auto n = state.range(0);
 
     for (auto _ : state) {
         for (int i = 0; i < n; ++i) {
-            client->send_and_receive("d");
-            client->send_and_receive("i");
-            client->send_and_receive("a");
-            client->send_and_receive("n");
+            brush_client->send_and_receive("d");
+            ink_client->read_next_message();
 
-            client->send_and_receive("\b");
-            client->send_and_receive("\b");
-            client->send_and_receive("\b");
-            client->send_and_receive("\b");
+            brush_client->send_and_receive("i");
+            ink_client->read_next_message();
+
+            brush_client->send_and_receive("a");
+            ink_client->read_next_message();
+
+            brush_client->send_and_receive("n");
+            ink_client->read_next_message();
+
+            brush_client->send_and_receive("\b");
+            ink_client->read_next_message();
+
+            brush_client->send_and_receive("\b");
+            ink_client->read_next_message();
+
+            brush_client->send_and_receive("\b");
+            ink_client->read_next_message();
+
+            brush_client->send_and_receive("\b");
+            ink_client->read_next_message();
         }
     }
 

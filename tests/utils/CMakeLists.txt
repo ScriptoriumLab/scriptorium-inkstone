@@ -1,5 +1,6 @@
 add_library(modian_inkstone_test_utils INTERFACE
     include/modian/tests/utils/test_pipe_client.h
+    include/modian/tests/utils/test_ui_pipe_client.h
 )
 
 target_include_directories(modian_inkstone_test_utils INTERFACE
