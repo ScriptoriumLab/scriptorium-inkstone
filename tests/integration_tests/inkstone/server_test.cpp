@@ -45,7 +45,7 @@ protected:
 
 	std::unique_ptr<modian::inkstone::server> server_instance_;
 	std::jthread server_thread_;
-	const std::string PIPE_NAME = R"(\\.\pipe\modian_ipc_brush)";
+	const std::string PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
 };
 
 TEST_F(server_integration_tests, should_successfully_return_candidate_when_input_is_correct) {

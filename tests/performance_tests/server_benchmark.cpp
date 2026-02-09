@@ -23,7 +23,7 @@ class server_benchmark_fixture : public benchmark::Fixture {
 public:
     static std::unique_ptr<server> server_instance;
     static std::jthread server_thread;
-    const std::string PIPE_NAME = R"(\\.\pipe\modian_ipc_brush)";
+    const std::string PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
     std::unique_ptr<tests::utils::test_pipe_client> client;
 
     void SetUp(const ::benchmark::State& state) override {

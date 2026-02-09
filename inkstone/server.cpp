@@ -7,7 +7,7 @@
 #include "modian/service/input_protocol_service.h"
 
 namespace modian::inkstone {
-	const std::string BRUSH_PIPE_NAME = R"(\\.\pipe\modian_ipc_brush)";
+	const std::string BRUSH_PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
 
 	server::server(const manager::EngineDetail& engine_detail) {
 		auto engine_manager = std::make_shared<manager::engine_manager>();
