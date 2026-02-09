@@ -8,6 +8,7 @@ FetchContent_MakeAvailable(json)
 
 add_library(modian_inkstone_service STATIC
     src/input_protocol_service.cpp
+    src/ui_protocol_service.cpp
 )
 
 target_link_libraries(modian_inkstone_service PRIVATE
