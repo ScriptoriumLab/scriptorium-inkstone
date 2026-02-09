@@ -26,4 +26,8 @@ namespace modian::inkstone::manager {
 
 		return {core::protocol::input::v1::message_type::UPDATE, std::move(raw_pinyin)};
 	}
+
+	std::string session_orchestrator::select_candidate(const size_t& index) const {
+		return engine_manager_->get_current_candidates()[index];
+	}
 }

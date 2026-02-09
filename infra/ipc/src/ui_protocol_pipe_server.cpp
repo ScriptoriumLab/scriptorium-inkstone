@@ -67,8 +67,59 @@ namespace modian::inkstone::infra::ipc {
             if (connected && !st.stop_requested()) {
                 core::logger_service::logger()->info("[UI-Pipe] UI Connected!");
                 pipe_handle_.store(h);
-            } else {
-                CloseHandle(h);
+
+                read_loop(h, st);
+
+                pipe_handle_.store(INVALID_HANDLE_VALUE);
+            }
+
+            CloseHandle(h);
+        }
+    }
+
+    void ui_protocol_pipe_server::read_loop(HANDLE h, const std::stop_token& st) const {
+        std::vector<char> buffer(4096);
+        DWORD bytes_read = 0;
+        DWORD bytes_avail = 0;
+
+        while (!st.stop_requested()) {
+            BOOL peek_success = PeekNamedPipe(
+                h,
+                nullptr,
+                0,
+                nullptr,
+                &bytes_avail,
+                nullptr
+            );
+
+            if (!peek_success) {
+                core::logger_service::logger()->info("[UI-Pipe] Peek failed (Client disconnected?)");
+                break;
+            }
+
+            if (bytes_avail == 0) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                continue;
+            }
+
+            BOOL success = ReadFile(
+                h,
+                buffer.data(),
+                static_cast<DWORD>(buffer.size()),
+                &bytes_read,
+                nullptr
+            );
+
+            if (!success || bytes_read == 0) {
+                break;
+            }
+
+            std::string message(buffer.data(), bytes_read);
+
+            if (!message.empty()) {
+                if (message_handler_) {
+                    message_handler_(message);
+                }
             }
         }
     }

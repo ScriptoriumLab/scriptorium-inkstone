@@ -47,6 +47,20 @@ namespace modian::inkstone {
 		);
 		input_protocol_pipe_ = std::make_unique<infra::ipc::input_protocol_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
 		ui_protocol_pipe_ = std::make_unique<infra::ipc::ui_protocol_pipe_server>(UI_PROTOCOL_PIPE_NAME);
+		ui_protocol_pipe_->set_on_message([this](std::string msg) {
+			auto action = service::ui_protocol_service::parse_user_action_response(msg);
+
+			if (action.type == core::protocol::ui::v1::action_type::SELECT_CANDIDATE) {
+				size_t index = action.payload;
+
+				core::logger_service::logger()->info("UI Selected Candidate: {}", index);
+
+				const auto text = session_orchestrator_->select_candidate(index);
+				if (!text.empty()) {
+					   core::logger_service::logger()->info("TODO: Commit text to Brush: {}", text);
+				}
+			}
+		});
 
 		auto bridge = std::make_shared<ui_bridge>(ui_protocol_pipe_.get());
 		candidate_manager_->add_observer(bridge);
