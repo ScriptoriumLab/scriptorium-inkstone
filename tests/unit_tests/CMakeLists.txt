@@ -11,7 +11,7 @@ target_link_libraries(modian_inkstone_unit_tests PRIVATE
     modian::inkstone::core
     modian_inkstone_service
     modian_inkstone_manager
-    modian_inkstone_infra_utils
+    modian::inkstone::infra_utils
     gtest_main
     gmock_main
 )
