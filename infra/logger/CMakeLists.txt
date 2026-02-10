@@ -20,3 +20,5 @@ target_link_libraries(modian_inkstone_logger
     PRIVATE modian::inkstone::core
     PUBLIC spdlog::spdlog
 )
+
+add_library(modian::inkstone::logger ALIAS modian_inkstone_logger)

@@ -19,7 +19,7 @@ target_link_libraries(
     benchmark::benchmark
     modian_inkstone_server
     modian::inkstone::core
-    modian_inkstone_logger
+    modian::inkstone::logger
     modian_inkstone_test_utils
 )
 
