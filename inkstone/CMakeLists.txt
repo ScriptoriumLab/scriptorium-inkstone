@@ -14,13 +14,15 @@ target_include_directories(modian_inkstone_server PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
+add_library(modian::inkstone::server ALIAS modian_inkstone_server)
+
 add_executable(
     modian_inkstone
     app.cpp
 )
 
 target_link_libraries(modian_inkstone PRIVATE
-    modian_inkstone_server
+    modian::inkstone::server
 )
 
 set_target_properties(modian_inkstone PROPERTIES
