@@ -13,3 +13,5 @@ target_link_libraries(
     modian::inkstone::core
     modian_inkstone_infra_utils
 )
+
+add_library(modian::inkstone::ipc_server ALIAS modian_inkstone_ipc_server)

@@ -2,7 +2,7 @@ add_library(modian_inkstone_server server.cpp)
 
 target_link_libraries(modian_inkstone_server PUBLIC
     modian_inkstone_manager
-    modian_inkstone_ipc_server
+    modian::inkstone::ipc_server
     modian_inkstone_infra_utils
     modian_inkstone_logger
     modian_inkstone_service
