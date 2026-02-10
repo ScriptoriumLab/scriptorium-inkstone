@@ -7,7 +7,7 @@ target_link_libraries(modian_inkstone_integration_tests
     modian::inkstone::core
     modian::inkstone::server
     modian::inkstone::logger
-    modian_inkstone_test_utils
+    modian::inkstone::test_utils
     gtest_main
     gmock_main
 )

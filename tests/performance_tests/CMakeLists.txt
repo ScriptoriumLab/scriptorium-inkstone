@@ -20,7 +20,7 @@ target_link_libraries(
     modian::inkstone::server
     modian::inkstone::core
     modian::inkstone::logger
-    modian_inkstone_test_utils
+    modian::inkstone::test_utils
 )
 
 target_compile_definitions(modian_inkstone_performance_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
