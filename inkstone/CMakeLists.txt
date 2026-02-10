@@ -30,6 +30,8 @@ set_target_properties(modian_inkstone PROPERTIES
     OUTPUT_NAME "modian-inkstone"
 )
 
+add_executable(modian::inkstone ALIAS modian_inkstone)
+
 set(RAW_USER_HOME "$ENV{USERPROFILE}")
 file(TO_CMAKE_PATH "${RAW_USER_HOME}" USER_HOME)
 set(MODIAN_ROOT_DIR "${USER_HOME}/Modian")
