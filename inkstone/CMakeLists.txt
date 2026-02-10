@@ -5,7 +5,7 @@ target_link_libraries(modian_inkstone_server PUBLIC
     modian::inkstone::ipc_server
     modian::inkstone::infra_utils
     modian::inkstone::logger
-    modian_inkstone_service
+    modian::inkstone::service
     modian::inkstone::core
 )
 

@@ -9,7 +9,7 @@ add_executable(modian_inkstone_unit_tests
 
 target_link_libraries(modian_inkstone_unit_tests PRIVATE
     modian::inkstone::core
-    modian_inkstone_service
+    modian::inkstone::service
     modian::inkstone::manager
     modian::inkstone::infra_utils
     gtest_main
