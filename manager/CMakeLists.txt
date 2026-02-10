@@ -14,3 +14,5 @@ target_include_directories(modian_inkstone_manager PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
+
+add_library(modian::inkstone::manager ALIAS modian_inkstone_manager)
