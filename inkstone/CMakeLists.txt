@@ -6,7 +6,7 @@ target_link_libraries(modian_inkstone_server PUBLIC
     modian_inkstone_infra_utils
     modian_inkstone_logger
     modian_inkstone_service
-    modian_inkstone_core
+    modian::inkstone::core
 )
 
 target_include_directories(modian_inkstone_server PUBLIC

@@ -12,7 +12,7 @@ add_library(modian_inkstone_service STATIC
 )
 
 target_link_libraries(modian_inkstone_service PRIVATE
-    modian_inkstone_core
+    modian::inkstone::core
     nlohmann_json::nlohmann_json
 )
 

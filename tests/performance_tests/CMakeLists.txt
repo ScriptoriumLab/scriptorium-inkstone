@@ -18,7 +18,7 @@ target_link_libraries(
     modian_inkstone_performance_tests PRIVATE
     benchmark::benchmark
     modian_inkstone_server
-    modian_inkstone_core
+    modian::inkstone::core
     modian_inkstone_logger
     modian_inkstone_test_utils
 )

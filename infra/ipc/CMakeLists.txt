@@ -10,6 +10,6 @@ target_include_directories(modian_inkstone_ipc_server PUBLIC
 
 target_link_libraries(
     modian_inkstone_ipc_server PRIVATE
-    modian_inkstone_core
+    modian::inkstone::core
     modian_inkstone_infra_utils
 )

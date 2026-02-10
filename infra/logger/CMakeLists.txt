@@ -17,6 +17,6 @@ target_include_directories(modian_inkstone_logger PUBLIC
 )
 
 target_link_libraries(modian_inkstone_logger
-    PRIVATE modian_inkstone_core
+    PRIVATE modian::inkstone::core
     PUBLIC spdlog::spdlog
 )

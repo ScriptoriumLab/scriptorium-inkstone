@@ -7,7 +7,7 @@ add_library(modian_inkstone_manager STATIC
 target_link_libraries(
     modian_inkstone_manager
     PRIVATE
-    modian_inkstone_core
+    modian::inkstone::core
 )
 
 target_include_directories(modian_inkstone_manager PUBLIC
