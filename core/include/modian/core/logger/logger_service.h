@@ -16,12 +16,17 @@
 namespace modian::inkstone::core {
 	extern MODIAN_LOGGER_API std::atomic<int> update_logger_times;
 
+	template<typename Factory>
+	concept logger_factory = requires(Factory factory) {
+		{ factory() } -> std::convertible_to<std::shared_ptr<base_logger>>;
+	};
+
 	class logger_service {
 	public:
 		static void print_logo();
 
-		template<typename LoggerFactory>
-		static void update_logger(LoggerFactory&& factory) {
+		template<logger_factory Factory>
+		static void update_logger(Factory&& factory) {
 			if (update_logger_times.load(std::memory_order_acquire) > 0) {
 				return;
 			}
