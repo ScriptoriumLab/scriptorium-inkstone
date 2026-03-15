@@ -168,4 +168,6 @@ fabric.properties
 .history
 .ionide
 
+build*/
+compile_commands.json
 # End of https://www.toptal.com/developers/gitignore/api/clion,c++,visualstudiocode
