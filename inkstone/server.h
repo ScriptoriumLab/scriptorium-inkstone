@@ -13,7 +13,6 @@ namespace modian::inkstone {
 		void signal_stop();
 
 	private:
-		std::shared_ptr<manager::candidate_manager> candidate_manager_;
 		std::shared_ptr<manager::session_orchestrator> session_orchestrator_;
 
 		std::unique_ptr<infra::ipc::input_protocol_pipe_server> input_protocol_pipe_;
