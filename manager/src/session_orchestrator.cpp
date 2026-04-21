@@ -14,16 +14,16 @@ namespace modian::inkstone::manager {
 
         if (key == "cmd:left") {
             if (has_candidates && highlight_index_ > 0) {
-                highlight_index_--;
-                update_ui(candidates);
+                --highlight_index_;
+                update_ui(std::move(candidates));
             }
             return {core::protocol::input::v1::message_type::UPDATE, engine_manager_->get_current_raw_pinyin()};
         }
 
         if (key == "cmd:right") {
             if (has_candidates && highlight_index_ < candidates.size() - 1) {
-                highlight_index_++;
-                update_ui(candidates);
+                ++highlight_index_;
+                update_ui(std::move(candidates));
             }
             return {core::protocol::input::v1::message_type::UPDATE, engine_manager_->get_current_raw_pinyin()};
         }
@@ -46,18 +46,16 @@ namespace modian::inkstone::manager {
             highlight_index_ = 0;
         }
 		candidates = engine_manager_->get_current_candidates();
-		candidate_manager_->update_state(candidates, highlight_index_);
+        update_ui(std::move(candidates));
 
-		std::string raw_pinyin = engine_manager_->get_current_raw_pinyin();
-
-		return {core::protocol::input::v1::message_type::UPDATE, std::move(raw_pinyin)};
+		return {core::protocol::input::v1::message_type::UPDATE, engine_manager_->get_current_raw_pinyin()};
 	}
 
-	void session_orchestrator::update_ui(const std::vector<std::string>& candidates) const {
-		candidate_manager_->update_state(candidates, highlight_index_);
+	void session_orchestrator::update_ui(std::vector<std::string> candidates) const {
+		candidate_manager_->update_state(std::move(candidates), highlight_index_);
 	}
 
-	std::string session_orchestrator::select_candidate(const size_t& index) const {
+	std::string session_orchestrator::select_candidate(size_t index) const {
 		return engine_manager_->get_current_candidates()[index];
 	}
 }

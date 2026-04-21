@@ -10,13 +10,13 @@ namespace modian::inkstone::manager {
 	public:
 		session_orchestrator(std::unique_ptr<candidate_manager> candidate_manager, std::unique_ptr<engine_manager> engine_manager);
 		[[nodiscard]] core::protocol::input::v1::instruction handle_key(const core::protocol::input::v1::key_event& key_event);
-		[[nodiscard]] std::string select_candidate(const size_t& index) const;
+		[[nodiscard]] std::string select_candidate(size_t index) const;
 
 	private:
 		size_t highlight_index_{0};
 		std::unique_ptr<candidate_manager> candidate_manager_;
 		std::unique_ptr<engine_manager> engine_manager_;
 
-		void update_ui(const std::vector<std::string>& candidates) const;
+		void update_ui(std::vector<std::string> candidates) const;
 	};
 }
