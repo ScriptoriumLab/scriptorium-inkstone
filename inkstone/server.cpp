@@ -63,8 +63,6 @@ namespace modian::inkstone {
 
 		auto bridge = std::make_shared<ui_bridge>(ui_protocol_pipe_.get());
 		candidate_manager_->add_observer(bridge);
-
-		ui_bridge_ = bridge;
 	}
 
 	void server::run() {

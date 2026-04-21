@@ -13,7 +13,6 @@ namespace modian::inkstone {
 		void signal_stop();
 
 	private:
-		std::shared_ptr<core::candidate_observer> ui_bridge_;
 		std::shared_ptr<manager::candidate_manager> candidate_manager_;
 		std::shared_ptr<manager::session_orchestrator> session_orchestrator_;
 
