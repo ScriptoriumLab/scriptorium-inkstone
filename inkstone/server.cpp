@@ -50,7 +50,7 @@ namespace modian::inkstone {
 
 				const auto text = session_orchestrator_->select_candidate(index);
 				if (!text.empty()) {
-					   core::logger_service::logger()->info("TODO: Commit text to Brush: {}", text);
+                    core::logger_service::logger()->info("TODO: Commit text to Brush: {}", text);
 				}
 			}
 		});
