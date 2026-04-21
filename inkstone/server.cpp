@@ -1,5 +1,6 @@
 #include "server.h"
 
+#include <memory>
 #include <string>
 
 #include "modian/core/logger/logger_service.h"
@@ -54,15 +55,15 @@ namespace modian::inkstone {
 			}
 		});
 		auto bridge = std::make_shared<ui_bridge>(std::move(ui_protocol_pipe));
-		auto candidate_manager = std::make_shared<manager::candidate_manager>();
+		auto candidate_manager = std::make_unique<manager::candidate_manager>();
 		candidate_manager->add_observer(bridge);
 
-		auto engine_manager = std::make_shared<manager::engine_manager>();
+		auto engine_manager = std::make_unique<manager::engine_manager>();
 		engine_manager->add_new_engine(engine_detail);
 
 		session_orchestrator_ = std::make_shared<manager::session_orchestrator>(
-			candidate_manager,
-			engine_manager
+			std::move(candidate_manager),
+			std::move(engine_manager)
 		);
 	}
 

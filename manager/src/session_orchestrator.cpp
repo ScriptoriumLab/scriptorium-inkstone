@@ -1,9 +1,7 @@
 #include "modian/orchistrator/session_orchestrator.h"
 
-#include "modian/core/logger/logger_service.h"
-
 namespace modian::inkstone::manager {
-	session_orchestrator::session_orchestrator(std::shared_ptr<candidate_manager> candidate_manager, std::shared_ptr<engine_manager> engine_manager)
+	session_orchestrator::session_orchestrator(std::unique_ptr<candidate_manager> candidate_manager, std::unique_ptr<engine_manager> engine_manager)
 		: candidate_manager_{std::move(candidate_manager)}, engine_manager_{std::move(engine_manager)} {}
 
 	core::protocol::input::v1::instruction session_orchestrator::handle_key(const core::protocol::input::v1::key_event& key_event) {
