@@ -37,9 +37,6 @@ namespace modian::inkstone {
 	};
 
 	server::server(const manager::EngineDetail& engine_detail) {
-		auto engine_manager = std::make_shared<manager::engine_manager>();
-		engine_manager->add_new_engine(engine_detail);
-		auto candidate_manager = std::make_shared<manager::candidate_manager>();
 		input_protocol_pipe_ = std::make_unique<infra::ipc::input_protocol_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
 		auto ui_protocol_pipe = std::make_unique<infra::ipc::ui_protocol_pipe_server>(UI_PROTOCOL_PIPE_NAME);
 		ui_protocol_pipe->set_on_message([this](std::string msg) {
@@ -56,9 +53,13 @@ namespace modian::inkstone {
 				}
 			}
 		});
-
 		auto bridge = std::make_shared<ui_bridge>(std::move(ui_protocol_pipe));
+		auto candidate_manager = std::make_shared<manager::candidate_manager>();
 		candidate_manager->add_observer(bridge);
+
+		auto engine_manager = std::make_shared<manager::engine_manager>();
+		engine_manager->add_new_engine(engine_detail);
+
 		session_orchestrator_ = std::make_shared<manager::session_orchestrator>(
 			candidate_manager,
 			engine_manager
