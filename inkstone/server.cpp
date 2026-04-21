@@ -3,7 +3,7 @@
 #include <string>
 
 #include "modian/core/logger/logger_service.h"
-#include "modian/core/protocol/instruction.h"
+#include "modian/infra/ipc/ui_protocol_pipe_server.h"
 #include "modian/service/input_protocol_service.h"
 #include "modian/service/ui_protocol_service.h"
 
@@ -13,8 +13,8 @@ namespace modian::inkstone {
 
 	class ui_bridge : public core::candidate_observer {
 	public:
-		explicit ui_bridge(infra::ipc::ui_protocol_pipe_server* pipe)
-			: pipe_(pipe) {}
+		explicit ui_bridge(std::unique_ptr<infra::ipc::ui_protocol_pipe_server> pipe)
+			: pipe_(std::move(pipe)) {}
 
 		void on_candidate_update(const std::vector<std::string>& candidates, const size_t& highlight_index) override {
 			if (!pipe_) return;
@@ -33,7 +33,7 @@ namespace modian::inkstone {
 		}
 
 	private:
-		infra::ipc::ui_protocol_pipe_server* pipe_;
+        std::unique_ptr<infra::ipc::ui_protocol_pipe_server> pipe_;
 	};
 
 	server::server(const manager::EngineDetail& engine_detail) {
@@ -41,8 +41,8 @@ namespace modian::inkstone {
 		engine_manager->add_new_engine(engine_detail);
 		auto candidate_manager = std::make_shared<manager::candidate_manager>();
 		input_protocol_pipe_ = std::make_unique<infra::ipc::input_protocol_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
-		ui_protocol_pipe_ = std::make_unique<infra::ipc::ui_protocol_pipe_server>(UI_PROTOCOL_PIPE_NAME);
-		ui_protocol_pipe_->set_on_message([this](std::string msg) {
+		auto ui_protocol_pipe = std::make_unique<infra::ipc::ui_protocol_pipe_server>(UI_PROTOCOL_PIPE_NAME);
+		ui_protocol_pipe->set_on_message([this](std::string msg) {
 			auto action = service::ui_protocol_service::parse_user_action_response(msg);
 
 			if (action.type == core::protocol::ui::v1::action_type::SELECT_CANDIDATE) {
@@ -57,7 +57,7 @@ namespace modian::inkstone {
 			}
 		});
 
-		auto bridge = std::make_shared<ui_bridge>(ui_protocol_pipe_.get());
+		auto bridge = std::make_shared<ui_bridge>(std::move(ui_protocol_pipe));
 		candidate_manager->add_observer(bridge);
 		session_orchestrator_ = std::make_shared<manager::session_orchestrator>(
 			candidate_manager,
