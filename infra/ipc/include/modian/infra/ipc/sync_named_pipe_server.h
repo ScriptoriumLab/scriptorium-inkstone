@@ -17,13 +17,13 @@ namespace modian::inkstone::infra::ipc {
         virtual void stop() = 0;
     };
 
-	class input_protocol_pipe_server : public isync_ipc_server<std::string, std::string> {
+	class sync_named_pipe_server : public isync_ipc_server<std::string, std::string> {
 	public:
-		explicit input_protocol_pipe_server(std::string_view pipe_name);
-		input_protocol_pipe_server(const input_protocol_pipe_server&) = delete;
-		input_protocol_pipe_server& operator=(const input_protocol_pipe_server&) = delete;
+		explicit sync_named_pipe_server(std::string_view pipe_name);
+		sync_named_pipe_server(const sync_named_pipe_server&) = delete;
+		sync_named_pipe_server& operator=(const sync_named_pipe_server&) = delete;
 
-		~input_protocol_pipe_server() override;
+		~sync_named_pipe_server() override;
 
 		void run(request_handler_t handler) override;
 

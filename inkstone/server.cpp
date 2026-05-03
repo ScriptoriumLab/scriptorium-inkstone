@@ -4,6 +4,7 @@
 #include <string>
 
 #include "modian/core/logger/logger_service.h"
+#include "modian/infra/ipc/sync_named_pipe_server.h"
 #include "modian/infra/ipc/ui_protocol_pipe_server.h"
 #include "modian/service/input_protocol_service.h"
 #include "modian/service/ui_protocol_service.h"
@@ -38,7 +39,7 @@ namespace modian::inkstone {
 	};
 
 	server::server(const manager::EngineDetail& engine_detail) {
-		input_protocol_pipe_ = std::make_unique<infra::ipc::input_protocol_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
+		input_protocol_ipc_server_ = std::make_unique<infra::ipc::sync_named_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
 		auto ui_protocol_pipe = std::make_unique<infra::ipc::ui_protocol_pipe_server>(UI_PROTOCOL_PIPE_NAME);
 		ui_protocol_pipe->set_on_message([this](std::string msg) {
 			auto action = service::ui_protocol_service::parse_user_action_response(msg);
@@ -69,7 +70,7 @@ namespace modian::inkstone {
 	}
 
 	void server::run() {
-		input_protocol_pipe_->run([this](const std::string& request) {
+		input_protocol_ipc_server_->run([this](const std::string& request) {
 			const auto key_event = service::input_protocol_service::parse_key_event_request(request);
 
 			if (key_event.content == "cmd:shutdown") {

@@ -1,4 +1,4 @@
-#include "modian/infra/ipc/input_protocol_pipe_server.h"
+#include "modian/infra/ipc/sync_named_pipe_server.h"
 
 #include <windows.h>
 #include <utility>
@@ -10,13 +10,13 @@
 using namespace std::chrono_literals;
 
 namespace modian::inkstone::infra::ipc {
-	input_protocol_pipe_server::input_protocol_pipe_server(std::string_view pipe_name) : pipe_name_{pipe_name} {}
+	sync_named_pipe_server::sync_named_pipe_server(std::string_view pipe_name) : pipe_name_{pipe_name} {}
 
-	input_protocol_pipe_server::~input_protocol_pipe_server() {
+	sync_named_pipe_server::~sync_named_pipe_server() {
 		stop();
 	}
 
-	void input_protocol_pipe_server::stop() {
+	void sync_named_pipe_server::stop() {
 		bool expected{true};
 
 		if (!running_.compare_exchange_strong(expected, false)) {
@@ -34,7 +34,7 @@ namespace modian::inkstone::infra::ipc {
 		}
 	}
 
-	void input_protocol_pipe_server::run(request_handler_t handler) {
+	void sync_named_pipe_server::run(request_handler_t handler) {
 		if (running_) return;
 
 		handler_ = std::move(handler);
@@ -45,7 +45,7 @@ namespace modian::inkstone::infra::ipc {
 		});
 	}
 
-	void input_protocol_pipe_server::accept_loop(std::stop_token st) {
+	void sync_named_pipe_server::accept_loop(std::stop_token st) {
 		while (running_ && !st.stop_requested()) {
 			HANDLE pipe_handle = CreateNamedPipeW(
 			utils::utf8_to_wstring(pipe_name_).c_str(),
@@ -89,7 +89,7 @@ namespace modian::inkstone::infra::ipc {
 		core::logger_service::logger()->info("[Infra] Server loop exited.");
 	}
 
-	void input_protocol_pipe_server::handle_session(void* raw_handle, std::stop_token st) const {
+	void sync_named_pipe_server::handle_session(void* raw_handle, std::stop_token st) const {
 		HANDLE pipe_handle = raw_handle;
 
 		std::vector<char> buffer(BUFFER_SIZE);
