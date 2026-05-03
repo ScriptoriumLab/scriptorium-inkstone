@@ -32,8 +32,8 @@ namespace modian::inkstone::manager {
             if (has_candidates) {
                 std::string text = candidates[highlight_index_];
                 engine_manager_->reset();
-                candidate_manager_->update_state({}, 0);
                 highlight_index_ = 0;
+                update_ui({});
                 return {core::protocol::input::v1::message_type::COMMIT, text};
             }
             return {core::protocol::input::v1::message_type::COMMIT, " "};
