@@ -7,19 +7,27 @@
 #include <thread>
 
 namespace modian::inkstone::infra::ipc {
-	class input_protocol_pipe_server {
+    template<typename Req, typename Res>
+    struct isync_ipc_server {
+        using request_handler_t = std::function<Res(Req)>;
+
+        virtual ~isync_ipc_server() = default;
+
+        virtual void run(request_handler_t handler) = 0;
+        virtual void stop() = 0;
+    };
+
+	class input_protocol_pipe_server : public isync_ipc_server<std::string, std::string> {
 	public:
-		using request_handler_t = std::function<std::string(std::string)>;
-
 		explicit input_protocol_pipe_server(std::string_view pipe_name);
-		~input_protocol_pipe_server();
-
 		input_protocol_pipe_server(const input_protocol_pipe_server&) = delete;
 		input_protocol_pipe_server& operator=(const input_protocol_pipe_server&) = delete;
 
-		void run(request_handler_t handler);
+		~input_protocol_pipe_server() override;
 
-		void stop();
+		void run(request_handler_t handler) override;
+
+		void stop() override;
 
 	private:
 		void accept_loop(std::stop_token st);
