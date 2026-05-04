@@ -40,8 +40,8 @@ namespace modian::inkstone {
 
 	server::server(const manager::EngineDetail& engine_detail) {
 		input_protocol_ipc_server_ = std::make_unique<infra::ipc::sync_named_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
-		auto ui_protocol_pipe = std::make_unique<infra::ipc::ui_protocol_pipe_server>(UI_PROTOCOL_PIPE_NAME);
-		ui_protocol_pipe->set_on_message([this](std::string msg) {
+		auto ui_protocol_ipc_server = std::make_unique<infra::ipc::ui_protocol_pipe_server>(UI_PROTOCOL_PIPE_NAME);
+		ui_protocol_ipc_server->set_on_message([this](std::string msg) {
 			auto action = service::ui_protocol_service::parse_user_action_response(msg);
 
 			if (action.type == core::protocol::ui::v1::action_type::SELECT_CANDIDATE) {
@@ -56,7 +56,7 @@ namespace modian::inkstone {
 				}
 			}
 		});
-		auto bridge = std::make_shared<ui_bridge>(std::move(ui_protocol_pipe));
+		auto bridge = std::make_shared<ui_bridge>(std::move(ui_protocol_ipc_server));
 		auto candidate_manager = std::make_unique<manager::candidate_manager>();
 		candidate_manager->add_observer(bridge);
 
