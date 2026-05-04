@@ -18,12 +18,12 @@ namespace modian::inkstone::infra::ipc {
         virtual void set_message_handler(message_handler_t handler) = 0;
     };
 
-	class ui_protocol_pipe_server : public iasync_ipc_server<std::string, std::string> {
+	class async_named_pipe_server : public iasync_ipc_server<std::string, std::string> {
 	public:
 		using message_handler_t = std::function<void(std::string)>;
 
-		explicit ui_protocol_pipe_server(std::string_view pipe_name);
-		~ui_protocol_pipe_server() override;
+		explicit async_named_pipe_server(std::string_view pipe_name);
+		~async_named_pipe_server() override;
 
 		void send(const std::string& data) override;
 

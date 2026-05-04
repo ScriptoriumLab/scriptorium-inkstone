@@ -1,4 +1,4 @@
-#include "modian/infra/ipc/ui_protocol_pipe_server.h"
+#include "modian/infra/ipc/async_named_pipe_server.h"
 
 #include <chrono>
 
@@ -9,20 +9,20 @@ using namespace std::chrono_literals;
 
 namespace modian::inkstone::infra::ipc {
 
-    ui_protocol_pipe_server::ui_protocol_pipe_server(std::string_view pipe_name)
+    async_named_pipe_server::async_named_pipe_server(std::string_view pipe_name)
         : pipe_name_(pipe_name) {
         worker_thread_ = std::jthread([this](std::stop_token st) {
             this->connection_loop(st);
         });
     }
 
-    ui_protocol_pipe_server::~ui_protocol_pipe_server() {
+    async_named_pipe_server::~async_named_pipe_server() {
         if (const HANDLE h = pipe_handle_.exchange(INVALID_HANDLE_VALUE); h != INVALID_HANDLE_VALUE) {
             CloseHandle(h);
         }
     }
 
-    void ui_protocol_pipe_server::send(const std::string& data) {
+    void async_named_pipe_server::send(const std::string& data) {
         std::lock_guard lock(send_mutex_);
         const HANDLE h = pipe_handle_.load();
 
@@ -41,7 +41,7 @@ namespace modian::inkstone::infra::ipc {
         }
     }
 
-    void ui_protocol_pipe_server::connection_loop(std::stop_token st) {
+    void async_named_pipe_server::connection_loop(std::stop_token st) {
         while (!st.stop_requested()) {
             if (pipe_handle_.load() != INVALID_HANDLE_VALUE) {
                 std::this_thread::sleep_for(100ms);
@@ -77,7 +77,7 @@ namespace modian::inkstone::infra::ipc {
         }
     }
 
-    void ui_protocol_pipe_server::read_loop(HANDLE h, const std::stop_token& st) const {
+    void async_named_pipe_server::read_loop(HANDLE h, const std::stop_token& st) const {
         std::vector<char> buffer(4096);
         DWORD bytes_read = 0;
         DWORD bytes_avail = 0;
