@@ -17,7 +17,7 @@ namespace modian::inkstone::infra::ipc {
 
 		void send(const std::string& data);
 
-		void set_on_message(message_handler_t handler) {
+		void set_message_handler(message_handler_t handler) {
 			message_handler_ = std::move(handler);
 		}
 	private:

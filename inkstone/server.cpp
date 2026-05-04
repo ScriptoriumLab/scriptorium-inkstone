@@ -41,7 +41,7 @@ namespace modian::inkstone {
 	server::server(const manager::EngineDetail& engine_detail) {
 		input_protocol_ipc_server_ = std::make_unique<infra::ipc::sync_named_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
 		auto ui_protocol_ipc_server = std::make_unique<infra::ipc::ui_protocol_pipe_server>(UI_PROTOCOL_PIPE_NAME);
-		ui_protocol_ipc_server->set_on_message([this](std::string msg) {
+		ui_protocol_ipc_server->set_message_handler([this](std::string msg) {
 			auto action = service::ui_protocol_service::parse_user_action_response(msg);
 
 			if (action.type == core::protocol::ui::v1::action_type::SELECT_CANDIDATE) {
