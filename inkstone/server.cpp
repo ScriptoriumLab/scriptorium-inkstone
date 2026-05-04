@@ -15,7 +15,7 @@ namespace modian::inkstone {
 
 	class ui_bridge : public core::candidate_observer {
 	public:
-		explicit ui_bridge(std::unique_ptr<infra::ipc::ui_protocol_pipe_server> pipe)
+		explicit ui_bridge(std::unique_ptr<infra::ipc::iasync_ipc_server<std::string, std::string>> pipe)
 			: pipe_(std::move(pipe)) {}
 
 		void on_candidate_update(const std::vector<std::string>& candidates, const size_t& highlight_index) override {
@@ -35,7 +35,7 @@ namespace modian::inkstone {
 		}
 
 	private:
-        std::unique_ptr<infra::ipc::ui_protocol_pipe_server> pipe_;
+        std::unique_ptr<infra::ipc::iasync_ipc_server<std::string, std::string>> pipe_;
 	};
 
 	server::server(const manager::EngineDetail& engine_detail) {

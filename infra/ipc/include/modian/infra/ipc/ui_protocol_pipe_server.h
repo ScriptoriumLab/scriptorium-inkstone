@@ -8,16 +8,26 @@
 #include <windows.h>
 
 namespace modian::inkstone::infra::ipc {
-	class ui_protocol_pipe_server {
+    template<typename Req, typename Res>
+    struct iasync_ipc_server {
+        using message_handler_t = std::function<void(Res)>;
+
+        virtual ~iasync_ipc_server() = default;
+
+        virtual void send(const Req& message) = 0;
+        virtual void set_message_handler(message_handler_t handler) = 0;
+    };
+
+	class ui_protocol_pipe_server : public iasync_ipc_server<std::string, std::string> {
 	public:
 		using message_handler_t = std::function<void(std::string)>;
 
 		explicit ui_protocol_pipe_server(std::string_view pipe_name);
-		~ui_protocol_pipe_server();
+		~ui_protocol_pipe_server() override;
 
-		void send(const std::string& data);
+		void send(const std::string& data) override;
 
-		void set_message_handler(message_handler_t handler) {
+		void set_message_handler(message_handler_t handler) override {
 			message_handler_ = std::move(handler);
 		}
 	private:
