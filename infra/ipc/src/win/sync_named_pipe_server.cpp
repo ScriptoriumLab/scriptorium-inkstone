@@ -1,4 +1,4 @@
-#include "modian/infra/ipc/sync_named_pipe_server.h"
+#include "modian/infra/ipc/win/sync_named_pipe_server.h"
 
 #include <windows.h>
 #include <utility>

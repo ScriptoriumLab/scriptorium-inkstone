@@ -6,7 +6,7 @@
 #include <mutex>
 #include <windows.h>
 
-#include "iasync_ipc_server.h"
+#include "modian/infra/ipc/iasync_ipc_server.h"
 
 namespace modian::inkstone::infra::ipc {
 	class async_named_pipe_server : public iasync_ipc_server<std::string, std::string> {

@@ -5,7 +5,7 @@
 #include <mutex>
 #include <thread>
 
-#include "isync_ipc_server.h"
+#include "modian/infra/ipc/isync_ipc_server.h"
 
 namespace modian::inkstone::infra::ipc {
 	class sync_named_pipe_server : public isync_ipc_server<std::string, std::string> {
