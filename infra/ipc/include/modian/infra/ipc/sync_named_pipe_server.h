@@ -2,21 +2,12 @@
 
 #include <atomic>
 #include <string>
-#include <functional>
 #include <mutex>
 #include <thread>
 
+#include "isync_ipc_server.h"
+
 namespace modian::inkstone::infra::ipc {
-    template<typename Req, typename Res>
-    struct isync_ipc_server {
-        using request_handler_t = std::function<Res(Req)>;
-
-        virtual ~isync_ipc_server() = default;
-
-        virtual void run(request_handler_t handler) = 0;
-        virtual void stop() = 0;
-    };
-
 	class sync_named_pipe_server : public isync_ipc_server<std::string, std::string> {
 	public:
 		explicit sync_named_pipe_server(std::string_view pipe_name);

@@ -1,7 +1,10 @@
 #pragma once
 
-#include "modian/infra/ipc/async_named_pipe_server.h"
-#include "modian/infra/ipc/sync_named_pipe_server.h"
+#include <string>
+#include <memory>
+
+#include "modian/infra/ipc/isync_ipc_server.h"
+#include "modian/infra/ipc/iasync_ipc_server.h"
 
 namespace modian::inkstone::infra::ipc {
     class ipc_server_factory {
