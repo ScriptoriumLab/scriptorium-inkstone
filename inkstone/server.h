@@ -1,6 +1,6 @@
 #pragma once
 
-#include "modian/infra/ipc/sync_named_pipe_server.h"
+#include "modian/infra/ipc/isync_ipc_server.h"
 #include "modian/orchistrator/session_orchestrator.h"
 
 namespace modian::inkstone {
