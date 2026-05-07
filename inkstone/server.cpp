@@ -4,8 +4,7 @@
 #include <string>
 
 #include "modian/core/logger/logger_service.h"
-#include "modian/infra/ipc/sync_named_pipe_server.h"
-#include "modian/infra/ipc/async_named_pipe_server.h"
+#include "modian/infra/ipc/ipc_server_factory.h"
 #include "modian/service/input_protocol_service.h"
 #include "modian/service/ui_protocol_service.h"
 
@@ -39,8 +38,8 @@ namespace modian::inkstone {
 	};
 
 	server::server(const manager::EngineDetail& engine_detail) {
-		input_protocol_ipc_server_ = std::make_unique<infra::ipc::sync_named_pipe_server>(INPUT_PROTOCOL_PIPE_NAME);
-		auto ui_protocol_ipc_server = std::make_unique<infra::ipc::async_named_pipe_server>(UI_PROTOCOL_PIPE_NAME);
+		input_protocol_ipc_server_ = infra::ipc::ipc_server_factory::create_sync_ipc_server(INPUT_PROTOCOL_PIPE_NAME);
+		auto ui_protocol_ipc_server = infra::ipc::ipc_server_factory::create_async_ipc_server(UI_PROTOCOL_PIPE_NAME);
 		ui_protocol_ipc_server->set_message_handler([this](std::string msg) {
 			auto action = service::ui_protocol_service::parse_user_action_response(msg);
 

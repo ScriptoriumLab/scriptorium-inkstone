@@ -1,7 +1,12 @@
-add_library(modian_inkstone_ipc_server STATIC
-    src/sync_named_pipe_server.cpp
-    src/async_named_pipe_server.cpp
-)
+add_library(modian_inkstone_ipc_server STATIC)
+
+if (WIN32)
+    target_sources(modian_inkstone_ipc_server PRIVATE
+        src/sync_named_pipe_server.cpp
+        src/async_named_pipe_server.cpp
+        src/win/ipc_server_factory.cpp
+    )
+endif()
 
 target_include_directories(modian_inkstone_ipc_server PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
