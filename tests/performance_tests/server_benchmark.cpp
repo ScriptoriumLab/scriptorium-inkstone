@@ -4,7 +4,6 @@
 
 #include "../../inkstone/server.h"
 #include "modian/core/logger/logger_service.h"
-#include "modian/logger/spdlog_logger.h"
 #include "include/modian/tests/utils/test_input_protocol_pipe_client.h"
 #include "include/modian/tests/utils/test_ui_protocol_pipe_client.h"
 #include "modian/core/engine/pinyin_engine.h"
