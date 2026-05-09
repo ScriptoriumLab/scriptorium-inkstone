@@ -4,7 +4,7 @@
 #include <windows.h>
 #endif
 
-#include "modian/infra/utils/utils.h"
+#include "modian/common/infra/utils/string_utils.h"
 #include "modian/core/engine/pinyin_engine.h"
 #include "logger_guard.h"
 #include "modian/logger/spdlog_logger.h"
@@ -19,7 +19,7 @@ int main() {
 
     try {
         modian::inkstone::server inkstone_server{
-            modian::inkstone::core::lazy_load_dictionary<modian::inkstone::core::pinyin_engine>(modian::inkstone::infra::utils::get_dict_path())
+            modian::inkstone::core::lazy_load_dictionary<modian::inkstone::core::pinyin_engine>(modian::common::infra::utils::get_dict_path())
         };
         inkstone_server.run();
     } catch (const std::exception& e) {

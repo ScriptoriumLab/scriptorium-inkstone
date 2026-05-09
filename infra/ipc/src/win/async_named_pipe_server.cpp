@@ -3,7 +3,7 @@
 #include <chrono>
 
 #include "modian/core/logger/logger_service.h"
-#include "modian/infra/utils/utils.h"
+#include "modian/common/infra/utils/string_utils.h"
 
 using namespace std::chrono_literals;
 
@@ -49,7 +49,7 @@ namespace modian::inkstone::infra::ipc {
             }
 
             HANDLE h = CreateNamedPipeW(
-                utils::utf8_to_wstring(pipe_name_).c_str(),
+                common::infra::utils::utf8_to_wstring(pipe_name_).c_str(),
                 PIPE_ACCESS_DUPLEX,
                 PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
                 1, 4096, 4096, 0, nullptr

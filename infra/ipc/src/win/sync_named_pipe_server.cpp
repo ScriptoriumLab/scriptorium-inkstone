@@ -5,7 +5,7 @@
 #include <chrono>
 
 #include "modian/core/logger/logger_service.h"
-#include "modian/infra/utils/utils.h"
+#include "modian/common/infra/utils/string_utils.h"
 
 using namespace std::chrono_literals;
 
@@ -24,7 +24,7 @@ namespace modian::inkstone::infra::ipc {
 		}
 
 		HANDLE h_pipe = CreateFileW(
-			utils::utf8_to_wstring(pipe_name_).c_str(),
+			common::infra::utils::utf8_to_wstring(pipe_name_).c_str(),
 			GENERIC_READ | GENERIC_WRITE,
 			0, nullptr, OPEN_EXISTING, 0, nullptr
 		);
@@ -48,7 +48,7 @@ namespace modian::inkstone::infra::ipc {
 	void sync_named_pipe_server::accept_loop(std::stop_token st) {
 		while (running_ && !st.stop_requested()) {
 			HANDLE pipe_handle = CreateNamedPipeW(
-			utils::utf8_to_wstring(pipe_name_).c_str(),
+			common::infra::utils::utf8_to_wstring(pipe_name_).c_str(),
 			PIPE_ACCESS_DUPLEX,
 			PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
 				PIPE_UNLIMITED_INSTANCES,
