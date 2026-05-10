@@ -9,12 +9,8 @@ namespace modian::inkstone::core::protocol::input::v1 {
 		COMMIT = 'C'
 	};
 
-	class instruction {
-	public:
-		instruction();
-		instruction(const message_type& type, std::string payload);
-
-		message_type type;
-		std::string payload;
+	struct instruction {
+		message_type type{message_type::NONE};
+		std::string payload{};
 	};
 }
