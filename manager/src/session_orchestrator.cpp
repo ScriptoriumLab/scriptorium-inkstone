@@ -4,7 +4,7 @@ namespace modian::inkstone::manager {
 	session_orchestrator::session_orchestrator(std::unique_ptr<candidate_manager> candidate_manager, std::unique_ptr<engine_manager> engine_manager)
 		: candidate_manager_{std::move(candidate_manager)}, engine_manager_{std::move(engine_manager)} {}
 
-    common::core::protocol::input::v1::instruction session_orchestrator::handle_key(const core::protocol::input::v1::key_event& key_event) {
+    common::core::protocol::input::v1::instruction session_orchestrator::handle_key(const common::core::protocol::input::v1::key_event& key_event) {
 		const std::string& key = key_event.content;
 
         if (key.empty()) return {common::core::protocol::input::v1::message_type::UPDATE, ""};
