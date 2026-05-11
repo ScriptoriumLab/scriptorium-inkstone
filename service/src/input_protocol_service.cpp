@@ -5,8 +5,8 @@ namespace modian::inkstone::service {
 		return core::protocol::input::v1::key_event{request};
 	}
 
-	std::string input_protocol_service::build_instruction_response(const core::protocol::input::v1::instruction& instruction) {
-		if (instruction.type == core::protocol::input::v1::message_type::NONE) return "";
+	std::string input_protocol_service::build_instruction_response(const common::core::protocol::input::v1::instruction& instruction) {
+		if (instruction.type == common::core::protocol::input::v1::message_type::NONE) return "";
 		if (instruction.payload.empty()) return "";
 
 		std::string draft_message;
