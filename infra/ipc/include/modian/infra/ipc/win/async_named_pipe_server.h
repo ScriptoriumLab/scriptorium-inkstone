@@ -6,10 +6,10 @@
 #include <mutex>
 #include <windows.h>
 
-#include "modian/infra/ipc/iasync_ipc_server.h"
+#include "modian/common/core/ipc/iasync_ipc_server.h"
 
 namespace modian::inkstone::infra::ipc {
-	class async_named_pipe_server : public iasync_ipc_server<std::string, std::string> {
+	class async_named_pipe_server : public common::core::ipc::iasync_ipc_server<std::string, std::string> {
 	public:
 		using message_handler_t = std::function<void(std::string)>;
 
