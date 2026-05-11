@@ -1,6 +1,6 @@
 #pragma once
 
-#include "modian/infra/ipc/isync_ipc_server.h"
+#include "modian/common/core/ipc/isync_ipc_server.h"
 #include "modian/orchistrator/session_orchestrator.h"
 
 namespace modian::inkstone {
@@ -14,7 +14,7 @@ namespace modian::inkstone {
 	private:
 		std::shared_ptr<manager::session_orchestrator> session_orchestrator_;
 
-		std::unique_ptr<infra::ipc::isync_ipc_server<std::string, std::string>> input_protocol_ipc_server_;
+		std::unique_ptr<common::core::ipc::isync_ipc_server<std::string, std::string>> input_protocol_ipc_server_;
 
 		std::mutex exit_mutex_;
 		std::condition_variable exit_cv_;

@@ -5,10 +5,10 @@
 #include <mutex>
 #include <thread>
 
-#include "modian/infra/ipc/isync_ipc_server.h"
+#include "modian/common/core/ipc/isync_ipc_server.h"
 
 namespace modian::inkstone::infra::ipc {
-	class sync_named_pipe_server : public isync_ipc_server<std::string, std::string> {
+	class sync_named_pipe_server : public common::core::ipc::isync_ipc_server<std::string, std::string> {
 	public:
 		explicit sync_named_pipe_server(std::string_view pipe_name);
 		sync_named_pipe_server(const sync_named_pipe_server&) = delete;
