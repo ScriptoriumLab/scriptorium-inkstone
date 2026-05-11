@@ -43,7 +43,7 @@ namespace modian::inkstone {
 		ui_protocol_ipc_server->set_message_handler([this](std::string msg) {
 			auto action = service::ui_protocol_service::parse_user_action_response(msg);
 
-			if (action.type == core::protocol::ui::v1::action_type::SELECT_CANDIDATE) {
+			if (action.type == common::core::protocol::ui::v1::action_type::SELECT_CANDIDATE) {
 				size_t index = action.payload;
 
 				core::logger_service::logger()->info("UI Selected Candidate: {}", index);

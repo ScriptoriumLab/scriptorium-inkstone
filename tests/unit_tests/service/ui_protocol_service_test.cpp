@@ -16,6 +16,6 @@ TEST(ui_protocol_service_test, should_successfully_parse_select_candidate_action
 	const std::string response = R"({"type":"SelectCandidate","payload":2})";
 	const auto action = modian::inkstone::service::ui_protocol_service::parse_user_action_response(response);
 
-	ASSERT_EQ(action.type, modian::inkstone::core::protocol::ui::v1::action_type::SELECT_CANDIDATE);
+	ASSERT_EQ(action.type, modian::common::core::protocol::ui::v1::action_type::SELECT_CANDIDATE);
 	ASSERT_EQ(action.payload, 2);
 }
