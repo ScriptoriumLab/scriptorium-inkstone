@@ -8,7 +8,6 @@ target_link_libraries(modian_inkstone_server PUBLIC
     modian::inkstone::manager
     modian::inkstone::ipc_server
     modian::inkstone::logger
-    modian::inkstone::service
     modian::inkstone::core
 )
 

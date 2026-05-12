@@ -8,7 +8,7 @@
 #include "modian/infra/ipc/ipc_server_factory.h"
 
 #include "modian/common/service/protocol/input_protocol_service.h"
-#include "modian/service/ui_protocol_service.h"
+#include "modian/common/service/protocol/ui_protocol_service.h"
 
 namespace modian::inkstone {
 	const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
@@ -28,7 +28,7 @@ namespace modian::inkstone {
 			int page_index = 0;
 			int total_pages = 1;
 
-			std::string render_state = service::ui_protocol_service::build_render_state_request(
+			std::string render_state = common::service::ui_protocol_service::build_render_state_request(
 				visible, x, y, candidates, highlight_index, page_index, total_pages
 			);
 
@@ -43,7 +43,7 @@ namespace modian::inkstone {
 		input_protocol_ipc_server_ = infra::ipc::ipc_server_factory::create_sync_ipc_server(INPUT_PROTOCOL_PIPE_NAME);
 		auto ui_protocol_ipc_server = infra::ipc::ipc_server_factory::create_async_ipc_server(UI_PROTOCOL_PIPE_NAME);
 		ui_protocol_ipc_server->set_message_handler([this](std::string msg) {
-			auto action = service::ui_protocol_service::parse_user_action_response(msg);
+			auto action = common::service::ui_protocol_service::parse_user_action_response(msg);
 
 			if (action.type == common::core::protocol::ui::v1::action_type::SELECT_CANDIDATE) {
 				size_t index = action.payload;
