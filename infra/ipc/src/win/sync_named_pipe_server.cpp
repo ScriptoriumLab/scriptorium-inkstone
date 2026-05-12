@@ -4,7 +4,7 @@
 #include <utility>
 #include <chrono>
 
-#include "modian/core/logger/logger_service.h"
+#include "modian/common/core/logger/logger_service.h"
 #include "modian/common/infra/utils/string_utils.h"
 
 using namespace std::chrono_literals;
@@ -59,7 +59,7 @@ namespace modian::inkstone::infra::ipc {
 			);
 
 			if (pipe_handle == INVALID_HANDLE_VALUE) {
-				core::logger_service::logger()->error("[infra] CreateNamedPipe failed. Error: {}", GetLastError());
+                common::core::logger_service::logger()->error("[infra] CreateNamedPipe failed. Error: {}", GetLastError());
 				std::this_thread::sleep_for(100ms);
 				continue;
 			}
@@ -68,7 +68,7 @@ namespace modian::inkstone::infra::ipc {
 							 ? true : (GetLastError() == ERROR_PIPE_CONNECTED);
 
 			if (connected) {
-				core::logger_service::logger()->info("Brush connected! Ready to grind ink.");
+                common::core::logger_service::logger()->info("Brush connected! Ready to grind ink.");
 
 				if (!running_) {
 					CloseHandle(pipe_handle);
@@ -82,11 +82,11 @@ namespace modian::inkstone::infra::ipc {
 					}
 				);
 			} else {
-				core::logger_service::logger()->info("[Infra] Connection failed.");
+                common::core::logger_service::logger()->info("[Infra] Connection failed.");
 				CloseHandle(pipe_handle);
 			}
 		}
-		core::logger_service::logger()->info("[Infra] Server loop exited.");
+        common::core::logger_service::logger()->info("[Infra] Server loop exited.");
 	}
 
 	void sync_named_pipe_server::handle_session(void* raw_handle, std::stop_token st) const {
@@ -121,7 +121,7 @@ namespace modian::inkstone::infra::ipc {
 			);
 		}
 
-		core::logger_service::logger()->info("[Infra] Session ended (Client disconnected).");
+        common::core::logger_service::logger()->info("[Infra] Session ended (Client disconnected).");
 		FlushFileBuffers(pipe_handle);
 		DisconnectNamedPipe(pipe_handle);
 		CloseHandle(pipe_handle);

@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "../../inkstone/server.h"
-#include "modian/core/logger/logger_service.h"
+#include "modian/common/core/logger/logger_service.h"
 #include "include/modian/tests/utils/test_input_protocol_pipe_client.h"
 #include "include/modian/tests/utils/test_ui_protocol_pipe_client.h"
 #include "modian/core/engine/pinyin_engine.h"
@@ -11,10 +11,10 @@
 using namespace modian::inkstone;
 
 namespace modian::tests::performance_tests {
-    class mock_logger : public core::base_logger {
+    class mock_logger : public common::core::base_logger {
     public:
         ~mock_logger() override = default;
-        void sink_it(core::log_level level, std::string_view msg) override {}
+        void sink_it(common::core::log_level level, std::string_view msg) override {}
         [[nodiscard]] std::string_view type() const override { return "mock_logger"; }
     };
 }
@@ -31,7 +31,7 @@ public:
 
     void SetUp(const ::benchmark::State& state) override {
         if (!server_instance) {
-            core::logger_service::update_logger([]{
+            modian::common::core::logger_service::update_logger([]{
                 return std::make_shared<modian::tests::performance_tests::mock_logger>();
             });
 

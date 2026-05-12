@@ -3,20 +3,20 @@
 #include <fstream>
 #include <sstream>
 
-#include "modian/core/logger/logger_service.h"
+#include "modian/common/core/logger/logger_service.h"
 
 namespace modian::inkstone::core {
 	pinyin_engine::pinyin_engine(const std::string& dictionary_path) {
 		try {
 			load_dictionary(dictionary_path);
 		} catch (const std::exception& e) {
-			logger_service::logger()->error(e.what());
+            common::core::logger_service::logger()->error(e.what());
 		}
 	}
 
 	void pinyin_engine::update_input_state(const char c) {
 		input_buffer_ += c;
-		logger_service::logger()->debug("input buffer is: {}", input_buffer_);
+        common::core::logger_service::logger()->debug("input buffer is: {}", input_buffer_);
 	}
 
 	void pinyin_engine::handle_backspace() {
@@ -64,6 +64,6 @@ namespace modian::inkstone::core {
 			}
 		}
 
-		logger_service::logger()->info("Dictionary loaded. Words count: {}", dictionary_.size());
+        common::core::logger_service::logger()->info("Dictionary loaded. Words count: {}", dictionary_.size());
 	}
 }

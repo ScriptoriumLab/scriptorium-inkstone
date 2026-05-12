@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "modian/core/logger/logger_service.h"
+#include "modian/common/core/logger/logger_service.h"
 
 namespace modian::inkstone::manager {
 
@@ -20,14 +20,14 @@ namespace modian::inkstone::manager {
           const auto first_candidate = count > 0 ? candidates_[0] : "";
           read_lock.unlock(); // 读完解锁
 
-          core::logger_service::logger()->info("Updated candidates: count={}, first='{}'",
+          common::core::logger_service::logger()->info("Updated candidates: count={}, first='{}'",
                 count,
                 first_candidate);
 
           notify_observers();
           return true;
        } else {
-          core::logger_service::logger()->info("No candidates found.");
+           common::core::logger_service::logger()->info("No candidates found.");
           notify_observers();
           return false;
        }
@@ -40,7 +40,7 @@ namespace modian::inkstone::manager {
           highlight_index_ = highlight_index;
        }
 
-       core::logger_service::logger()->info("UI Update: count={}, hl={}", candidates.size(), highlight_index);
+       common::core::logger_service::logger()->info("UI Update: count={}, hl={}", candidates.size(), highlight_index);
        notify_observers();
    }
 
@@ -54,7 +54,7 @@ namespace modian::inkstone::manager {
 
        if (std::ranges::find(observers_, observer) == observers_.end()) {
           observers_.push_back(std::move(observer));
-          core::logger_service::logger()->debug("Observer added. Total: {}", observers_.size());
+          common::core::logger_service::logger()->debug("Observer added. Total: {}", observers_.size());
        }
     }
 
@@ -65,7 +65,7 @@ namespace modian::inkstone::manager {
        std::erase(observers_, observer);
 
        if (observers_.size() < old_size) {
-           core::logger_service::logger()->debug("Observer removed. Remaining: {}", observers_.size());
+           common::core::logger_service::logger()->debug("Observer removed. Remaining: {}", observers_.size());
        }
     }
 

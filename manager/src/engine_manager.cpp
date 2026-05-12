@@ -1,5 +1,6 @@
 #include "modian/manager/engine_manager.h"
-#include "modian/core/logger/logger_service.h"
+
+#include "modian/common/core/logger/logger_service.h"
 
 namespace modian::inkstone::manager {
     void engine_manager::add_new_engine(const EngineDetail& engine_detail) {
@@ -14,7 +15,7 @@ namespace modian::inkstone::manager {
         auto it = engine_factories_.find(engine_name);
         if (it != engine_factories_.end()) {
             current_engine_ = it->second();
-            core::logger_service::logger()->info("Switched to engine: {}", engine_name);
+            common::core::logger_service::logger()->info("Switched to engine: {}", engine_name);
             reset();
             return true;
         }

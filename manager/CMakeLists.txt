@@ -9,6 +9,7 @@ target_link_libraries(
     PRIVATE
     modian::common::core::observer
     modian::common::core::protocol
+    modian::common::core::logger
     modian::inkstone::core
 )
 

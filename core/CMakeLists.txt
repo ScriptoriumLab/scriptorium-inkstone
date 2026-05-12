@@ -1,7 +1,10 @@
 add_library(modian_inkstone_core STATIC
     src/engine/pinyin_engine.cpp
     src/logger/console_logger.cpp
-    src/logger/logger_service.cpp
+)
+
+target_link_libraries(modian_inkstone_core PRIVATE
+    modian::common::core::logger
 )
 
 target_include_directories(modian_inkstone_core PUBLIC

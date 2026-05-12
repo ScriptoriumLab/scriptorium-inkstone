@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include "modian/core/logger/logger_service.h"
+#include "modian/common/core/logger/logger_service.h"
 #include "modian/common/infra/utils/string_utils.h"
 
 using namespace std::chrono_literals;
@@ -34,7 +34,7 @@ namespace modian::inkstone::infra::ipc {
         const BOOL success = WriteFile(h, payload.data(), static_cast<DWORD>(payload.size()), &written, nullptr);
 
         if (!success) {
-            core::logger_service::logger()->info("[UI-Pipe] Write failed, client disconnected.");
+            common::core::logger_service::logger()->info("[UI-Pipe] Write failed, client disconnected.");
             DisconnectNamedPipe(h);
             CloseHandle(h);
             pipe_handle_.store(INVALID_HANDLE_VALUE);
@@ -60,12 +60,12 @@ namespace modian::inkstone::infra::ipc {
                 continue;
             }
 
-            core::logger_service::logger()->info("[UI-Pipe] Waiting for Ink UI...");
+            common::core::logger_service::logger()->info("[UI-Pipe] Waiting for Ink UI...");
 
             const bool connected = ConnectNamedPipe(h, nullptr) ? true : (GetLastError() == ERROR_PIPE_CONNECTED);
 
             if (connected && !st.stop_requested()) {
-                core::logger_service::logger()->info("[UI-Pipe] UI Connected!");
+                common::core::logger_service::logger()->info("[UI-Pipe] UI Connected!");
                 pipe_handle_.store(h);
 
                 read_loop(h, st);
@@ -93,7 +93,7 @@ namespace modian::inkstone::infra::ipc {
             );
 
             if (!peek_success) {
-                core::logger_service::logger()->info("[UI-Pipe] Peek failed (Client disconnected?)");
+                common::core::logger_service::logger()->info("[UI-Pipe] Peek failed (Client disconnected?)");
                 break;
             }
 
