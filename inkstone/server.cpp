@@ -6,7 +6,8 @@
 #include "modian/common/core/observer/icandidate_observer.h"
 #include "modian/core/logger/logger_service.h"
 #include "modian/infra/ipc/ipc_server_factory.h"
-#include "modian/service/input_protocol_service.h"
+
+#include "modian/common/service/protocol/input_protocol_service.h"
 #include "modian/service/ui_protocol_service.h"
 
 namespace modian::inkstone {
@@ -71,7 +72,7 @@ namespace modian::inkstone {
 
 	void server::run() {
 		input_protocol_ipc_server_->run([this](const std::string& request) {
-			const auto key_event = service::input_protocol_service::parse_key_event_request(request);
+			const auto key_event = common::service::input_protocol_service::parse_key_event_request(request);
 
 			if (key_event.content == "cmd:shutdown") {
 			   this->signal_stop();
@@ -80,7 +81,7 @@ namespace modian::inkstone {
 
 			const auto instruction = session_orchestrator_->handle_key(key_event);
 
-			return service::input_protocol_service::build_instruction_response(instruction);
+			return common::service::input_protocol_service::build_instruction_response(instruction);
 		});
 
 		core::logger_service::logger()->info("Inkstone Server (Headless) running...");

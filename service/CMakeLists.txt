@@ -7,7 +7,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json)
 
 add_library(modian_inkstone_service STATIC
-    src/input_protocol_service.cpp
     src/ui_protocol_service.cpp
 )
 
