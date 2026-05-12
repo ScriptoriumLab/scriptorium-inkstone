@@ -23,8 +23,8 @@ int main() {
         };
         inkstone_server.run();
     } catch (const std::exception& e) {
-        if (modian::inkstone::core::logger_service::logger()) {
-            modian::inkstone::core::logger_service::logger()->error("Fatal Error: {}", e.what());
+        if (modian::common::core::logger_service::logger()) {
+            modian::common::core::logger_service::logger()->error("Fatal Error: {}", e.what());
         } else {
             std::cerr << "Fatal Error (Logger failed): " << e.what() << std::endl;
         }
