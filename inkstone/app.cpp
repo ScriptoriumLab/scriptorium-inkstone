@@ -7,7 +7,7 @@
 #include "modian/common/infra/utils/string_utils.h"
 #include "modian/core/engine/pinyin_engine.h"
 #include "logger_guard.h"
-#include "modian/logger/spdlog_logger.h"
+#include "modian/common/infra/logger/spdlog_logger.h"
 #include "server.h"
 
 int main() {
@@ -15,7 +15,7 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 #endif
-    logger_guard<modian::inkstone::infra::logger::spdlog_logger> log_guard{};
+    logger_guard<modian::common::infra::logger::spdlog_logger> log_guard{};
 
     try {
         modian::inkstone::server inkstone_server{

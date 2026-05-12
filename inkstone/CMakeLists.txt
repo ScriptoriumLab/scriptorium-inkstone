@@ -5,9 +5,9 @@ target_link_libraries(modian_inkstone_server PUBLIC
     modian::common::core::observer
     modian::common::service::protocol
     modian::common::infra::utils
+    modian::common::infra::logger
     modian::inkstone::manager
     modian::inkstone::ipc_server
-    modian::inkstone::logger
     modian::inkstone::core
 )
 

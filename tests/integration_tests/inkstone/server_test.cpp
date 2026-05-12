@@ -6,8 +6,8 @@
 #include "modian/core/engine/input_engine.h"
 #include "modian/core/engine/pinyin_engine.h"
 
-#include "modian/core/logger/logger_service.h"
-#include "modian/logger/spdlog_logger.h"
+#include "modian/common/core/logger/logger_service.h"
+#include "modian/common/infra/logger/spdlog_logger.h"
 #include "../../inkstone/server.h"
 
 #include "include/modian/tests/utils/test_input_protocol_pipe_client.h"
@@ -18,8 +18,8 @@ using namespace std::chrono_literals;
 class server_integration_tests : public ::testing::Test {
 protected:
 	static void SetUpTestSuite() {
-		modian::inkstone::core::logger_service::update_logger([](){
-			return std::make_shared<modian::inkstone::infra::logger::spdlog_logger>();
+		modian::common::core::logger_service::update_logger([](){
+			return std::make_shared<modian::common::infra::logger::spdlog_logger>();
 		});
 	}
 
@@ -37,7 +37,7 @@ protected:
 	}
 
 	void TearDown() override {
-		modian::inkstone::core::logger_service::shutdown();
+		modian::common::core::logger_service::shutdown();
 
 		if (server_instance_) {
 			server_instance_->signal_stop();

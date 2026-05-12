@@ -17,9 +17,9 @@ add_executable(
 target_link_libraries(
     modian_inkstone_performance_tests PRIVATE
     benchmark::benchmark
+    modian::common::infra::logger
     modian::inkstone::server
     modian::inkstone::core
-    modian::inkstone::logger
     modian::inkstone::test_utils
 )
 
