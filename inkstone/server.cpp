@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 
+#include "modian/common/core/observer/icandidate_observer.h"
 #include "modian/core/logger/logger_service.h"
 #include "modian/infra/ipc/ipc_server_factory.h"
 #include "modian/service/input_protocol_service.h"
@@ -12,12 +13,12 @@ namespace modian::inkstone {
 	const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
 	const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_ui_protocol_pipe)";
 
-	class ui_bridge : public core::candidate_observer {
+	class ui_bridge : public common::core::icandidate_observer {
 	public:
 		explicit ui_bridge(std::unique_ptr<common::core::ipc::iasync_ipc_server<std::string, std::string>> pipe)
 			: async_server_(std::move(pipe)) {}
 
-		void on_candidate_update(const std::vector<std::string>& candidates, const size_t& highlight_index) override {
+		void on_candidate_update(const std::vector<std::string>& candidates, size_t highlight_index) override {
 			if (!async_server_) return;
 
 			bool visible = !candidates.empty();

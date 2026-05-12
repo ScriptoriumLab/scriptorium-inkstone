@@ -49,7 +49,7 @@ namespace modian::inkstone::manager {
         return candidates_;
     }
 
-    void candidate_manager::add_observer(std::shared_ptr<core::candidate_observer> observer) {
+    void candidate_manager::add_observer(std::shared_ptr<common::core::icandidate_observer> observer) {
        std::unique_lock lock(mutex_);
 
        if (std::ranges::find(observers_, observer) == observers_.end()) {
@@ -58,7 +58,7 @@ namespace modian::inkstone::manager {
        }
     }
 
-    void candidate_manager::remove_observer(const std::shared_ptr<core::candidate_observer>& observer) {
+    void candidate_manager::remove_observer(const std::shared_ptr<common::core::icandidate_observer>& observer) {
        std::unique_lock lock(mutex_);
 
        const auto old_size = observers_.size();
@@ -70,7 +70,7 @@ namespace modian::inkstone::manager {
     }
 
    void candidate_manager::notify_observers() const {
-      std::vector<std::shared_ptr<core::candidate_observer>> observers_copy;
+      std::vector<std::shared_ptr<common::core::icandidate_observer>> observers_copy;
       {
          std::shared_lock lock(mutex_);
          observers_copy = observers_;

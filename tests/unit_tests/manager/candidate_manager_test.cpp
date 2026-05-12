@@ -3,15 +3,13 @@
 
 #include "modian/manager/candidate_manager.h"
 
-using namespace modian::inkstone;
-
-class mock_observer : public core::candidate_observer {
+class mock_observer : public modian::common::core::icandidate_observer {
 public:
-	MOCK_METHOD(void, on_candidate_update, (const std::vector<std::string>&, const size_t&), (override));
+	MOCK_METHOD(void, on_candidate_update, (const std::vector<std::string>&, size_t), (override));
 };
 
 TEST(candidate_manager_test, ShouldNotifyObserverOnUpdate) {
-	const auto manager = std::make_shared<manager::candidate_manager>();
+	const auto manager = std::make_shared<modian::inkstone::manager::candidate_manager>();
 	const auto observer = std::make_shared<mock_observer>();
 
 	manager->add_observer(observer);
@@ -22,16 +20,16 @@ TEST(candidate_manager_test, ShouldNotifyObserverOnUpdate) {
 	manager->update_candidates({"ni", "hao"});
 }
 
-class suicidal_observer : public core::candidate_observer, public std::enable_shared_from_this<suicidal_observer> {
+class suicidal_observer : public modian::common::core::icandidate_observer, public std::enable_shared_from_this<suicidal_observer> {
 public:
-	std::weak_ptr<manager::candidate_manager> manager_weak_;
+	std::weak_ptr<modian::inkstone::manager::candidate_manager> manager_weak_;
 	int call_count_ = 0;
 
-	void set_manager(const std::shared_ptr<manager::candidate_manager>& mgr) {
+	void set_manager(const std::shared_ptr<modian::inkstone::manager::candidate_manager>& mgr) {
 		manager_weak_ = mgr;
 	}
 
-	void on_candidate_update(const std::vector<std::string>& candidates, const size_t&) override {
+	void on_candidate_update(const std::vector<std::string>& candidates, size_t) override {
 		call_count_++;
 
 		if (auto mgr = manager_weak_.lock()) {
@@ -41,7 +39,7 @@ public:
 };
 
 TEST(candidate_manager_test, ShouldNotCrashWhenObserverRemovesItself) {
-	auto manager = std::make_shared<manager::candidate_manager>();
+	auto manager = std::make_shared<modian::inkstone::manager::candidate_manager>();
 	auto suicide_observer = std::make_shared<suicidal_observer>();
 
 	suicide_observer->set_manager(manager);

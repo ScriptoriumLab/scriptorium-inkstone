@@ -7,8 +7,9 @@ add_executable(modian_inkstone_unit_tests
 )
 
 target_link_libraries(modian_inkstone_unit_tests PRIVATE
-    modian::common::infra::utils
+    modian::common::core::observer
     modian::common::core::protocol
+    modian::common::infra::utils
     modian::inkstone::core
     modian::inkstone::service
     modian::inkstone::manager
