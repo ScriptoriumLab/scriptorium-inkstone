@@ -1,4 +1,4 @@
-#include "modian/orchistrator/session_orchestrator.h"
+#include "modian/orchestrator/session_orchestrator.h"
 
 namespace modian::inkstone::manager {
 	session_orchestrator::session_orchestrator(std::unique_ptr<candidate_manager> candidate_manager, std::unique_ptr<engine_manager> engine_manager)

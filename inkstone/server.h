@@ -1,7 +1,7 @@
 #pragma once
 
 #include "modian/common/core/ipc/isync_ipc_server.h"
-#include "modian/orchistrator/session_orchestrator.h"
+#include "modian/orchestrator/session_orchestrator.h"
 
 namespace modian::inkstone {
 	class server {
