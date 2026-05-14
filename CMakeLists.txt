@@ -17,7 +17,6 @@ include(CTest)
 
 add_subdirectory(core)
 add_subdirectory(manager)
-add_subdirectory(infra)
 add_subdirectory(inkstone)
 
 if (BUILD_TESTING)

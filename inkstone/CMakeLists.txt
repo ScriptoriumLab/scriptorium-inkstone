@@ -1,13 +1,12 @@
 add_library(modian_inkstone_server server.cpp)
 
 target_link_libraries(modian_inkstone_server PUBLIC
-    modian::common::core::ipc
     modian::common::core::observer
     modian::common::service::protocol
     modian::common::infra::utils
     modian::common::infra::logger
+    modian::common::infra::ipc
     modian::inkstone::manager
-    modian::inkstone::ipc_server
     modian::inkstone::core
 )
 
