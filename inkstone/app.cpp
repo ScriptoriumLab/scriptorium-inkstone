@@ -15,7 +15,7 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 #endif
-    modian::inkstone::logger_guard<modian::common::infra::logger::spdlog_logger> log_guard{};
+    modian::inkstone::logger_guard<modian::common::infra::logger::spdlog_logger> log_guard{"inkstone"};
 
     try {
         modian::inkstone::server inkstone_server{

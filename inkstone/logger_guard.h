@@ -5,9 +5,11 @@
 namespace modian::inkstone {
     template<typename logger>
     struct logger_guard {
-        logger_guard() {
-            common::core::logger_service::update_logger([](){
-                return std::make_shared<logger>();
+        template<typename... Args>
+        logger_guard(Args&&... args) {
+            auto instance = std::make_shared<logger>(std::forward<Args>(args)...);
+            common::core::logger_service::update_logger([instance](){
+                return instance;
             });
         }
 

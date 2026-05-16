@@ -19,7 +19,7 @@ class server_integration_tests : public ::testing::Test {
 protected:
 	static void SetUpTestSuite() {
 		modian::common::core::logger_service::update_logger([](){
-			return std::make_shared<modian::common::infra::logger::spdlog_logger>();
+			return std::make_shared<modian::common::infra::logger::spdlog_logger>("inkstone");
 		});
 	}
 
