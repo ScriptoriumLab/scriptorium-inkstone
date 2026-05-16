@@ -2,6 +2,7 @@ add_library(modian_inkstone_server server.cpp)
 
 target_link_libraries(modian_inkstone_server PUBLIC
     modian::common::core::observer
+    modian::common::core::logger
     modian::common::service::protocol
     modian::common::infra::utils
     modian::common::infra::logger

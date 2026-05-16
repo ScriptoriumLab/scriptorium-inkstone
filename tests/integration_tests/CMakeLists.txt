@@ -4,6 +4,7 @@ add_executable(modian_inkstone_integration_tests
 )
 
 target_link_libraries(modian_inkstone_integration_tests
+    modian::common::core::logger
     modian::common::infra::logger
     modian::inkstone::core
     modian::inkstone::server
