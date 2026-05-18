@@ -16,6 +16,19 @@ namespace modian::inkstone::core {
         curr->candidates.push_back(std::move(candidate));
     }
 
+    void dictionary::get_candidates(const trie_node* node, std::vector<std::string>& candidates) const {
+        if (node == nullptr || candidates.size() == MAX_CANDIDATES) return;
+
+        for (const auto& candidate : node->candidates) {
+            if (candidates.size() == MAX_CANDIDATES) break;
+            candidates.push_back(candidate);
+        }
+
+        for (const auto& sub : node->sub_node) {
+            get_candidates(sub.get(), candidates);
+        }
+    }
+
     std::vector<std::string> dictionary::lookup(const std::string& input) const {
         auto curr = &data_;
         for (const auto& c : input) {
@@ -30,6 +43,10 @@ namespace modian::inkstone::core {
             }
         }
 
-        return curr->candidates;
+        std::vector<std::string> candidates;
+        candidates.reserve(MAX_CANDIDATES);
+        get_candidates(curr, candidates);
+
+        return candidates;
     }
 }

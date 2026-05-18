@@ -16,6 +16,9 @@ namespace modian::inkstone::core {
             std::array<std::unique_ptr<trie_node>, 26> sub_node;
         };
 
+        void get_candidates(const trie_node* node, std::vector<std::string>& candidates) const;
+
+        const int MAX_CANDIDATES{50};
 		trie_node data_;
     };
 }
