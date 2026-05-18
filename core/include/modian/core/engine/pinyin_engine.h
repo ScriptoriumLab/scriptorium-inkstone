@@ -1,8 +1,8 @@
 #pragma once
 
 #include "modian/core/engine/input_engine.h"
+#include "modian/core/dictionary/dictionary.h"
 
-#include <unordered_map>
 #include <vector>
 
 namespace modian::inkstone::core {
@@ -21,6 +21,6 @@ namespace modian::inkstone::core {
 	private:
 		void load_dictionary(const std::string& path);
 		std::string input_buffer_;
-		std::unordered_map<std::string, std::vector<std::string>> dictionary_;
+		dictionary dictionary_;
 	};
 }

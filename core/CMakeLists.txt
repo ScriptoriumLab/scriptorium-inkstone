@@ -1,4 +1,5 @@
 add_library(modian_inkstone_core STATIC
+    src/dictionary/dictionary.cpp
     src/engine/pinyin_engine.cpp
 )
 

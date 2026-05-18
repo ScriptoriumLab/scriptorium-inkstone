@@ -34,10 +34,7 @@ namespace modian::inkstone::core {
 			return {};
 		}
 
-		if (const auto it = dictionary_.find(input_buffer_); it != dictionary_.end()) {
-			return it->second;
-		}
-		return {};
+        return dictionary_.lookup(input_buffer_);
 	}
 
 	[[nodiscard]] std::string pinyin_engine::get_raw_input() const {
@@ -57,13 +54,10 @@ namespace modian::inkstone::core {
 			std::istringstream iss(line);
 			if (std::string pinyin; iss >> pinyin) {
 				std::string word;
-				auto& words = dictionary_[pinyin];
 				while (iss >> word) {
-					words.emplace_back(std::move(word));
+                    dictionary_.build(pinyin, word);
 				}
 			}
 		}
-
-        common::core::logger_service::logger()->info("Dictionary loaded. Words count: {}", dictionary_.size());
 	}
 }
