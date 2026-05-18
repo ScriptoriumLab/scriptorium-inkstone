@@ -1,6 +1,8 @@
 #pragma once
 
-#include <unordered_map>
+#include <array>
+#include <vector>
+#include <memory>
 #include<string>
 
 namespace modian::inkstone::core {
@@ -9,6 +11,11 @@ namespace modian::inkstone::core {
         void build(const std::string& pinyin, std::string candidate);
         [[nodiscard]] std::vector<std::string> lookup(const std::string& input) const;
     private:
-		std::unordered_map<std::string, std::vector<std::string>> data_;
+        struct trie_node {
+            std::vector<std::string> candidates;
+            std::array<std::unique_ptr<trie_node>, 26> sub_node;
+        };
+
+		trie_node data_;
     };
 }
