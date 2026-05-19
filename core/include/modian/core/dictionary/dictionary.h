@@ -6,6 +6,12 @@
 #include<string>
 
 namespace modian::inkstone::core {
+    struct dictionary_entry {
+        std::string spelling;
+        std::string word;
+        int weight;
+    };
+
     class dictionary {
     public:
         void build(const std::string& spelling, std::string candidate);
