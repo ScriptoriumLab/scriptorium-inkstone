@@ -1,9 +1,9 @@
 #include "modian/core/dictionary/dictionary.h"
 
 namespace modian::inkstone::core {
-    void dictionary::build(const std::string& pinyin, std::string candidate) {
+    void dictionary::build(const std::string& spelling, std::string candidate) {
         auto curr = &data_;
-        for (const auto& c : pinyin) {
+        for (const auto& c : spelling) {
             if (c < 'a' || c > 'z') {
                 continue;
             }
@@ -29,9 +29,9 @@ namespace modian::inkstone::core {
         }
     }
 
-    std::vector<std::string> dictionary::lookup(const std::string& input) const {
+    std::vector<std::string> dictionary::lookup(const std::string& spelling) const {
         auto curr = &data_;
-        for (const auto& c : input) {
+        for (const auto& c : spelling) {
             if (c < 'a' || c > 'z') {
                 continue;
             }

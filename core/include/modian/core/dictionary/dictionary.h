@@ -8,8 +8,8 @@
 namespace modian::inkstone::core {
     class dictionary {
     public:
-        void build(const std::string& pinyin, std::string candidate);
-        [[nodiscard]] std::vector<std::string> lookup(const std::string& input) const;
+        void build(const std::string& spelling, std::string candidate);
+        [[nodiscard]] std::vector<std::string> lookup(const std::string& spelling) const;
     private:
         struct trie_node {
             std::vector<std::string> candidates;
