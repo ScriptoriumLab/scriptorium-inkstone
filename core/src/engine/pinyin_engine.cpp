@@ -52,11 +52,8 @@ namespace modian::inkstone::core {
 			if (line.empty()) continue;
 
 			std::istringstream iss(line);
-			if (std::string pinyin; iss >> pinyin) {
-				std::string word;
-				while (iss >> word) {
-                    dictionary_.build(pinyin, word);
-				}
+			if (dictionary_entry entry; iss >> entry) {
+                dictionary_.build(entry);
 			}
 		}
 	}

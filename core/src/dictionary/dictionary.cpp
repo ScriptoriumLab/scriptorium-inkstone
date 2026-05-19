@@ -1,9 +1,12 @@
 #include "modian/core/dictionary/dictionary.h"
 
+#include <algorithm>
+#include <ranges>
+
 namespace modian::inkstone::core {
-    void dictionary::build(const std::string& spelling, std::string candidate) {
+    void dictionary::build(const dictionary_entry& entry) {
         auto curr = &data_;
-        for (const auto& c : spelling) {
+        for (const auto& c : entry.spelling) {
             if (c < 'a' || c > 'z') {
                 continue;
             }
@@ -13,10 +16,10 @@ namespace modian::inkstone::core {
             }
             curr = curr->sub_node[idx].get();
         }
-        curr->candidates.push_back(std::move(candidate));
+        curr->candidates.push_back(entry);
     }
 
-    void dictionary::get_candidates(const trie_node* node, std::vector<std::string>& candidates) const {
+    void dictionary::get_candidates(const trie_node* node, std::vector<dictionary_entry>& candidates) const {
         if (node == nullptr || candidates.size() == MAX_CANDIDATES) return;
 
         for (const auto& candidate : node->candidates) {
@@ -43,10 +46,15 @@ namespace modian::inkstone::core {
             }
         }
 
-        std::vector<std::string> candidates;
+        std::vector<dictionary_entry> candidates;
         candidates.reserve(MAX_CANDIDATES);
         get_candidates(curr, candidates);
+        std::sort(candidates.begin(), candidates.end(), [](const auto& l, const auto& r){
+            return l.weight > r.weight;
+        });
 
-        return candidates;
+        return candidates
+            | std::views::transform([](const auto& entry) { return entry.word; })
+            | std::ranges::to<std::vector>();
     }
 }
