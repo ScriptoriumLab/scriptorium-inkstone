@@ -1,5 +1,6 @@
 add_executable(modian_inkstone_unit_tests
     test_main.cpp
+    core/dictionary/dictionary_test.cpp
     manager/candidate_manager_test.cpp
 )
 
