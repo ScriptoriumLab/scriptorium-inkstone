@@ -22,7 +22,7 @@ namespace modian::inkstone::core {
         std::vector<std::vector<int>> possible_path_dag(N, {});
         for (int l = 0; l < N; ++l) {
             for (int r = l + 1; r <= std::min(N, l + MAX_SPELLING_LEN); ++r) {
-                auto sub_str = raw_string.substr(l, r - l);
+                auto sub_str = std::string{raw_string.substr(l, r - l)};
                 if (syllabary.count(sub_str) > 0) {
                     possible_path_dag[l].push_back(r);
                 }
@@ -36,5 +36,9 @@ namespace modian::inkstone::core {
         }
 
         return tokens;
+    }
+
+    void tokenizer::add_syllabary(std::string spelling) {
+        syllabary.insert(std::move(spelling));
     }
 }

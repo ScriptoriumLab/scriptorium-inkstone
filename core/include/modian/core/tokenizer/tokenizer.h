@@ -8,12 +8,10 @@ namespace modian::inkstone::core {
     class tokenizer {
     public:
         std::vector<std::vector<std::string>> split(std::string_view raw_string);
+        void add_syllabary(std::string spelling);
 
     private:
         static constexpr int MAX_SPELLING_LEN{6};
-        std::unordered_set<std::string_view> syllabary{
-            "ni", "hao", "shi", "jie",
-            "fan", "gan", "fang", "an"
-        };
+        std::unordered_set<std::string> syllabary{};
     };
 }

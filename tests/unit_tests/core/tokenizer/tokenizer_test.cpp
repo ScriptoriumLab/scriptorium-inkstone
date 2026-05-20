@@ -4,6 +4,11 @@
 
 TEST(tokenizer_test, should_successfully_get_all_possible_spelling_when_input_is_a_raw_string) {
     modian::inkstone::core::tokenizer tokenizer{};
+    tokenizer.add_syllabary("fan");
+    tokenizer.add_syllabary("gan");
+    tokenizer.add_syllabary("fang");
+    tokenizer.add_syllabary("an");
+
     auto tokens = tokenizer.split("fangan");
 
     ASSERT_EQ(tokens.size(), 2);
@@ -16,6 +21,11 @@ TEST(tokenizer_test, should_successfully_get_all_possible_spelling_when_input_is
 
 TEST(tokenizer_test, should_successfully_get_only_one_possible_spelling_when_input_is_a_raw_string) {
     modian::inkstone::core::tokenizer tokenizer{};
+    tokenizer.add_syllabary("ni");
+    tokenizer.add_syllabary("hao");
+    tokenizer.add_syllabary("shi");
+    tokenizer.add_syllabary("jie");
+
     auto tokens = tokenizer.split("nihaoshijie");
 
     ASSERT_EQ(tokens.size(), 1);
