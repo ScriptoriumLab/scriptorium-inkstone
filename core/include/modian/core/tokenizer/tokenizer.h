@@ -7,7 +7,7 @@
 namespace modian::inkstone::core {
     class tokenizer {
     public:
-        std::vector<std::vector<std::string>> split(std::string_view raw_string);
+        std::vector<std::vector<std::string>> split(std::string_view raw_string) const;
         void add_syllabary(std::string spelling);
 
     private:

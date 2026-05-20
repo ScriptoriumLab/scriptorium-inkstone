@@ -1,6 +1,7 @@
 #pragma once
 
 #include "modian/core/engine/input_engine.h"
+#include "modian/core/tokenizer/tokenizer.h"
 #include "modian/core/dictionary/dictionary.h"
 
 #include <vector>
@@ -21,6 +22,7 @@ namespace modian::inkstone::core {
 	private:
 		void load_dictionary(const std::string& path);
 		std::string input_buffer_;
+        tokenizer tokenizer_;
 		dictionary dictionary_;
 	};
 }

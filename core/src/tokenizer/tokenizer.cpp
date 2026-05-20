@@ -16,7 +16,7 @@ namespace modian::inkstone::core {
         }
     }
 
-    std::vector<std::vector<std::string>> tokenizer::split(std::string_view raw_string) {
+    std::vector<std::vector<std::string>> tokenizer::split(std::string_view raw_string) const {
         const int N = raw_string.size();
 
         std::vector<std::vector<int>> possible_path_dag(N, {});

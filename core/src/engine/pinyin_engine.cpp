@@ -34,6 +34,7 @@ namespace modian::inkstone::core {
 			return {};
 		}
 
+        auto tokens = tokenizer_.split(input_buffer_);
         return dictionary_.lookup(input_buffer_);
 	}
 
@@ -54,6 +55,7 @@ namespace modian::inkstone::core {
 			std::istringstream iss(line);
 			if (dictionary_entry entry; iss >> entry) {
                 dictionary_.build(entry);
+                tokenizer_.add_syllabary(entry.spelling);
 			}
 		}
 	}
