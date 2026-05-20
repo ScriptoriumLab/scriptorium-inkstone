@@ -28,6 +28,7 @@ namespace modian::inkstone::core {
             std::array<std::unique_ptr<trie_node>, 26> sub_node;
         };
 
+        static constexpr auto cmp = [](const dictionary_entry& l, const dictionary_entry& r){ return  l.weight > r.weight; };
         void get_candidates(const trie_node* node, std::vector<dictionary_entry>& candidates) const;
 
         const int MAX_CANDIDATES{50};

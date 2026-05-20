@@ -20,11 +20,16 @@ namespace modian::inkstone::core {
     }
 
     void dictionary::get_candidates(const trie_node* node, std::vector<dictionary_entry>& candidates) const {
-        if (node == nullptr || candidates.size() == MAX_CANDIDATES) return;
+        if (node == nullptr) return;
 
         for (const auto& candidate : node->candidates) {
-            if (candidates.size() == MAX_CANDIDATES) break;
             candidates.push_back(candidate);
+            std::push_heap(candidates.begin(), candidates.end(), cmp);
+
+            if (candidates.size() > MAX_CANDIDATES) {
+                std::pop_heap(candidates.begin(), candidates.end(), cmp);
+                candidates.pop_back();
+            }
         }
 
         for (const auto& sub : node->sub_node) {
@@ -47,11 +52,9 @@ namespace modian::inkstone::core {
         }
 
         std::vector<dictionary_entry> candidates;
-        candidates.reserve(MAX_CANDIDATES);
+        candidates.reserve(MAX_CANDIDATES + 1);
         get_candidates(curr, candidates);
-        std::sort(candidates.begin(), candidates.end(), [](const auto& l, const auto& r){
-            return l.weight > r.weight;
-        });
+        std::sort_heap(candidates.begin(), candidates.end(), cmp);
 
         return candidates
             | std::views::transform([](const auto& entry) { return entry.word; })
