@@ -1,5 +1,6 @@
 add_executable(modian_inkstone_integration_tests
     test_main.cpp
+    core/engine/input_engine_test.cpp
     inkstone/server_test.cpp
 )
 
