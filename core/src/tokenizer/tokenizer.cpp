@@ -27,6 +27,9 @@ namespace modian::inkstone::core {
                     possible_path_dag[l].push_back(r);
                 }
             }
+            if (possible_path_dag[l].empty()) {
+                possible_path_dag[l].push_back(N);
+            }
         }
 
         std::vector<std::vector<std::string>> tokens;
