@@ -58,11 +58,11 @@ TEST_F(server_integration_tests, should_successfully_return_candidate_when_input
 	ASSERT_TRUE(ink_client.connect()) << "UI failed to connect";
 
 	const auto response_without_candidates = brush_client.send_and_receive("n");
-	EXPECT_THAT(response_without_candidates, testing::HasSubstr(R"({"payload":"n","type":"U"})"));
+	EXPECT_THAT(response_without_candidates, testing::HasSubstr(R"({"candidate_info":{"payload":"n"},"type":"U"})"));
 	ink_client.read_next_message();
 
 	const auto response_with_candidates = brush_client.send_and_receive("i");
-	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"payload":"ni","type":"U"})"));
+	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"candidate_info":{"payload":"ni"},"type":"U"})"));
 
 	const auto json_msg = ink_client.read_next_message();
 	EXPECT_THAT(json_msg, testing::HasSubstr("\"candidates\""));
@@ -87,13 +87,13 @@ TEST_F(server_integration_tests, should_successfully_handle_backspace_when_user_
 
 	const auto response_after_backspace = brush_client.send_and_receive("cmd:backspace");
 	ink_client.read_next_message();
-	EXPECT_THAT(response_after_backspace, testing::HasSubstr(R"({"payload":"di","type":"U"})"));
+	EXPECT_THAT(response_after_backspace, testing::HasSubstr(R"({"candidate_info":{"payload":"di"},"type":"U"})"));
 
 	brush_client.send_and_receive("a");
 	ink_client.read_next_message();
 
 	const auto response_with_candidates = brush_client.send_and_receive("n");
-	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"payload":"dian","type":"U"})"));
+	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"candidate_info":{"payload":"dian"},"type":"U"})"));
 
 	const auto json_msg = ink_client.read_next_message();
 	EXPECT_THAT(json_msg, testing::HasSubstr("\"candidates\""));
