@@ -1,4 +1,4 @@
-# Modian Inkstone
+# Scriptorium Inkstone
 
 [![Modian IME Inkstone CI](https://github.com/ModianIME/modian-inkstone/actions/workflows/modian-ime-inkstone-ci.yml/badge.svg)](https://github.com/ModianIME/modian-inkstone/actions/workflows/modian-ime-inkstone-ci.yml)
 
