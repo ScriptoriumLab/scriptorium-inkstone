@@ -1,14 +1,14 @@
 #pragma once
 
-#include "modian/common/core/logger/logger_service.h"
+#include "scriptorium/felt/core/logger/logger_service.h"
 
-namespace modian::inkstone {
+namespace scriptorium::inkstone {
     template<typename logger>
     struct logger_guard {
         template<typename... Args>
         logger_guard(Args&&... args) {
             auto instance = std::make_shared<logger>(std::forward<Args>(args)...);
-            common::core::logger_service::update_logger([instance](){
+            felt::core::logger_service::update_logger([instance](){
                 return instance;
             });
         }
@@ -19,7 +19,7 @@ namespace modian::inkstone {
         logger_guard operator=(logger_guard&&) = delete;
 
         ~logger_guard() {
-            common::core::logger_service::shutdown();
+            felt::core::logger_service::shutdown();
         }
     };
 }

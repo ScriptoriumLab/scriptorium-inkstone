@@ -1,13 +1,13 @@
 #include "gtest/gtest.h"
 
-#include "modian/core/dictionary/dictionary.h"
+#include "scriptorium/core/dictionary/dictionary.h"
 
 TEST(dictionary_test, should_return_top_candidates_by_using_weight_when_lookup_with_exact_spelling) {
-    modian::inkstone::core::dictionary_entry entry1{"ni", "你", 100};
-    modian::inkstone::core::dictionary_entry entry2{"ni", "泥", 50};
-    modian::inkstone::core::dictionary_entry entry3{"ni", "拟", 70};
+    scriptorium::inkstone::core::dictionary_entry entry1{"ni", "你", 100};
+    scriptorium::inkstone::core::dictionary_entry entry2{"ni", "泥", 50};
+    scriptorium::inkstone::core::dictionary_entry entry3{"ni", "拟", 70};
 
-    modian::inkstone::core::dictionary dict;
+    scriptorium::inkstone::core::dictionary dict;
     dict.build(entry1);
     dict.build(entry2);
     dict.build(entry3);
@@ -20,11 +20,11 @@ TEST(dictionary_test, should_return_top_candidates_by_using_weight_when_lookup_w
 }
 
 TEST(dictionary_test, should_return_top_mixed_candidates_with_different_weight_when_lookup_with_fuzzy_spelling) {
-    modian::inkstone::core::dictionary_entry entry1{"ni", "你", 100};
-    modian::inkstone::core::dictionary_entry entry2{"ni", "泥", 50};
-    modian::inkstone::core::dictionary_entry entry3{"nian", "年", 70};
+    scriptorium::inkstone::core::dictionary_entry entry1{"ni", "你", 100};
+    scriptorium::inkstone::core::dictionary_entry entry2{"ni", "泥", 50};
+    scriptorium::inkstone::core::dictionary_entry entry3{"nian", "年", 70};
 
-    modian::inkstone::core::dictionary dict;
+    scriptorium::inkstone::core::dictionary dict;
     dict.build(entry1);
     dict.build(entry2);
     dict.build(entry3);
@@ -37,7 +37,7 @@ TEST(dictionary_test, should_return_top_mixed_candidates_with_different_weight_w
 }
 
 TEST(dictionary_test, should_truncate_to_max_candidates_and_keep_highest_weights_when_exceeding_capacity) {
-    modian::inkstone::core::dictionary dict;
+    scriptorium::inkstone::core::dictionary dict;
 
     std::vector<std::string> characters{
         "你", "尼", "泥", "拟", "逆", "倪", "妮", "腻", "匿", "霓",
@@ -49,7 +49,7 @@ TEST(dictionary_test, should_truncate_to_max_candidates_and_keep_highest_weights
     };
 
     for (int i = 0; i < characters.size(); ++i) {
-        modian::inkstone::core::dictionary_entry entry{ "ni", characters[i], i + 1 };
+        scriptorium::inkstone::core::dictionary_entry entry{ "ni", characters[i], i + 1 };
         dict.build(entry);
     }
 

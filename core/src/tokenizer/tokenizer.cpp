@@ -1,6 +1,6 @@
-#include "modian/core/tokenizer/tokenizer.h"
+#include "scriptorium/core/tokenizer/tokenizer.h"
 
-namespace modian::inkstone::core {
+namespace scriptorium::inkstone::core {
     namespace {
         void dfs(std::string_view raw_string, const std::vector<std::vector<int>>& dag, int i, std::vector<std::string>& current_path, std::vector<std::vector<std::string>>& tokens) {
             if (i == raw_string.size()) {

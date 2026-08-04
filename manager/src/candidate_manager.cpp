@@ -1,10 +1,10 @@
-#include "modian/manager/candidate_manager.h"
+#include "scriptorium/manager/candidate_manager.h"
 
 #include <algorithm>
 
-#include "modian/common/core/logger/logger_service.h"
+#include "scriptorium/felt/core/logger/logger_service.h"
 
-namespace modian::inkstone::manager {
+namespace scriptorium::inkstone::manager {
 
     bool candidate_manager::update_candidates(std::vector<std::string> candidates) {
        std::unique_lock lock(mutex_);
@@ -20,14 +20,14 @@ namespace modian::inkstone::manager {
           const auto first_candidate = count > 0 ? candidates_[0] : "";
           read_lock.unlock(); // 读完解锁
 
-          common::core::logger_service::logger()->info("Updated candidates: count={}, first='{}'",
+          felt::core::logger_service::logger()->info("Updated candidates: count={}, first='{}'",
                 count,
                 first_candidate);
 
           notify_observers();
           return true;
        } else {
-           common::core::logger_service::logger()->info("No candidates found.");
+           felt::core::logger_service::logger()->info("No candidates found.");
           notify_observers();
           return false;
        }
@@ -40,7 +40,7 @@ namespace modian::inkstone::manager {
           highlight_index_ = highlight_index;
        }
 
-       common::core::logger_service::logger()->info("UI Update: count={}, hl={}", candidates.size(), highlight_index);
+       felt::core::logger_service::logger()->info("UI Update: count={}, hl={}", candidates.size(), highlight_index);
        notify_observers();
    }
 
@@ -49,28 +49,28 @@ namespace modian::inkstone::manager {
         return candidates_;
     }
 
-    void candidate_manager::add_observer(std::shared_ptr<common::core::icandidate_observer> observer) {
+    void candidate_manager::add_observer(std::shared_ptr<felt::core::icandidate_observer> observer) {
        std::unique_lock lock(mutex_);
 
        if (std::ranges::find(observers_, observer) == observers_.end()) {
           observers_.push_back(std::move(observer));
-          common::core::logger_service::logger()->debug("Observer added. Total: {}", observers_.size());
+          felt::core::logger_service::logger()->debug("Observer added. Total: {}", observers_.size());
        }
     }
 
-    void candidate_manager::remove_observer(const std::shared_ptr<common::core::icandidate_observer>& observer) {
+    void candidate_manager::remove_observer(const std::shared_ptr<felt::core::icandidate_observer>& observer) {
        std::unique_lock lock(mutex_);
 
        const auto old_size = observers_.size();
        std::erase(observers_, observer);
 
        if (observers_.size() < old_size) {
-           common::core::logger_service::logger()->debug("Observer removed. Remaining: {}", observers_.size());
+           felt::core::logger_service::logger()->debug("Observer removed. Remaining: {}", observers_.size());
        }
     }
 
    void candidate_manager::notify_observers() const {
-      std::vector<std::shared_ptr<common::core::icandidate_observer>> observers_copy;
+      std::vector<std::shared_ptr<felt::core::icandidate_observer>> observers_copy;
       {
          std::shared_lock lock(mutex_);
          observers_copy = observers_;

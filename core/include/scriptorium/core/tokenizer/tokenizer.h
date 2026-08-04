@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace modian::inkstone::core {
+namespace scriptorium::inkstone::core {
     class tokenizer {
     public:
         std::vector<std::vector<std::string>> split(std::string_view raw_string) const;

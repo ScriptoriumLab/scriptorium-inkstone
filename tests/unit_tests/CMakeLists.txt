@@ -1,17 +1,17 @@
-add_executable(modian_inkstone_unit_tests
+add_executable(scriptorium_inkstone_unit_tests
     test_main.cpp
     core/tokenizer/tokenizer_test.cpp
     core/dictionary/dictionary_test.cpp
     manager/candidate_manager_test.cpp
 )
 
-target_link_libraries(modian_inkstone_unit_tests PRIVATE
-    modian::common::core::observer
-    modian::common::infra::utils
-    modian::inkstone::core
-    modian::inkstone::manager
+target_link_libraries(scriptorium_inkstone_unit_tests PRIVATE
+    scriptorium::felt::core::observer
+    scriptorium::felt::infra::utils
+    scriptorium::inkstone::core
+    scriptorium::inkstone::manager
     gtest_main
     gmock_main
 )
 
-target_compile_definitions(modian_inkstone_unit_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+target_compile_definitions(scriptorium_inkstone_unit_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")

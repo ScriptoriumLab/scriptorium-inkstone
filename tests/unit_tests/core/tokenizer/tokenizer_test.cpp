@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 
-#include "modian/core/tokenizer/tokenizer.h"
+#include "scriptorium/core/tokenizer/tokenizer.h"
 
 TEST(tokenizer_test, should_successfully_get_all_possible_spelling_when_input_is_a_raw_string) {
-    modian::inkstone::core::tokenizer tokenizer{};
+    scriptorium::inkstone::core::tokenizer tokenizer{};
     tokenizer.add_syllabary("fan");
     tokenizer.add_syllabary("gan");
     tokenizer.add_syllabary("fang");
@@ -20,7 +20,7 @@ TEST(tokenizer_test, should_successfully_get_all_possible_spelling_when_input_is
 }
 
 TEST(tokenizer_test, should_successfully_get_only_one_possible_spelling_when_input_is_a_raw_string) {
-    modian::inkstone::core::tokenizer tokenizer{};
+    scriptorium::inkstone::core::tokenizer tokenizer{};
     tokenizer.add_syllabary("ni");
     tokenizer.add_syllabary("hao");
     tokenizer.add_syllabary("shi");
@@ -36,7 +36,7 @@ TEST(tokenizer_test, should_successfully_get_only_one_possible_spelling_when_inp
 }
 
 TEST(tokenizer_test, should_successfully_get_candidates_when_the_last_character_input_is_a_substring_of_syllabary) {
-    modian::inkstone::core::tokenizer tokenizer{};
+    scriptorium::inkstone::core::tokenizer tokenizer{};
     tokenizer.add_syllabary("ni");
     tokenizer.add_syllabary("hao");
     tokenizer.add_syllabary("shi");

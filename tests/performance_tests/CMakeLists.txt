@@ -10,18 +10,18 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googlebenchmark)
 
 add_executable(
-    modian_inkstone_performance_tests
+    scriptorium_inkstone_performance_tests
     server_benchmark.cpp
 )
 
 target_link_libraries(
-    modian_inkstone_performance_tests PRIVATE
+    scriptorium_inkstone_performance_tests PRIVATE
     benchmark::benchmark
-    modian::common::core::logger
-    modian::common::infra::logger
-    modian::inkstone::server
-    modian::inkstone::core
-    modian::inkstone::test_utils
+    scriptorium::felt::core::logger
+    scriptorium::felt::infra::logger
+    scriptorium::inkstone::server
+    scriptorium::inkstone::core
+    scriptorium::inkstone::test_utils
 )
 
-target_compile_definitions(modian_inkstone_performance_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+target_compile_definitions(scriptorium_inkstone_performance_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")

@@ -1,8 +1,8 @@
-#include "modian/manager/engine_manager.h"
+#include "scriptorium/manager/engine_manager.h"
 
-#include "modian/common/core/logger/logger_service.h"
+#include "scriptorium/felt/core/logger/logger_service.h"
 
-namespace modian::inkstone::manager {
+namespace scriptorium::inkstone::manager {
     void engine_manager::add_new_engine(const EngineDetail& engine_detail) {
         engine_factories_.emplace(engine_detail.first, engine_detail.second);
 
@@ -15,7 +15,7 @@ namespace modian::inkstone::manager {
         auto it = engine_factories_.find(engine_name);
         if (it != engine_factories_.end()) {
             current_engine_ = it->second();
-            common::core::logger_service::logger()->info("Switched to engine: {}", engine_name);
+            felt::core::logger_service::logger()->info("Switched to engine: {}", engine_name);
             reset();
             return true;
         }

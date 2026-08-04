@@ -6,7 +6,7 @@
 
 using namespace std::chrono_literals;
 
-namespace modian::inkstone::tests::utils {
+namespace scriptorium::inkstone::tests::utils {
 	class test_input_protocol_pipe_client {
 	public:
 		explicit test_input_protocol_pipe_client(std::string_view pipe_name) {

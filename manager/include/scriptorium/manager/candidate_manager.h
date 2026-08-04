@@ -5,9 +5,9 @@
 #include <string>
 #include <shared_mutex>
 
-#include "modian/common/core/observer/icandidate_observer.h"
+#include "scriptorium/felt/core/observer/icandidate_observer.h"
 
-namespace modian::inkstone::manager {
+namespace scriptorium::inkstone::manager {
 	class candidate_manager {
 	public:
 		candidate_manager() = default;
@@ -18,13 +18,13 @@ namespace modian::inkstone::manager {
 
 		[[nodiscard]] const std::vector<std::string>& get_candidates() const;
 
-		void add_observer(std::shared_ptr<common::core::icandidate_observer> observer);
-		void remove_observer(const std::shared_ptr<common::core::icandidate_observer>& observer);
+		void add_observer(std::shared_ptr<felt::core::icandidate_observer> observer);
+		void remove_observer(const std::shared_ptr<felt::core::icandidate_observer>& observer);
 	private:
 		std::vector<std::string> candidates_;
 		size_t highlight_index_{0};
 
-		std::vector<std::shared_ptr<common::core::icandidate_observer>> observers_;
+		std::vector<std::shared_ptr<felt::core::icandidate_observer>> observers_;
 
 		mutable std::shared_mutex mutex_;
 

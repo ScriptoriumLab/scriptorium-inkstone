@@ -2,10 +2,10 @@
 
 #include <codecvt>
 
-#include "modian/core/engine/pinyin_engine.h"
+#include "scriptorium/core/engine/pinyin_engine.h"
 
 TEST(pinyin_engine_test, should_successfully_load_dictionary_and_show_candidates_when_input_correct_pinyin) {
-	auto engine = modian::inkstone::core::pinyin_engine{std::string{PROJECT_SOURCE_DIR}.append("/data/pinyin_dictionary.txt")};
+	auto engine = scriptorium::inkstone::core::pinyin_engine{std::string{PROJECT_SOURCE_DIR}.append("/data/pinyin_dictionary.txt")};
 
 	engine.update_input_state('n');
 	engine.update_input_state('i');

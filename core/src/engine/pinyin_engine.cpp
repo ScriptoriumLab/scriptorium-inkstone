@@ -1,22 +1,22 @@
-#include "modian/core/engine/pinyin_engine.h"
+#include "scriptorium/core/engine/pinyin_engine.h"
 
 #include <fstream>
 #include <sstream>
 
-#include "modian/common/core/logger/logger_service.h"
+#include "scriptorium/felt/core/logger/logger_service.h"
 
-namespace modian::inkstone::core {
+namespace scriptorium::inkstone::core {
 	pinyin_engine::pinyin_engine(const std::string& dictionary_path) {
 		try {
 			load_dictionary(dictionary_path);
 		} catch (const std::exception& e) {
-            common::core::logger_service::logger()->error(e.what());
+            felt::core::logger_service::logger()->error(e.what());
 		}
 	}
 
 	void pinyin_engine::update_input_state(const char c) {
 		input_buffer_ += c;
-        common::core::logger_service::logger()->debug("input buffer is: {}", input_buffer_);
+        felt::core::logger_service::logger()->debug("input buffer is: {}", input_buffer_);
 	}
 
 	void pinyin_engine::handle_backspace() {

@@ -7,7 +7,7 @@
 #include <utility>
 #include <memory>
 
-namespace modian::inkstone::core {
+namespace scriptorium::inkstone::core {
 	class input_engine {
   	public:
 		virtual ~input_engine() = default;

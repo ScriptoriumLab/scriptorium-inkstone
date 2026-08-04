@@ -1,13 +1,13 @@
-#include "modian/orchestrator/session_orchestrator.h"
+#include "scriptorium/orchestrator/session_orchestrator.h"
 
-namespace modian::inkstone::manager {
+namespace scriptorium::inkstone::manager {
 	session_orchestrator::session_orchestrator(std::unique_ptr<candidate_manager> candidate_manager, std::unique_ptr<engine_manager> engine_manager)
 		: candidate_manager_{std::move(candidate_manager)}, engine_manager_{std::move(engine_manager)} {}
 
-    common::core::protocol::input::v1::instruction session_orchestrator::handle_key(const common::core::protocol::input::v1::key_event& key_event) {
+    felt::core::protocol::input::v1::instruction session_orchestrator::handle_key(const felt::core::protocol::input::v1::key_event& key_event) {
 		const std::string& key = key_event.content;
 
-        if (key.empty()) return {common::core::protocol::input::v1::message_type::UPDATE, { "" }};
+        if (key.empty()) return {felt::core::protocol::input::v1::message_type::UPDATE, { "" }};
 
         auto candidates = engine_manager_->get_current_candidates();
         bool has_candidates = !candidates.empty();
@@ -17,7 +17,7 @@ namespace modian::inkstone::manager {
                 --highlight_index_;
                 update_ui(std::move(candidates));
             }
-            return {common::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
+            return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
         }
 
         if (key == "cmd:right") {
@@ -25,7 +25,7 @@ namespace modian::inkstone::manager {
                 ++highlight_index_;
                 update_ui(std::move(candidates));
             }
-            return {common::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
+            return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
         }
 
         if (key == "cmd:space") {
@@ -34,9 +34,9 @@ namespace modian::inkstone::manager {
                 engine_manager_->reset();
                 highlight_index_ = 0;
                 update_ui({});
-                return {common::core::protocol::input::v1::message_type::COMMIT, { text }};
+                return {felt::core::protocol::input::v1::message_type::COMMIT, { text }};
             }
-            return {common::core::protocol::input::v1::message_type::COMMIT, { " " }};
+            return {felt::core::protocol::input::v1::message_type::COMMIT, { " " }};
         }
 
         if (key == "cmd:backspace") {
@@ -48,7 +48,7 @@ namespace modian::inkstone::manager {
 		candidates = engine_manager_->get_current_candidates();
         update_ui(std::move(candidates));
 
-		return {common::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
+		return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
 	}
 
 	void session_orchestrator::update_ui(std::vector<std::string> candidates) const {

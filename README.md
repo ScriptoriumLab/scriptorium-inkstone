@@ -1,6 +1,6 @@
 # Scriptorium Inkstone
 
-[![Modian IME Inkstone CI](https://github.com/ModianIME/modian-inkstone/actions/workflows/modian-ime-inkstone-ci.yml/badge.svg)](https://github.com/ModianIME/modian-inkstone/actions/workflows/modian-ime-inkstone-ci.yml)
+[![Scriptorium Inkstone CI](https://github.com/ScriptoriumLab/scriptorium-inkstone/actions/workflows/scriptorium-inkstone-ci.yml/badge.svg)](https://github.com/ScriptoriumLab/scriptorium-inkstone/actions/workflows/scriptorium-inkstone-ci.yml)
 
 ```
 =======================================================================================================================
@@ -21,7 +21,7 @@ Yb, `88'  `88'  `88                     8I                                      
 
 ## 1. Introduction
 
-**Modian Inkstone** is the **Core Logic Server (The Brain)** of the Modian IME ecosystem.
+**Scriptorium Inkstone** is the **Core Logic Server (The Brain)** of the Scriptorium IME ecosystem.
 
 Designed as an **out-of-process** daemon, it handles all the heavy lifting: state management, Pinyin analysis, candidate ranking, and dictionary lookups. By decoupling the logic from the OS client (Brush), Inkstone ensures that complex calculations never block the user's UI thread and provides a crash-resistant architecture.
 
@@ -34,7 +34,7 @@ Designed as an **out-of-process** daemon, it handles all the heavy lifting: stat
 
 Inkstone follows a strict **Onion Architecture** (Hexagonal Architecture) to ensure the core logic remains isolated from infrastructure details.
 
-![Modian Inkstone Architecture V1.0](./assets/Modian_Inkstone_Architecture_V1.0.png)
+![Scriptorium Inkstone Architecture V1.0](./assets/Scriptorium_Inkstone_Architecture_V1.1.0.png)
 
 ### The Layers
 1.  **Core Layer (The Domain)**:
@@ -52,7 +52,7 @@ Inkstone follows a strict **Onion Architecture** (Hexagonal Architecture) to ens
 
 Unlike the Brush (which focuses on Integration), Inkstone's testing strategy prioritizes **Performance** and **Algorithmic Correctness**.
 
-![Modian Inkstone Test Strategy](./assets/Modian_Inkstone_Test_Strategy.png)
+![Scriptorium Inkstone Test Strategy](./assets/Scriptorium_Inkstone_Test_Strategy.png)
 
 ### Level 3: Performance Tests (The Crown Jewel)
 We use **Google Benchmark** to rigorously track the "speed of light" of our engine.
@@ -83,7 +83,7 @@ cmake --build build
 
 ### Running Benchmarks
 ```bash
-./build/tests/performance_tests/modian_inkstone_performance_tests.exe
+./build/tests/performance_tests/scriptorium_inkstone_performance_tests.exe
 ```
 
 ## 5. Roadmap

@@ -1,9 +1,9 @@
-#include "modian/core/dictionary/dictionary.h"
+#include "scriptorium/core/dictionary/dictionary.h"
 
 #include <algorithm>
 #include <ranges>
 
-namespace modian::inkstone::core {
+namespace scriptorium::inkstone::core {
     void dictionary::build(const dictionary_entry& entry) {
         auto curr = &data_;
         for (const auto& c : entry.spelling) {

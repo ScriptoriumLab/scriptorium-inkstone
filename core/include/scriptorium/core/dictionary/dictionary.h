@@ -6,7 +6,7 @@
 #include <string>
 #include <istream>
 
-namespace modian::inkstone::core {
+namespace scriptorium::inkstone::core {
     struct dictionary_entry {
         std::string spelling;
         std::string word;

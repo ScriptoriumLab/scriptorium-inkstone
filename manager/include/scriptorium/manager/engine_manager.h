@@ -6,9 +6,9 @@
 #include <functional>
 #include <utility>
 
-#include "modian/core/engine/input_engine.h"
+#include "scriptorium/core/engine/input_engine.h"
 
-namespace modian::inkstone::manager {
+namespace scriptorium::inkstone::manager {
 	using EngineFactory = std::function<std::shared_ptr<core::input_engine>()>;
 	using EngineDetail = std::pair<std::string, EngineFactory>;
 

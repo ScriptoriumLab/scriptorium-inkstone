@@ -1,12 +1,12 @@
 #pragma once
 
-#include "modian/core/engine/input_engine.h"
-#include "modian/core/tokenizer/tokenizer.h"
-#include "modian/core/dictionary/dictionary.h"
+#include "scriptorium/core/engine/input_engine.h"
+#include "scriptorium/core/tokenizer/tokenizer.h"
+#include "scriptorium/core/dictionary/dictionary.h"
 
 #include <vector>
 
-namespace modian::inkstone::core {
+namespace scriptorium::inkstone::core {
 	class pinyin_engine : public input_engine {
 	public:
 		static constexpr std::string_view id{"pinyin engine"};

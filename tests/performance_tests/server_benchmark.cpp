@@ -3,18 +3,18 @@
 #include <memory>
 
 #include "../../inkstone/server.h"
-#include "modian/common/core/logger/logger_service.h"
-#include "include/modian/tests/utils/test_input_protocol_pipe_client.h"
-#include "include/modian/tests/utils/test_ui_protocol_pipe_client.h"
-#include "modian/core/engine/pinyin_engine.h"
+#include "scriptorium/felt/core/logger/logger_service.h"
+#include "include/scriptorium/tests/utils/test_input_protocol_pipe_client.h"
+#include "include/scriptorium/tests/utils/test_ui_protocol_pipe_client.h"
+#include "scriptorium/core/engine/pinyin_engine.h"
 
-using namespace modian::inkstone;
+using namespace scriptorium::inkstone;
 
-namespace modian::tests::performance_tests {
-    class mock_logger : public common::core::base_logger {
+namespace scriptorium::tests::performance_tests {
+    class mock_logger : public felt::core::base_logger {
     public:
         ~mock_logger() override = default;
-        void sink_it(common::core::log_level level, std::string_view msg) override {}
+        void sink_it(felt::core::log_level level, std::string_view msg) override {}
         [[nodiscard]] std::string_view type() const override { return "mock_logger"; }
     };
 }
@@ -26,17 +26,17 @@ public:
     static std::unique_ptr<tests::utils::test_input_protocol_pipe_client> brush_client;
     static std::unique_ptr<tests::utils::test_ui_protocol_pipe_client> ink_client;
 
-    const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_input_protocol_pipe)";
-	const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\modian_ui_protocol_pipe)";
+    const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_input_protocol_pipe)";
+	const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_ui_protocol_pipe)";
 
     void SetUp(const ::benchmark::State& state) override {
         if (!server_instance) {
-            modian::common::core::logger_service::update_logger([]{
-                return std::make_shared<modian::tests::performance_tests::mock_logger>();
+            scriptorium::felt::core::logger_service::update_logger([]{
+                return std::make_shared<scriptorium::tests::performance_tests::mock_logger>();
             });
 
             const auto dict_path = std::filesystem::path(PROJECT_SOURCE_DIR) / "data" / "pinyin_dictionary.txt";
-            auto dict_loader = modian::inkstone::core::lazy_load_dictionary<core::pinyin_engine>(dict_path.string());
+            auto dict_loader = scriptorium::inkstone::core::lazy_load_dictionary<core::pinyin_engine>(dict_path.string());
             server_instance = std::make_unique<server>(dict_loader);
             server_thread = std::jthread([this] {
                 server_instance->run();
@@ -64,7 +64,7 @@ std::jthread server_benchmark_fixture::server_thread;
 std::unique_ptr<tests::utils::test_input_protocol_pipe_client> server_benchmark_fixture::brush_client = nullptr;
 std::unique_ptr<tests::utils::test_ui_protocol_pipe_client> server_benchmark_fixture::ink_client = nullptr;
 
-BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_modian_input_method_performance)(benchmark::State& state) {
+BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_scriptorium_input_method_performance)(benchmark::State& state) {
     auto n = state.range(0);
 
     for (auto _ : state) {
@@ -98,7 +98,7 @@ BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_modian_input_method_performance)
     state.SetComplexityN(state.range(0));
 }
 
-BENCHMARK_REGISTER_F(server_benchmark_fixture, BM_modian_input_method_performance)
+BENCHMARK_REGISTER_F(server_benchmark_fixture, BM_scriptorium_input_method_performance)
     ->RangeMultiplier(10)
     ->Range(1, 100000)
     ->Complexity(benchmark::oN)
