@@ -8,6 +8,10 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+if (MSVC)
+    add_compile_options("/utf-8")
+endif()
+
 add_subdirectory(utils)
 
 add_subdirectory(unit_tests)
