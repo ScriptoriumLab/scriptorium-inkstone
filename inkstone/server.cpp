@@ -3,18 +3,19 @@
 #include <memory>
 #include <string>
 
-#include "scriptorium/felt/core/observer/icandidate_observer.h"
 #include "scriptorium/felt/core/logger/logger_service.h"
 #include "scriptorium/felt/infra/ipc/ipc_server_factory.h"
 
 #include "scriptorium/felt/service/protocol/input_protocol_service.h"
 #include "scriptorium/felt/service/protocol/ui_protocol_service.h"
 
+#include "scriptorium/core/observer/icandidate_observer.h"
+
 namespace scriptorium::inkstone {
 	const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_input_protocol_pipe)";
 	const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_ui_protocol_pipe)";
 
-	class ui_bridge : public felt::core::icandidate_observer {
+	class ui_bridge : public core::icandidate_observer {
 	public:
 		explicit ui_bridge(std::unique_ptr<felt::core::ipc::iasync_ipc_server<std::string, std::string>> pipe)
 			: async_server_(std::move(pipe)) {}

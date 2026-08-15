@@ -1,7 +1,6 @@
 add_library(scriptorium_inkstone_server server.cpp)
 
 target_link_libraries(scriptorium_inkstone_server PUBLIC
-    scriptorium::felt::core::observer
     scriptorium::felt::core::logger
     scriptorium::felt::service::protocol
     scriptorium::felt::infra::utils

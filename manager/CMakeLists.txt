@@ -7,7 +7,6 @@ add_library(scriptorium_inkstone_manager STATIC
 target_link_libraries(
     scriptorium_inkstone_manager
     PRIVATE
-    scriptorium::felt::core::observer
     scriptorium::felt::core::protocol
     scriptorium::felt::core::logger
     scriptorium::inkstone::core

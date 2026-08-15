@@ -6,7 +6,6 @@ add_executable(scriptorium_inkstone_unit_tests
 )
 
 target_link_libraries(scriptorium_inkstone_unit_tests PRIVATE
-    scriptorium::felt::core::observer
     scriptorium::felt::infra::utils
     scriptorium::inkstone::core
     scriptorium::inkstone::manager

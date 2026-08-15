@@ -3,7 +3,7 @@
 
 #include "scriptorium/manager/candidate_manager.h"
 
-class mock_observer : public scriptorium::felt::core::icandidate_observer {
+class mock_observer : public scriptorium::inkstone::core::icandidate_observer {
 public:
 	MOCK_METHOD(void, on_candidate_update, (const std::vector<std::string>&, size_t), (override));
 };
@@ -20,7 +20,7 @@ TEST(candidate_manager_test, ShouldNotifyObserverOnUpdate) {
 	manager->update_candidates({"ni", "hao"});
 }
 
-class suicidal_observer : public scriptorium::felt::core::icandidate_observer, public std::enable_shared_from_this<suicidal_observer> {
+class suicidal_observer : public scriptorium::inkstone::core::icandidate_observer, public std::enable_shared_from_this<suicidal_observer> {
 public:
 	std::weak_ptr<scriptorium::inkstone::manager::candidate_manager> manager_weak_;
 	int call_count_ = 0;
