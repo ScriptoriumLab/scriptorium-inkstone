@@ -69,16 +69,16 @@ BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_scriptorium_input_method_perform
 
     for (auto _ : state) {
         for (int i = 0; i < n; ++i) {
-            brush_client->send_and_receive("d");
-            ink_client->read_next_message();
-
-            brush_client->send_and_receive("i");
+            brush_client->send_and_receive("f");
             ink_client->read_next_message();
 
             brush_client->send_and_receive("a");
             ink_client->read_next_message();
 
             brush_client->send_and_receive("n");
+            ink_client->read_next_message();
+
+            brush_client->send_and_receive("g");
             ink_client->read_next_message();
 
             brush_client->send_and_receive("cmd:backspace");
