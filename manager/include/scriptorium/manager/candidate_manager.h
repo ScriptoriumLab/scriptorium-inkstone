@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <vector>
-#include <string>
 #include <shared_mutex>
 
 #include "scriptorium/core/observer/icandidate_observer.h"
@@ -13,15 +12,14 @@ namespace scriptorium::inkstone::manager {
 		candidate_manager() = default;
 		~candidate_manager() = default;
 
-		bool update_candidates(std::vector<std::string> candidates);
-		void update_state(const std::vector<std::string>& candidates, size_t highlight_index);
+		void update_state(const std::vector<core::candidate>& candidates, size_t highlight_index);
 
-		[[nodiscard]] const std::vector<std::string>& get_candidates() const;
+		[[nodiscard]] const std::vector<core::candidate>& get_candidates() const;
 
 		void add_observer(std::shared_ptr<core::icandidate_observer> observer);
 		void remove_observer(const std::shared_ptr<core::icandidate_observer>& observer);
 	private:
-		std::vector<std::string> candidates_;
+		std::vector<core::candidate> candidates_;
 		size_t highlight_index_{0};
 
 		std::vector<std::shared_ptr<core::icandidate_observer>> observers_;

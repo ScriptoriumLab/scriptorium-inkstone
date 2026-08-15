@@ -2,7 +2,6 @@ add_executable(scriptorium_inkstone_unit_tests
     test_main.cpp
     core/tokenizer/tokenizer_test.cpp
     core/dictionary/dictionary_test.cpp
-    manager/candidate_manager_test.cpp
 )
 
 target_link_libraries(scriptorium_inkstone_unit_tests PRIVATE

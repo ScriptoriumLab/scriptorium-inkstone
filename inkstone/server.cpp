@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <ranges>
 
 #include "scriptorium/felt/core/logger/logger_service.h"
 #include "scriptorium/felt/infra/ipc/ipc_server_factory.h"
@@ -20,7 +21,7 @@ namespace scriptorium::inkstone {
 		explicit ui_bridge(std::unique_ptr<felt::core::ipc::iasync_ipc_server<std::string, std::string>> pipe)
 			: async_server_(std::move(pipe)) {}
 
-		void on_candidate_update(const std::vector<std::string>& candidates, size_t highlight_index) override {
+		void on_candidate_update(const std::vector<core::candidate>& candidates, size_t highlight_index) override {
 			if (!async_server_) return;
 
 			bool visible = !candidates.empty();
@@ -30,7 +31,13 @@ namespace scriptorium::inkstone {
 			int total_pages = 1;
 
 			std::string render_state = felt::service::ui_protocol_service::build_render_state_request(
-				visible, x, y, candidates, highlight_index, page_index, total_pages
+				visible,
+                x, y,
+                candidates
+                    | std::views::transform([](const auto& c){ return c.word; })
+                    | std::ranges::to<std::vector<std::string>>(),
+                highlight_index,
+                page_index, total_pages
 			);
 
 			async_server_->send(render_state);

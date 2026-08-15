@@ -54,8 +54,7 @@ namespace scriptorium::inkstone::manager {
 	}
 
 	void session_orchestrator::update_ui(std::vector<core::candidate> candidates) const {
-        auto candidates_str = candidates | std::views::transform([](const core::candidate& c) { return c.word; }) | std::ranges::to<std::vector<std::string>>();
-		candidate_manager_->update_state(candidates_str, highlight_index_);
+		candidate_manager_->update_state(candidates, highlight_index_);
 	}
 
     core::candidate session_orchestrator::select_candidate(size_t index) const {
