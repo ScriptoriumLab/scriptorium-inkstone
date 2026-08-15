@@ -50,10 +50,10 @@ namespace scriptorium::inkstone {
 
                 felt::core::logger_service::logger()->info("UI Selected Candidate: {}", index);
 
-				const auto text = session_orchestrator_->select_candidate(index);
-				if (!text.empty()) {
+				const auto candidate = session_orchestrator_->select_candidate(index);
+				if (!candidate.word.empty()) {
                     // TODO: need to solve async select candidates (i.e., clicking one candidate from UI need to notify inkstone and brush to replace with this candidate)
-                    felt::core::logger_service::logger()->info("TODO: Commit text to Brush: {}", text);
+                    felt::core::logger_service::logger()->info("TODO: Commit text to Brush: {}", candidate.word);
 				}
 			}
 		});

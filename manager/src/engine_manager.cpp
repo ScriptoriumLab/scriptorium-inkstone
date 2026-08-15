@@ -43,8 +43,8 @@ namespace scriptorium::inkstone::manager {
         }
     }
 
-    std::vector<std::string> engine_manager::get_current_candidates() const {
-        return current_engine_->get_candidates() | std::views::transform([](const auto& candidate) { return candidate.word; }) | std::ranges::to<std::vector>();
+    std::vector<core::candidate> engine_manager::get_current_candidates() const {
+        return current_engine_->get_candidates();
     }
 
     std::string engine_manager::get_current_raw_pinyin() const {

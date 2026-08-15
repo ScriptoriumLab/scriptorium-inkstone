@@ -19,7 +19,7 @@ namespace scriptorium::inkstone::manager {
 		void update_input_state(char character) const;
 		void handle_backspace() const;
 		void reset() const;
-		[[nodiscard]] std::vector<std::string> get_current_candidates() const;
+		[[nodiscard]] std::vector<core::candidate> get_current_candidates() const;
 		[[nodiscard]] std::string get_current_raw_pinyin() const;
 
 	private:

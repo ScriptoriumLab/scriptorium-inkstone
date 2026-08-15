@@ -1,5 +1,7 @@
 #include "scriptorium/orchestrator/session_orchestrator.h"
 
+#include <ranges>
+
 namespace scriptorium::inkstone::manager {
 	session_orchestrator::session_orchestrator(std::unique_ptr<candidate_manager> candidate_manager, std::unique_ptr<engine_manager> engine_manager)
 		: candidate_manager_{std::move(candidate_manager)}, engine_manager_{std::move(engine_manager)} {}
@@ -30,11 +32,11 @@ namespace scriptorium::inkstone::manager {
 
         if (key == "cmd:space") {
             if (has_candidates) {
-                std::string text = candidates[highlight_index_];
+                const auto candidate = candidates[highlight_index_];
                 engine_manager_->reset();
                 highlight_index_ = 0;
                 update_ui({});
-                return {felt::core::protocol::input::v1::message_type::COMMIT, { text }};
+                return {felt::core::protocol::input::v1::message_type::COMMIT, { candidate.word }};
             }
             return {felt::core::protocol::input::v1::message_type::COMMIT, { " " }};
         }
@@ -51,11 +53,12 @@ namespace scriptorium::inkstone::manager {
 		return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
 	}
 
-	void session_orchestrator::update_ui(std::vector<std::string> candidates) const {
-		candidate_manager_->update_state(std::move(candidates), highlight_index_);
+	void session_orchestrator::update_ui(std::vector<core::candidate> candidates) const {
+        auto candidates_str = candidates | std::views::transform([](const core::candidate& c) { return c.word; }) | std::ranges::to<std::vector<std::string>>();
+		candidate_manager_->update_state(candidates_str, highlight_index_);
 	}
 
-	std::string session_orchestrator::select_candidate(size_t index) const {
+    core::candidate session_orchestrator::select_candidate(size_t index) const {
 		return engine_manager_->get_current_candidates()[index];
 	}
 }
