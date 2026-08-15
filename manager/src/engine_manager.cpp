@@ -1,7 +1,5 @@
 #include "scriptorium/manager/engine_manager.h"
 
-#include <ranges>
-
 #include "scriptorium/felt/core/logger/logger_service.h"
 
 namespace scriptorium::inkstone::manager {
