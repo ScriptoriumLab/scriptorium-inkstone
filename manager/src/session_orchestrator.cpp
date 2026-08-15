@@ -17,7 +17,7 @@ namespace scriptorium::inkstone::manager {
                 --highlight_index_;
                 update_ui(std::move(candidates));
             }
-            return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
+            return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_input() }};
         }
 
         if (key == "cmd:right") {
@@ -25,7 +25,7 @@ namespace scriptorium::inkstone::manager {
                 ++highlight_index_;
                 update_ui(std::move(candidates));
             }
-            return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
+            return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_input() }};
         }
 
         if (key == "cmd:space") {
@@ -48,7 +48,7 @@ namespace scriptorium::inkstone::manager {
 		candidates = engine_manager_->get_current_candidates();
         update_ui(std::move(candidates));
 
-		return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_pinyin() }};
+		return {felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_input() }};
 	}
 
 	void session_orchestrator::update_ui(std::vector<core::candidate> candidates) const {

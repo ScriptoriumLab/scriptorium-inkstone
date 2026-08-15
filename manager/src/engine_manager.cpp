@@ -45,7 +45,7 @@ namespace scriptorium::inkstone::manager {
         return current_engine_->get_candidates();
     }
 
-    std::string engine_manager::get_current_raw_pinyin() const {
+    std::string engine_manager::get_current_raw_input() const {
         if (current_engine_) {
             return current_engine_->get_raw_input();
         }

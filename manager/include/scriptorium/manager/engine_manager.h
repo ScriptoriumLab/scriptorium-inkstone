@@ -20,7 +20,7 @@ namespace scriptorium::inkstone::manager {
 		void handle_backspace() const;
 		void reset() const;
 		[[nodiscard]] std::vector<core::candidate> get_current_candidates() const;
-		[[nodiscard]] std::string get_current_raw_pinyin() const;
+		[[nodiscard]] std::string get_current_raw_input() const;
 
 	private:
 		std::unordered_map<std::string, EngineFactory> engine_factories_;
