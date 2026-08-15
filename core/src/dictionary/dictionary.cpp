@@ -1,7 +1,6 @@
 #include "scriptorium/core/dictionary/dictionary.h"
 
 #include <algorithm>
-#include <ranges>
 
 namespace scriptorium::inkstone::core {
     void dictionary::build(const dictionary_entry& entry) {
@@ -37,7 +36,7 @@ namespace scriptorium::inkstone::core {
         }
     }
 
-    std::vector<std::string> dictionary::lookup(const std::string& spelling) const {
+    std::vector<dictionary_entry> dictionary::lookup(const std::string& spelling) const {
         auto curr = &data_;
         for (const auto& c : spelling) {
             if (c < 'a' || c > 'z') {
@@ -56,8 +55,6 @@ namespace scriptorium::inkstone::core {
         get_candidate_dictionary_entries(curr, candidate_dictionary_entries);
         std::sort_heap(candidate_dictionary_entries.begin(), candidate_dictionary_entries.end(), cmp);
 
-        return candidate_dictionary_entries
-            | std::views::transform([](const auto& entry) { return entry.word; })
-            | std::ranges::to<std::vector>();
+        return candidate_dictionary_entries;
     }
 }

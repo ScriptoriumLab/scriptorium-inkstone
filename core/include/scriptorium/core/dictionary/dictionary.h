@@ -21,7 +21,7 @@ namespace scriptorium::inkstone::core {
     class dictionary {
     public:
         void build(const dictionary_entry& entry);
-        [[nodiscard]] std::vector<std::string> lookup(const std::string& spelling) const;
+        [[nodiscard]] std::vector<dictionary_entry> lookup(const std::string& spelling) const;
     private:
         struct trie_node {
             std::vector<dictionary_entry> dictionary_entries;

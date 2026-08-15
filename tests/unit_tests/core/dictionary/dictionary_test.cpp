@@ -14,9 +14,9 @@ TEST(dictionary_test, should_return_top_candidates_by_using_weight_when_lookup_w
 
     auto candidates = dict.lookup("ni");
     ASSERT_EQ(candidates.size(), 3);
-    ASSERT_EQ(candidates[0], "你");
-    ASSERT_EQ(candidates[1], "拟");
-    ASSERT_EQ(candidates[2], "泥");
+    ASSERT_EQ(candidates[0].word, "你");
+    ASSERT_EQ(candidates[1].word, "拟");
+    ASSERT_EQ(candidates[2].word, "泥");
 }
 
 TEST(dictionary_test, should_return_top_mixed_candidates_with_different_weight_when_lookup_with_fuzzy_spelling) {
@@ -31,9 +31,9 @@ TEST(dictionary_test, should_return_top_mixed_candidates_with_different_weight_w
 
     auto candidates = dict.lookup("n");
     ASSERT_EQ(candidates.size(), 3);
-    ASSERT_EQ(candidates[0], "你");
-    ASSERT_EQ(candidates[1], "年");
-    ASSERT_EQ(candidates[2], "泥");
+    ASSERT_EQ(candidates[0].word, "你");
+    ASSERT_EQ(candidates[1].word, "年");
+    ASSERT_EQ(candidates[2].word, "泥");
 }
 
 TEST(dictionary_test, should_truncate_to_max_candidates_and_keep_highest_weights_when_exceeding_capacity) {
@@ -56,7 +56,7 @@ TEST(dictionary_test, should_truncate_to_max_candidates_and_keep_highest_weights
     auto candidates = dict.lookup("ni");
 
     ASSERT_EQ(candidates.size(), 50);
-    ASSERT_EQ(candidates.at(0), "嶷");
-    ASSERT_EQ(candidates.at(1), "儗");
-    ASSERT_EQ(candidates.at(49), "倪");
+    ASSERT_EQ(candidates.at(0).word, "嶷");
+    ASSERT_EQ(candidates.at(1).word, "儗");
+    ASSERT_EQ(candidates.at(49).word, "倪");
 }
