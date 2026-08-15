@@ -89,13 +89,13 @@ cmake --build build
 
 ## 5. Roadmap
 The current focus is on implementing the communication protocol and connecting the engine logic.
-- [ ] Protocol Implementation
-  - [ ] Integrate `nlohmann/json`.
-  - [ ] Implement `Service Layer` to bridge IPC strings to Core Structs.
-  - [ ] Define full JSON schema for `InputEvent` and `CandidateList`.
+- [x] Protocol Implementation
+  - [x] Integrate `nlohmann/json`.
+  - [x] Implement `Service Layer` to bridge IPC strings to Core Structs.
+  - [x] Define full JSON schema for `InputEvent` and `CandidateList`.
 - [ ] Engine & Logic
-  - [ ] Connect `PinyinEngine` to the IPC message loop.
-  - [ ] Implement basic "Exact Match" dictionary lookup.
+  - [x] Connect `PinyinEngine` to the IPC message loop.
+  - [x] Implement basic "Exact Match" dictionary lookup.
   - [ ] Implement paging logic for candidates.
 - [ ] Infrastructure
   - [ ] Optimize Named Pipe buffer size.
