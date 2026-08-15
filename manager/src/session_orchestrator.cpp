@@ -1,7 +1,5 @@
 #include "scriptorium/orchestrator/session_orchestrator.h"
 
-#include <ranges>
-
 namespace scriptorium::inkstone::manager {
 	session_orchestrator::session_orchestrator(std::unique_ptr<candidate_manager> candidate_manager, std::unique_ptr<engine_manager> engine_manager)
 		: candidate_manager_{std::move(candidate_manager)}, engine_manager_{std::move(engine_manager)} {}
