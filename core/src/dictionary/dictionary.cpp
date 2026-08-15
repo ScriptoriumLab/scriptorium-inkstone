@@ -16,24 +16,24 @@ namespace scriptorium::inkstone::core {
             }
             curr = curr->sub_node[idx].get();
         }
-        curr->candidates.push_back(entry);
+        curr->dictionary_entries.push_back(entry);
     }
 
-    void dictionary::get_candidates(const trie_node* node, std::vector<dictionary_entry>& candidates) const {
+    void dictionary::get_candidate_dictionary_entries(const trie_node* node, std::vector<dictionary_entry>& candidate_dictionary_entries) const {
         if (node == nullptr) return;
 
-        for (const auto& candidate : node->candidates) {
-            candidates.push_back(candidate);
-            std::push_heap(candidates.begin(), candidates.end(), cmp);
+        for (const auto& candidate : node->dictionary_entries) {
+            candidate_dictionary_entries.push_back(candidate);
+            std::push_heap(candidate_dictionary_entries.begin(), candidate_dictionary_entries.end(), cmp);
 
-            if (candidates.size() > MAX_CANDIDATES) {
-                std::pop_heap(candidates.begin(), candidates.end(), cmp);
-                candidates.pop_back();
+            if (candidate_dictionary_entries.size() > MAX_CANDIDATES) {
+                std::pop_heap(candidate_dictionary_entries.begin(), candidate_dictionary_entries.end(), cmp);
+                candidate_dictionary_entries.pop_back();
             }
         }
 
         for (const auto& sub : node->sub_node) {
-            get_candidates(sub.get(), candidates);
+            get_candidate_dictionary_entries(sub.get(), candidate_dictionary_entries);
         }
     }
 
@@ -51,12 +51,12 @@ namespace scriptorium::inkstone::core {
             }
         }
 
-        std::vector<dictionary_entry> candidates;
-        candidates.reserve(MAX_CANDIDATES + 1);
-        get_candidates(curr, candidates);
-        std::sort_heap(candidates.begin(), candidates.end(), cmp);
+        std::vector<dictionary_entry> candidate_dictionary_entries;
+        candidate_dictionary_entries.reserve(MAX_CANDIDATES + 1);
+        get_candidate_dictionary_entries(curr, candidate_dictionary_entries);
+        std::sort_heap(candidate_dictionary_entries.begin(), candidate_dictionary_entries.end(), cmp);
 
-        return candidates
+        return candidate_dictionary_entries
             | std::views::transform([](const auto& entry) { return entry.word; })
             | std::ranges::to<std::vector>();
     }

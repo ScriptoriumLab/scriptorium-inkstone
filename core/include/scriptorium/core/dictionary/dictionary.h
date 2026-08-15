@@ -24,12 +24,12 @@ namespace scriptorium::inkstone::core {
         [[nodiscard]] std::vector<std::string> lookup(const std::string& spelling) const;
     private:
         struct trie_node {
-            std::vector<dictionary_entry> candidates;
+            std::vector<dictionary_entry> dictionary_entries;
             std::array<std::unique_ptr<trie_node>, 26> sub_node;
         };
 
         static constexpr auto cmp = [](const dictionary_entry& l, const dictionary_entry& r){ return  l.weight > r.weight; };
-        void get_candidates(const trie_node* node, std::vector<dictionary_entry>& candidates) const;
+        void get_candidate_dictionary_entries(const trie_node* node, std::vector<dictionary_entry>& candidates) const;
 
         const int MAX_CANDIDATES{50};
 		trie_node data_;
