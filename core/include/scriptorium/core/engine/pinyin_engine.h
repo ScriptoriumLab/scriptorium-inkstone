@@ -16,7 +16,7 @@ namespace scriptorium::inkstone::core {
 		void update_input_state(char c) override;
 		void handle_backspace() override;
 		void reset() override;
-		[[nodiscard]] std::vector<std::string> get_candidates() const override;
+		[[nodiscard]] std::vector<candidate> get_candidates() const override;
 		[[nodiscard]] std::string get_raw_input() const override;
 
 	private:

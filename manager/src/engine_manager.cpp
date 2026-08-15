@@ -1,5 +1,7 @@
 #include "scriptorium/manager/engine_manager.h"
 
+#include <ranges>
+
 #include "scriptorium/felt/core/logger/logger_service.h"
 
 namespace scriptorium::inkstone::manager {
@@ -42,7 +44,7 @@ namespace scriptorium::inkstone::manager {
     }
 
     std::vector<std::string> engine_manager::get_current_candidates() const {
-        return current_engine_->get_candidates();
+        return current_engine_->get_candidates() | std::views::transform([](const auto& candidate) { return candidate.word; }) | std::ranges::to<std::vector>();
     }
 
     std::string engine_manager::get_current_raw_pinyin() const {

@@ -30,24 +30,24 @@ namespace scriptorium::inkstone::core {
 	}
 
     namespace {
-        void backtrace_assemble_sentences(const std::vector<std::vector<dictionary_entry>>& candidate_matrix, int starter, std::string& sentence, std::vector<std::string>& sentences) {
+        void backtrace_assemble_sentences(const std::vector<std::vector<dictionary_entry>>& candidate_matrix, int starter, candidate& sentence, std::vector<candidate>& sentences) {
             if (starter == candidate_matrix.size()) {
                 sentences.push_back(sentence);
                 return;
             }
 
             for (const auto& entry : candidate_matrix[starter]) {
-                auto old_length = sentence.size();
-                sentence.append(entry.word);
+                auto old_length = sentence.word.size();
+                sentence.word.append(entry.word);
 
                 backtrace_assemble_sentences(candidate_matrix, starter + 1, sentence, sentences);
 
-                sentence.resize(old_length);
+                sentence.word.resize(old_length);
             }
         }
     }
 
-	std::vector<std::string> pinyin_engine::get_candidates() const {
+	std::vector<candidate> pinyin_engine::get_candidates() const {
 		if (input_buffer_.empty()) {
 			return {};
 		}
@@ -57,15 +57,15 @@ namespace scriptorium::inkstone::core {
             return {};
         }
 
-        std::vector<std::string> final_candidates;
+        std::vector<candidate> final_candidates;
         for (const auto& path : spelling_paths) {
             std::vector<std::vector<dictionary_entry>> candidate_dictionary_entries_matrix;
             for (const auto& spelling : path) {
                 candidate_dictionary_entries_matrix.push_back(dictionary_.lookup(spelling));
             }
 
-            std::vector<std::string> sentences;
-            std::string sentence;
+            std::vector<candidate> sentences;
+            candidate sentence { .spelling_path = path };
             backtrace_assemble_sentences(candidate_dictionary_entries_matrix, 0, sentence, sentences);
 
             final_candidates.insert(final_candidates.end(), sentences.begin(), sentences.end());

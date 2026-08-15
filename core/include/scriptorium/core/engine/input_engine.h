@@ -7,6 +7,8 @@
 #include <utility>
 #include <memory>
 
+#include "scriptorium/core/candidate/candidate.h"
+
 namespace scriptorium::inkstone::core {
 	class input_engine {
   	public:
@@ -15,7 +17,7 @@ namespace scriptorium::inkstone::core {
 		virtual void update_input_state(char c) = 0;
 		virtual void handle_backspace() = 0;
 		virtual void reset() = 0;
-		[[nodiscard]] virtual std::vector<std::string> get_candidates() const = 0;
+		[[nodiscard]] virtual std::vector<candidate> get_candidates() const = 0;
 		[[nodiscard]] virtual std::string get_raw_input() const = 0;
 	};
 

@@ -12,7 +12,7 @@ TEST(pinyin_engine_test, should_successfully_load_dictionary_and_show_candidates
 	const auto candidates = engine.get_candidates();
 
 	ASSERT_EQ(candidates.size(), 3);
-	ASSERT_EQ(candidates.at(0), std::string{"你"});
-	ASSERT_EQ(candidates.at(1), std::string{"尼"});
-	ASSERT_EQ(candidates.at(2), std::string{"泥"});
+	ASSERT_EQ(candidates.at(0).word, std::string{"你"});
+	ASSERT_EQ(candidates.at(1).word, std::string{"尼"});
+	ASSERT_EQ(candidates.at(2).word, std::string{"泥"});
 }
