@@ -58,11 +58,11 @@ TEST_F(server_integration_tests, should_successfully_return_candidate_when_input
 	ASSERT_TRUE(ink_client.connect()) << "UI failed to connect";
 
 	const auto response_without_candidates = brush_client.send_and_receive("n");
-	EXPECT_THAT(response_without_candidates, testing::HasSubstr(R"({"candidate_info":{"word":"n"},"type":"U"})"));
+	EXPECT_THAT(response_without_candidates, testing::HasSubstr(R"({"candidate_info":{"spelling_path":["n"],"word":"n"},"type":"U"})"));
 	ink_client.read_next_message();
 
 	const auto response_with_candidates = brush_client.send_and_receive("i");
-	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"candidate_info":{"word":"ni"},"type":"U"})"));
+	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"candidate_info":{"spelling_path":["ni"],"word":"ni"},"type":"U"})"));
 
 	const auto json_msg = ink_client.read_next_message();
 	EXPECT_THAT(json_msg, testing::HasSubstr("\"candidates\""));
@@ -87,16 +87,16 @@ TEST_F(server_integration_tests, should_successfully_handle_backspace_when_user_
 
 	const auto response_after_backspace = brush_client.send_and_receive("cmd:backspace");
 	ink_client.read_next_message();
-	EXPECT_THAT(response_after_backspace, testing::HasSubstr(R"({"candidate_info":{"word":"fa"},"type":"U"})"));
+	EXPECT_THAT(response_after_backspace, testing::HasSubstr(R"({"candidate_info":{"spelling_path":["fa"],"word":"fa"},"type":"U"})"));
 
 	brush_client.send_and_receive("n");
 	ink_client.read_next_message();
 
 	const auto response_with_candidates = brush_client.send_and_receive("g");
-	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"candidate_info":{"word":"fang"},"type":"U"})"));
+	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"candidate_info":{"spelling_path":["fan","g"],"word":"fang"},"type":"U"})"));
 
 	const auto json_msg = ink_client.read_next_message();
 	EXPECT_THAT(json_msg, testing::HasSubstr("\"candidates\""));
 	EXPECT_THAT(json_msg, testing::HasSubstr("visible\":true"));
-	EXPECT_THAT(json_msg, testing::HasSubstr("方"));
+	EXPECT_THAT(json_msg, testing::HasSubstr("反"));
 }
