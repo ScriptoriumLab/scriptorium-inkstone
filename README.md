@@ -2,6 +2,8 @@
 
 [![Scriptorium Inkstone CI](https://github.com/ScriptoriumLab/scriptorium-inkstone/actions/workflows/scriptorium-inkstone-ci.yml/badge.svg)](https://github.com/ScriptoriumLab/scriptorium-inkstone/actions/workflows/scriptorium-inkstone-ci.yml)
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ```
 ================================================================================================================================================
 
@@ -102,3 +104,14 @@ The current focus is on implementing the communication protocol and connecting t
   - [ ] Add support for multiple client connections (future proofing).
   - [ ] Introduce thread pool for handling IPC requests without blocking the main loop.
 
+---
+
+## License
+
+Licensed under the **Apache License 2.0**.
+
+See `LICENSE` for details.
+
+---
+
+*Copyright © 2026 ScriptoriumLab.*
