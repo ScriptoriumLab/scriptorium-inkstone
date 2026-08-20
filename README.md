@@ -444,13 +444,25 @@ cmake --build build
 
 ### Run Tests
 
-Where the configured build exposes tests through CTest:
+Inkstone test suites are exposed through CTest and grouped by labels.
+
+Run the complete test suite with:
 
 ```bash
 ctest --test-dir build --output-on-failure
 ```
 
-Individual test executables can also be run directly while developing specific Inkstone components.
+Run a specific test category with `-L`:
+
+```bash
+ctest --test-dir build -L unit --output-on-failure
+ctest --test-dir build -L integration --output-on-failure
+ctest --test-dir build -L performance --output-on-failure
+```
+
+This allows correctness, integration, and performance tests to be executed independently while keeping a single CTest entry point for the project.
+
+Individual test executables can still be run directly when debugging or developing a specific component.
 
 ### Run Performance Tests
 
