@@ -471,7 +471,7 @@ Build Inkstone in Release mode before running performance benchmarks.
 For example:
 
 ```bash
-./build/tests/performance_tests/scriptorium_inkstone_performance_tests.exe
+ctest --test-dir build -L performance --output-on-failure
 ```
 
 Exact executable paths may vary by generator and platform.
