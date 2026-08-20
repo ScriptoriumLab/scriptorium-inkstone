@@ -24,4 +24,17 @@ target_link_libraries(
     scriptorium::inkstone::test_utils
 )
 
-target_compile_definitions(scriptorium_inkstone_performance_tests PRIVATE PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+target_compile_definitions(scriptorium_inkstone_performance_tests PRIVATE
+    PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+)
+
+add_test(
+    NAME scriptorium_inkstone_performance_tests
+    COMMAND scriptorium_inkstone_performance_tests
+)
+
+set_tests_properties(
+    scriptorium_inkstone_performance_tests
+    PROPERTIES
+        LABELS "inkstone-performance"
+)
