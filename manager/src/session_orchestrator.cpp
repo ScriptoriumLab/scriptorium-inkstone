@@ -5,68 +5,117 @@ namespace scriptorium::inkstone::manager {
 		: candidate_manager_{std::move(candidate_manager)}, engine_manager_{std::move(engine_manager)} {}
 
     felt::core::protocol::input::v1::instruction session_orchestrator::handle_key(const felt::core::protocol::input::v1::key_event& key_event) {
-        const std::string& key = key_event.content;
-
-        if (key.empty()) return {
-            felt::core::protocol::input::v1::message_type::UPDATE,
-            { "", {} }
-        };
+        using namespace felt::core::protocol::input::v1;
 
         auto candidates = engine_manager_->get_current_candidates();
-        bool has_candidates = !candidates.empty();
+        const bool has_candidates = !candidates.empty();
 
-        if (key == "cmd:left") {
+        switch (key_event.type) {
+        case key_event_type::LEFT: {
             if (has_candidates && highlight_index_ > 0) {
                 --highlight_index_;
-                auto current_path = candidates[highlight_index_].spelling_path;
+                const auto current_path = candidates[highlight_index_].spelling_path;
+
                 update_ui(std::move(candidates));
-                return { felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_input(), current_path } };
+
+                return {
+                    message_type::UPDATE,
+                    {engine_manager_->get_current_raw_input(), current_path}
+                };
             }
-            auto current_path = has_candidates ? candidates[highlight_index_].spelling_path : std::vector<std::string>{};
-            return { felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_input(), current_path } };
+
+            const auto current_path =
+                has_candidates
+                    ? candidates[highlight_index_].spelling_path
+                    : std::vector<std::string>{};
+
+            return {
+                message_type::UPDATE,
+                {engine_manager_->get_current_raw_input(), current_path}
+            };
         }
 
-        if (key == "cmd:right") {
+        case key_event_type::RIGHT: {
             if (has_candidates && highlight_index_ < candidates.size() - 1) {
                 ++highlight_index_;
-                auto current_path = candidates[highlight_index_].spelling_path;
+                const auto current_path = candidates[highlight_index_].spelling_path;
+
                 update_ui(std::move(candidates));
-                return { felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_input(), current_path } };
+
+                return {
+                    message_type::UPDATE,
+                    {engine_manager_->get_current_raw_input(), current_path}
+                };
             }
-            auto current_path = has_candidates ? candidates[highlight_index_].spelling_path : std::vector<std::string>{};
-            return { felt::core::protocol::input::v1::message_type::UPDATE, { engine_manager_->get_current_raw_input(), current_path } };
+
+            const auto current_path =
+                has_candidates
+                    ? candidates[highlight_index_].spelling_path
+                    : std::vector<std::string>{};
+
+            return {
+                message_type::UPDATE,
+                {engine_manager_->get_current_raw_input(), current_path}
+            };
         }
 
-        if (key == "cmd:space") {
+        case key_event_type::SPACE: {
             if (has_candidates) {
                 const auto candidate = candidates[highlight_index_];
+
                 engine_manager_->reset();
                 highlight_index_ = 0;
                 update_ui({});
+
                 return {
-                    felt::core::protocol::input::v1::message_type::COMMIT,
-                    { candidate.word, candidate.spelling_path }
+                    message_type::COMMIT,
+                    {candidate.word, candidate.spelling_path}
                 };
             }
-            return { felt::core::protocol::input::v1::message_type::COMMIT, { " ", {} } };
+
+            return {
+                message_type::COMMIT,
+                {" ", {}}
+            };
         }
 
-        if (key == "cmd:backspace") {
+        case key_event_type::BACKSPACE:
             engine_manager_->handle_backspace();
-        } else if (key.size() == 1) {
-            engine_manager_->update_input_state(key[0]);
-            highlight_index_ = 0;
+            break;
+
+        case key_event_type::TEXT: {
+            if (!key_event.content.has_value() || key_event.content->empty()) {
+                return {
+                    message_type::UPDATE,
+                    {"", {}}
+                };
+            }
+
+            const auto& content = *key_event.content;
+
+            if (content.size() == 1) {
+                engine_manager_->update_input_state(content[0]);
+                highlight_index_ = 0;
+            }
+
+            break;
+        }
         }
 
         candidates = engine_manager_->get_current_candidates();
-        has_candidates = !candidates.empty();
 
-        auto current_path = has_candidates ? candidates[highlight_index_].spelling_path : std::vector<std::string>{};
+        const bool has_updated_candidates = !candidates.empty();
+
+        const auto current_path =
+            has_updated_candidates
+                ? candidates[highlight_index_].spelling_path
+                : std::vector<std::string>{};
+
         update_ui(std::move(candidates));
 
         return {
-            felt::core::protocol::input::v1::message_type::UPDATE,
-            { engine_manager_->get_current_raw_input(), current_path }
+            message_type::UPDATE,
+            {engine_manager_->get_current_raw_input(), current_path}
         };
     }
 

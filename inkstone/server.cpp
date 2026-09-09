@@ -81,12 +81,6 @@ namespace scriptorium::inkstone {
 	void server::run() {
 		input_protocol_ipc_server_->run([this](const std::string& request) {
 			const auto key_event = felt::service::input_protocol_service::parse_key_event_request(request);
-
-			if (key_event.content == "cmd:shutdown") {
-			   this->signal_stop();
-			   return std::string("bye");
-		    }
-
 			const auto instruction = session_orchestrator_->handle_key(key_event);
 
 			return felt::service::input_protocol_service::build_instruction_response(instruction);
