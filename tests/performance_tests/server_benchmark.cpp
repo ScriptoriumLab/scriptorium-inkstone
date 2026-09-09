@@ -69,28 +69,28 @@ BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_scriptorium_input_method_perform
 
     for (auto _ : state) {
         for (int i = 0; i < n; ++i) {
-            brush_client->send_and_receive("f");
+            brush_client->send_and_receive(R"({"type":"TEXT","content":"f"})");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("a");
+            brush_client->send_and_receive(R"({"type":"TEXT","content":"a"})");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("n");
+            brush_client->send_and_receive(R"({"type":"TEXT","content":"n"})");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("g");
+            brush_client->send_and_receive(R"({"type":"TEXT","content":"g"})");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("cmd:backspace");
+            brush_client->send_and_receive(R"({"type":"BACKSPACE"})");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("cmd:backspace");
+            brush_client->send_and_receive(R"({"type":"BACKSPACE"})");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("cmd:backspace");
+            brush_client->send_and_receive(R"({"type":"BACKSPACE"})");
             ink_client->read_next_message();
 
-            brush_client->send_and_receive("cmd:backspace");
+            brush_client->send_and_receive(R"({"type":"BACKSPACE"})");
             ink_client->read_next_message();
         }
     }
