@@ -6,6 +6,7 @@ add_executable(scriptorium_inkstone_integration_tests
 target_link_libraries(scriptorium_inkstone_integration_tests
     scriptorium::felt::core::logger
     scriptorium::felt::infra::logger
+    scriptorium::felt::service::protocol
     scriptorium::inkstone::core
     scriptorium::inkstone::server
     scriptorium::inkstone::test_utils

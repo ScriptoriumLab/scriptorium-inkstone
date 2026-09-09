@@ -4,9 +4,13 @@
 
 #include "../../inkstone/server.h"
 #include "scriptorium/felt/core/logger/logger_service.h"
+#include "scriptorium/felt/core/protocol/v1/input/key_event.h"
+#include "scriptorium/felt/service/protocol/input_protocol_service.h"
 #include "include/scriptorium/tests/utils/test_input_protocol_pipe_client.h"
 #include "include/scriptorium/tests/utils/test_ui_protocol_pipe_client.h"
 #include "scriptorium/core/engine/pinyin_engine.h"
+
+#define NOT_USED(x) (void)(x)
 
 using namespace scriptorium::inkstone;
 
@@ -19,6 +23,31 @@ namespace scriptorium::tests::performance_tests {
     };
 }
 
+namespace {
+    namespace input_protocol = scriptorium::felt::core::protocol::input::v1;
+    namespace protocol_service = scriptorium::felt::service;
+
+    std::string build_text_request(const std::string& content) {
+        return protocol_service::input_protocol_service::build_key_event_request({
+            .event = {
+                input_protocol::key_event_type::TEXT,
+                content
+            },
+            .context = {}
+        });
+    }
+
+    std::string build_key_request(input_protocol::key_event_type type) {
+        return protocol_service::input_protocol_service::build_key_event_request({
+            .event = {
+                type,
+                std::nullopt
+            },
+            .context = {}
+        });
+    }
+}
+
 class server_benchmark_fixture : public benchmark::Fixture {
 public:
     static std::unique_ptr<server> server_instance;
@@ -27,7 +56,7 @@ public:
     static std::unique_ptr<tests::utils::test_ui_protocol_pipe_client> ink_client;
 
     const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_input_protocol_pipe)";
-	const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_ui_protocol_pipe)";
+    const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_ui_protocol_pipe)";
 
     void SetUp(const ::benchmark::State& state) override {
         if (!server_instance) {
@@ -67,30 +96,36 @@ std::unique_ptr<tests::utils::test_ui_protocol_pipe_client> server_benchmark_fix
 BENCHMARK_DEFINE_F(server_benchmark_fixture, BM_scriptorium_input_method_performance)(benchmark::State& state) {
     auto n = state.range(0);
 
+    const auto input_f = build_text_request("f");
+    const auto input_a = build_text_request("a");
+    const auto input_n = build_text_request("n");
+    const auto input_g = build_text_request("g");
+    const auto backspace = build_key_request(input_protocol::key_event_type::BACKSPACE);
+
     for (auto _ : state) {
         for (int i = 0; i < n; ++i) {
-            brush_client->send_and_receive(R"({"type":"TEXT","content":"f"})");
+            NOT_USED(brush_client->send_and_receive(input_f));
             ink_client->read_next_message();
 
-            brush_client->send_and_receive(R"({"type":"TEXT","content":"a"})");
+            NOT_USED(brush_client->send_and_receive(input_a));
             ink_client->read_next_message();
 
-            brush_client->send_and_receive(R"({"type":"TEXT","content":"n"})");
+            NOT_USED(brush_client->send_and_receive(input_n));
             ink_client->read_next_message();
 
-            brush_client->send_and_receive(R"({"type":"TEXT","content":"g"})");
+            NOT_USED(brush_client->send_and_receive(input_g));
             ink_client->read_next_message();
 
-            brush_client->send_and_receive(R"({"type":"BACKSPACE"})");
+            NOT_USED(brush_client->send_and_receive(backspace));
             ink_client->read_next_message();
 
-            brush_client->send_and_receive(R"({"type":"BACKSPACE"})");
+            NOT_USED(brush_client->send_and_receive(backspace));
             ink_client->read_next_message();
 
-            brush_client->send_and_receive(R"({"type":"BACKSPACE"})");
+            NOT_USED(brush_client->send_and_receive(backspace));
             ink_client->read_next_message();
 
-            brush_client->send_and_receive(R"({"type":"BACKSPACE"})");
+            NOT_USED(brush_client->send_and_receive(backspace));
             ink_client->read_next_message();
         }
     }

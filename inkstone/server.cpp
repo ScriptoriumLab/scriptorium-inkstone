@@ -16,36 +16,46 @@ namespace scriptorium::inkstone {
 	const std::string INPUT_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_input_protocol_pipe)";
 	const std::string UI_PROTOCOL_PIPE_NAME = R"(\\.\pipe\scriptorium_ui_protocol_pipe)";
 
-	class ui_bridge : public core::icandidate_observer {
-	public:
-		explicit ui_bridge(std::unique_ptr<felt::core::ipc::iasync_ipc_server<std::string, std::string>> pipe)
-			: async_server_(std::move(pipe)) {}
+    class ui_bridge : public core::icandidate_observer {
+    public:
+        explicit ui_bridge(
+            std::unique_ptr<felt::core::ipc::iasync_ipc_server<std::string, std::string>> pipe,
+            const std::optional<felt::core::protocol::input::v1::point>* anchor)
+            : async_server_(std::move(pipe)), anchor_(anchor) {}
 
-		void on_candidate_update(const std::vector<core::candidate>& candidates, size_t highlight_index) override {
-			if (!async_server_) return;
+        void on_candidate_update(const std::vector<core::candidate>& candidates, size_t highlight_index) override {
+            if (!async_server_) return;
 
-			bool visible = !candidates.empty();
-			double x = 100.0;
-			double y = 100.0;
-			int page_index = 0;
-			int total_pages = 1;
+            bool visible = !candidates.empty();
 
-			std::string render_state = felt::service::ui_protocol_service::build_render_state_request(
-				visible,
+            double x = 0.0;
+            double y = 0.0;
+
+            if (anchor_ && anchor_->has_value()) {
+                x = (*anchor_)->x;
+                y = (*anchor_)->y;
+            }
+
+            int page_index = 0;
+            int total_pages = 1;
+
+            std::string render_state = felt::service::ui_protocol_service::build_render_state_request(
+                visible,
                 x, y,
                 candidates
                     | std::views::transform([](const auto& c){ return c.word; })
                     | std::ranges::to<std::vector<std::string>>(),
                 highlight_index,
                 page_index, total_pages
-			);
+            );
 
-			async_server_->send(render_state);
-		}
+            async_server_->send(render_state);
+        }
 
-	private:
+    private:
         std::unique_ptr<felt::core::ipc::iasync_ipc_server<std::string, std::string>> async_server_;
-	};
+        const std::optional<felt::core::protocol::input::v1::point>* anchor_;
+    };
 
 	server::server(const manager::EngineDetail& engine_detail) {
 		input_protocol_ipc_server_ = felt::infra::ipc::ipc_server_factory::create_sync_ipc_server(INPUT_PROTOCOL_PIPE_NAME);
@@ -65,7 +75,7 @@ namespace scriptorium::inkstone {
 				}
 			}
 		});
-		auto bridge = std::make_shared<ui_bridge>(std::move(ui_protocol_ipc_server));
+        auto bridge = std::make_shared<ui_bridge>(std::move(ui_protocol_ipc_server), &ui_anchor_);
 		auto candidate_manager = std::make_unique<manager::candidate_manager>();
 		candidate_manager->add_observer(bridge);
 
@@ -78,21 +88,26 @@ namespace scriptorium::inkstone {
 		);
 	}
 
-	void server::run() {
-		input_protocol_ipc_server_->run([this](const std::string& request) {
-			const auto key_event = felt::service::input_protocol_service::parse_key_event_request(request);
-			const auto instruction = session_orchestrator_->handle_key(key_event);
+    void server::run() {
+        input_protocol_ipc_server_->run([this](const std::string& request) {
+            const auto key_event_request = felt::service::input_protocol_service::parse_key_event_request(request);
 
-			return felt::service::input_protocol_service::build_instruction_response(instruction);
-		});
+            if (key_event_request.context.anchor.has_value()) {
+                ui_anchor_ = key_event_request.context.anchor;
+            }
+
+            const auto instruction = session_orchestrator_->handle_key(key_event_request.event);
+
+            return felt::service::input_protocol_service::build_instruction_response(instruction);
+        });
 
         felt::core::logger_service::logger()->info("Inkstone Server (Headless) running...");
-		{
-			std::unique_lock lock(exit_mutex_);
-			exit_cv_.wait(lock, [this]{ return stop_requested_; });
-		}
+        {
+            std::unique_lock lock(exit_mutex_);
+            exit_cv_.wait(lock, [this]{ return stop_requested_; });
+        }
         felt::core::logger_service::logger()->info("Stopping server...");
-	}
+    }
 
 	void server::signal_stop() {
 		{

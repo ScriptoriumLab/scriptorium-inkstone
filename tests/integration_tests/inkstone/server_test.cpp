@@ -7,13 +7,43 @@
 #include "scriptorium/core/engine/pinyin_engine.h"
 
 #include "scriptorium/felt/core/logger/logger_service.h"
+#include "scriptorium/felt/core/protocol/v1/input/key_event.h"
 #include "scriptorium/felt/infra/logger/spdlog_logger.h"
+#include "scriptorium/felt/service/protocol/input_protocol_service.h"
+
 #include "../../inkstone/server.h"
 
 #include "include/scriptorium/tests/utils/test_input_protocol_pipe_client.h"
 #include "include/scriptorium/tests/utils/test_ui_protocol_pipe_client.h"
 
+#define NOT_USED(x) (void)(x)
+
 using namespace std::chrono_literals;
+
+namespace input_protocol = scriptorium::felt::core::protocol::input::v1;
+namespace protocol_service = scriptorium::felt::service;
+
+namespace {
+	std::string build_text_request(const std::string& content) {
+		return protocol_service::input_protocol_service::build_key_event_request({
+			.event = {
+				input_protocol::key_event_type::TEXT,
+				content
+			},
+			.context = {}
+		});
+	}
+
+	std::string build_key_request(input_protocol::key_event_type type) {
+		return protocol_service::input_protocol_service::build_key_event_request({
+			.event = {
+				type,
+				std::nullopt
+			},
+			.context = {}
+		});
+	}
+}
 
 class server_integration_tests : public ::testing::Test {
 protected:
@@ -57,11 +87,11 @@ TEST_F(server_integration_tests, should_successfully_return_candidate_when_input
 	scriptorium::inkstone::tests::utils::test_ui_protocol_pipe_client ink_client(UI_PROTOCOL_PIPE_NAME);
 	ASSERT_TRUE(ink_client.connect()) << "UI failed to connect";
 
-	const auto response_without_candidates = brush_client.send_and_receive(R"({"type":"TEXT","content":"n"})");
+	const auto response_without_candidates = brush_client.send_and_receive(build_text_request("n"));
 	EXPECT_THAT(response_without_candidates, testing::HasSubstr(R"({"candidate_info":{"spelling_path":["n"],"word":"n"},"type":"U"})"));
 	ink_client.read_next_message();
 
-	const auto response_with_candidates = brush_client.send_and_receive(R"({"type":"TEXT","content":"i"})");
+	const auto response_with_candidates = brush_client.send_and_receive(build_text_request("i"));
 	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"candidate_info":{"spelling_path":["ni"],"word":"ni"},"type":"U"})"));
 
 	const auto json_msg = ink_client.read_next_message();
@@ -76,24 +106,33 @@ TEST_F(server_integration_tests, should_successfully_handle_backspace_when_user_
 	ASSERT_TRUE(brush_client.connect());
 	ASSERT_TRUE(ink_client.connect());
 
-	brush_client.send_and_receive(R"({"type":"TEXT","content":"f"})");
+	NOT_USED(brush_client.send_and_receive(build_text_request("f")));
 	ink_client.read_next_message();
 
-	brush_client.send_and_receive(R"({"type":"TEXT","content":"a"})");
+	NOT_USED(brush_client.send_and_receive(build_text_request("a")));
 	ink_client.read_next_message();
 
-	brush_client.send_and_receive(R"({"type":"TEXT","content":"n"})");
+	NOT_USED(brush_client.send_and_receive(build_text_request("n")));
 	ink_client.read_next_message();
 
-	const auto response_after_backspace = brush_client.send_and_receive(R"({"type":"BACKSPACE"})");
-	ink_client.read_next_message();
-	EXPECT_THAT(response_after_backspace, testing::HasSubstr(R"({"candidate_info":{"spelling_path":["fa"],"word":"fa"},"type":"U"})"));
-
-	brush_client.send_and_receive(R"({"type":"TEXT","content":"n"})");
+	const auto response_after_backspace = brush_client.send_and_receive(
+		build_key_request(input_protocol::key_event_type::BACKSPACE)
+	);
 	ink_client.read_next_message();
 
-	const auto response_with_candidates = brush_client.send_and_receive(R"({"type":"TEXT","content":"g"})");
-	EXPECT_THAT(response_with_candidates, testing::HasSubstr(R"({"candidate_info":{"spelling_path":["fan","g"],"word":"fang"},"type":"U"})"));
+	EXPECT_THAT(
+		response_after_backspace,
+		testing::HasSubstr(R"({"candidate_info":{"spelling_path":["fa"],"word":"fa"},"type":"U"})")
+	);
+
+	NOT_USED(brush_client.send_and_receive(build_text_request("n")));
+	ink_client.read_next_message();
+
+	const auto response_with_candidates = brush_client.send_and_receive(build_text_request("g"));
+	EXPECT_THAT(
+		response_with_candidates,
+		testing::HasSubstr(R"({"candidate_info":{"spelling_path":["fan","g"],"word":"fang"},"type":"U"})")
+	);
 
 	const auto json_msg = ink_client.read_next_message();
 	EXPECT_THAT(json_msg, testing::HasSubstr("\"candidates\""));
