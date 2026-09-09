@@ -91,13 +91,8 @@ namespace scriptorium::inkstone::manager {
                 };
             }
 
-            const auto& content = *key_event.content;
-
-            if (content.size() == 1) {
-                engine_manager_->update_input_state(content[0]);
-                highlight_index_ = 0;
-            }
-
+            engine_manager_->update_input_state(key_event.content->front());
+            highlight_index_ = 0;
             break;
         }
         }
